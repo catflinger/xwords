@@ -34,6 +34,7 @@ import { InfoPanelComponent } from './ui/general/guides/info-panel/info-panel.co
 import { ClueTextChunkComponent } from './ui/clues/clue-text-chunk/clue-text-chunk.component';
 import { TipComponent } from './ui/general/guides/tip/tip.component';
 import { TipInstanceFactory } from './ui/general/guides/tip/tip-instance';
+import { SettingsComponent } from './ui/general/settings/settings.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -73,6 +74,7 @@ const tracks: ReadonlyArray<NavTrack> = [
     RemoveClueFormComponent,
     InfoPanelComponent,
     TipComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
