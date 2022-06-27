@@ -29,6 +29,8 @@ import { ClueEditorControlComponent } from './ui/puzzle-editing/tabbed-dialogs/e
 import { ClueTextControlComponent } from './ui/clues/clue-text-control/clue-text-control.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
+import { RemoveClueFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/remove-clue-form/remove-clue-form.component';
+import { InfoPanelComponent } from './ui/general/guides/info-panel/info-panel.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -62,6 +64,10 @@ const tracks: ReadonlyArray<NavTrack> = [
     BloggerComponent,
     ClueEditorControlComponent,
     ClueTextControlComponent,
+    ClueAnnotatorFormComponent,
+    EditClueFormComponent,
+    RemoveClueFormComponent,
+    InfoPanelComponent,
   ],
   imports: [
     BrowserModule,
