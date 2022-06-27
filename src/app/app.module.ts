@@ -17,6 +17,11 @@ import { UIProcessService } from './services/navigation/ui-process.service';
 import { IActivePuzzle, IPuzzleManager, PuzzleManagementService } from './services/puzzles/puzzle-management.service';
 import { AppComponent } from './ui/app/app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HomeComponent } from './ui/general/home/home.component';
+import { WordpressIdPipe } from './ui/general/wordpress-id.pipe';
+import { ClueDialogComponent } from './ui/puzzle-editing/tabbed-dialogs/clue-dialog/clue-dialog.component';
+import { SolverComponent } from './ui/puzzle-solving/solver/solver.component';
+import { BloggerComponent } from './ui/puzzle-solving/blogger/blogger.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -42,7 +47,12 @@ const tracks: ReadonlyArray<NavTrack> = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    WordpressIdPipe,
+    ClueDialogComponent,
+    SolverComponent,
+    BloggerComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col">
+        <h3>Blogger</h3>
+    </div>
+</div>
+
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <h5>{{puzzle.info.title}}</h5>
+    </div>
+</div>
+
+<div class="row mt-3" *ngIf="showEditor">
+    <div class="col">
+        <app-clue-dialog (close)="onEditorClose()"></app-clue-dialog>
+    </div>
+</div>
+
+<div class="row mt-3" *ngIf="showPuzzle">
+    <div class="col">
+        <table class="table w-100" *ngIf="puzzle">
+            <thead *ngIf="puzzle.publishOptions.textCols.length">
+                <th>No.</th>
+                <th *ngFor="let textCol of puzzle.publishOptions.textCols">{{textCol.caption}}</th>
+                <th>Clue</th>
+                <th>Comment</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let clue of puzzle.clues;">
+                    <tr class="border-top bg-light" [ngClass]="{'bg-white': clue.highlight}" (click)="onRowClick(clue)">
+                        <td class="py-0">
+                            {{clue.caption}}
+                        </td>
+                        <td class="font-weight-bold py-0" *ngFor="let textCol of puzzle.publishOptions.textCols; let i = index;">
+                            {{ clue.answers[i] }}
+                        </td>
+                        <td class="py-0">
+                            <app-clue-text [clueId]="clue.id"></app-clue-text>
+                        </td>
+                        <td class="py-0">
+                            <quill-view [content]="clue.comment" format="object" theme="snow"></quill-view>
+                        </td>
+                        <td class="py-0">
+                            <ng-container *ngIf="appSettings.general.showCommentValidation.enabled && clue.warnings.length && !clue.redirect">
+                                <span class="text-warning"> {{clue.warnings[0]}}</span>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">
+        <button type="button" class="btn btn-primary mr-3" (click)="onContinue()">Continue</button>
+        <button type="button" class="btn btn-primary mr-3" (click)="onSolver()" *ngIf="puzzle.solveable">Open in solver</button>
+        <button type="button" class="btn btn-primary mr-3" (click)="onEditClues()" style="display:none">Edit clues (temp)</button>
+        <button type="button" class="btn btn-primary mr-3" (click)="onBack()">Back</button>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<app-info-panel>
+    <p>
+        Add a new clue to the puzzle.
+    </p>
+</app-info-panel>
+
+<form [formGroup]="form" *ngIf="puzzle">
+
+    <app-clue-editor-control formControlName="edits"></app-clue-editor-control>
+    
+    <div class="row mt-3">
+        <div class="col p-3">
+            <button type="button" class="btn btn-primary" (click)="onAddClue()" [disabled]="!form.valid">Save</button>
+        </div>
+    </div>
+</form>

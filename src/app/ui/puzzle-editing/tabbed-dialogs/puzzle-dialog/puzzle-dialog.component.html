@@ -1,0 +1,48 @@
+<div class="modal-body" *ngIf="puzzle">
+
+    <ul ngbNav #nav="ngbNav" [(activeId)]="activeId" class="nav-tabs">
+
+        <li ngbNavItem="PuzzleInfoFormComponent">
+            <a ngbNavLink>General</a>
+            <ng-template ngbNavContent>
+                <app-puzzle-info-form (close)="onClose()"></app-puzzle-info-form>
+            </ng-template>
+        </li>
+
+        <li ngbNavItem="AddClueComponent">
+            <a ngbNavLink>Add Clue</a>
+            <ng-template ngbNavContent>
+                <app-add-clue-form (close)="onClose()"></app-add-clue-form>
+            </ng-template>
+        </li>
+
+        <li ngbNavItem="PuzzleOptionsComponent">
+            <a ngbNavLink>Annotation Otions</a>
+            <ng-template ngbNavContent>
+                <app-publish-options-form (close)="onClose()"></app-publish-options-form>
+            </ng-template>
+        </li>
+
+        <li ngbNavItem="GridFormComponent" *ngIf="puzzle.grid">
+            <a ngbNavLink>Edit Grid</a>
+            <ng-template ngbNavContent>
+                <app-grid-form (close)="onClose()"></app-grid-form>
+            </ng-template>
+        </li>
+
+        <li ngbNavItem="CheatFormComponent" *ngIf="puzzle.hasSolutions">
+            <a ngbNavLink>Cheat</a>
+            <ng-template ngbNavContent>
+                <app-cheat-form (close)="onClose()"></app-cheat-form>
+            </ng-template>
+        </li>
+
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="my-3"></div>
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark mr-3" (click)="onClose()">Close</button>
+</div>

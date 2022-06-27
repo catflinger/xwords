@@ -1,0 +1,94 @@
+<form [formGroup]="form" *ngIf="puzzle && clue && appSettings">
+
+    <div class="row mt-3">
+        <div class="col text-left">
+            <h5 class="text-capitalize">{{clue.caption}}</h5>
+        </div>
+        <div class="col text-right">
+            <button type="button" class="btn btn-link"
+                (click)="onClearDefinition()">clear definition</button>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <h4>
+                <app-clue-text-control formControlName="chunks" (change)="onChange(0)"></app-clue-text-control>
+            </h4>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <app-tip key="definitionWarning" (instance)="onTipInstance($event)" maxActivations="1">
+                You have not highlighted the definition yet.
+                To highlight the definition clue select part of the clue text using your mouse or other pointing
+                device.
+            </app-tip>
+        </div>
+    </div>
+
+    <div class="row mt-3" *ngIf="grid">
+        <div class="col">
+            <h4 class="spacey">
+                <span *ngFor="let chunk of latestAnswer" [ngClass]="chunk.klass">{{chunk.letter}}</span>
+            </h4>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <app-tip group="none" [suppressable]="false" *ngIf="showAnnotation">{{clue.annotation}}</app-tip>
+
+            <div formArrayName="answers" class="form-group" *ngFor="let item of answersFormArray.controls; index as i; trackBy: trackAnswersBy">
+                <div [formGroup]="item">
+
+                    <div class="float-left">
+                        <label [for]="item.value.id">{{item.value.caption}}</label>
+                    </div>
+
+                    <div class="float-right" *ngIf="i === 0 && clue.solution && appSettings.general.showCheat.enabled">
+                        <button type="button" class="btn btn-link"
+                            *ngIf="!(puzzle.publishOptions && puzzle.publishOptions.textCols.length > 1)"
+                            (click)="onCheat()">cheat</button>
+                        <button type="button" class="btn btn-link" (click)="onAnnotation()"
+                            *ngIf="clue.annotation">annotation</button>
+                    </div>
+
+                    <input 
+                        [attr.id]="item.value.id" 
+                        class="form-control" 
+                        [ngClass]="{'text-uppercase': !i}"
+                        #answer 
+                        formControlName="answer" 
+                        (input)="onChange(i)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <div class="form-group mb-0">
+                <div>
+                    <label for="comment">Comment</label>
+                </div>
+
+                <div>
+                    <quill-editor id="comment" formControlName="comment" format="object"
+                        (onContentChanged)="onChange(0)"></quill-editor>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <div class="text-warning" *ngIf="showTextWarning">
+                <span> {{warnings[0]}}</span>
+            </div>
+        </div>
+    </div>
+
+</form>
+

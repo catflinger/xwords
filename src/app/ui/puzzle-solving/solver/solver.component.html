@@ -1,0 +1,50 @@
+<div *ngIf="puzzle">
+    <div class="row">
+        <div class="col">
+            <h5>{{puzzle.info.title}}</h5>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="showEditor">
+        <div class="col">
+            <app-clue-dialog (close)="onEditorClose()"></app-clue-dialog>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="showPuzzle && puzzle.info.instructions">
+        <div class="col">
+            {{puzzle.info.instructions}}
+        </div>
+    </div>
+
+    <div class="row" *ngIf="showPuzzle">
+        <div class="col" *ngIf="puzzle.grid">
+            <app-grid (cellClick)="onCellClick($event)" [options]="{ hideShading: true, showConflicts: true }"></app-grid>
+        </div>
+
+        <div class="col">
+            <app-clue-list direction="across" (clueClick)="onClueClick($event)" [followRedirects]="true"></app-clue-list>
+        </div>
+
+        <div class="col">
+            <app-clue-list direction="down" (clueClick)="onClueClick($event)" [followRedirects]="true"></app-clue-list>
+        </div>
+    </div>
+
+    <div class="row  mb-5" *ngIf="showPuzzle">
+        <div class="col text-left">
+            <button type="button" class="btn btn-primary mr-3" (click)="onContinue()">Continue</button>
+            <button type="button" class="btn btn-primary mr-3" (click)="onBlogger()">Open in blogger</button>
+            <button type="button" class="btn btn-secondary mr-3 d-none" (click)="onJigsaw()">Open in jigsaw</button>
+            <button type="button" class="btn btn-primary mr-3" (click)="onBack()">Back</button>
+        </div>
+        <div class="col text-right">
+            <button type="button" class="btn btn-link mr-3" (click)="onFix()">puzzle options...</button>
+        </div>
+    </div>
+
+    <div *ngIf="appSettings.traceOutput">
+        <pre>{{puzzle | json}}</pre>
+    </div>
+
+</div>
