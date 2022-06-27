@@ -22,6 +22,12 @@ import { WordpressIdPipe } from './ui/general/wordpress-id.pipe';
 import { ClueDialogComponent } from './ui/puzzle-editing/tabbed-dialogs/clue-dialog/clue-dialog.component';
 import { SolverComponent } from './ui/puzzle-solving/solver/solver.component';
 import { BloggerComponent } from './ui/puzzle-solving/blogger/blogger.component';
+import { ClueAnnotatorFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/clue-annotator-form/clue-annotator-form.component';
+import { EditClueFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/edit-clue-form/edit-clue-form.component';
+import { ConfirmModalComponent } from './ui/general/confirm-modal/confirm-modal.component';
+import { ClueEditorControlComponent } from './ui/puzzle-editing/tabbed-dialogs/editors/clue-editor-control/clue-editor-control.component';
+import { ClueTextControlComponent } from './ui/clues/clue-text-control/clue-text-control.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const quillGlobalConfig = {
     modules: {
@@ -53,12 +59,17 @@ const tracks: ReadonlyArray<NavTrack> = [
     ClueDialogComponent,
     SolverComponent,
     BloggerComponent,
+    ClueEditorControlComponent,
+    ClueTextControlComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+
   ],
   providers: [
     HttpClient,
@@ -68,6 +79,11 @@ const tracks: ReadonlyArray<NavTrack> = [
     {provide: NAV_TRACKS, useValue: tracks},
     {provide: NAV_PROCESSOR, useClass: UIProcessService},
   ],
+  entryComponents: [
+    ClueAnnotatorFormComponent,
+    ConfirmModalComponent,
+    EditClueFormComponent,
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

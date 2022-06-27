@@ -72,6 +72,9 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
 
     public ngOnInit() {
 
+        console.log("Init Clue Annotator Form")
+
+
         this.form = this.formBuilder.group({
             answers: this.formBuilder.array([]),
             comment: [""],

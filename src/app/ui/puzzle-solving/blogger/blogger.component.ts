@@ -133,6 +133,7 @@ export class BloggerComponent implements OnInit, OnDestroy {
             this._showEditor = true;
 
             if (this.appSettings.editorMode === "modal") {
+
                 let modalRef = this.modalService.open(ClueDialogComponent, {
                     backdrop: "static",
                     size: "lg",
