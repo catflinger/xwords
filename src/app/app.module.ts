@@ -28,6 +28,7 @@ import { ConfirmModalComponent } from './ui/general/confirm-modal/confirm-modal.
 import { ClueEditorControlComponent } from './ui/puzzle-editing/tabbed-dialogs/editors/clue-editor-control/clue-editor-control.component';
 import { ClueTextControlComponent } from './ui/clues/clue-text-control/clue-text-control.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
 
 const quillGlobalConfig = {
     modules: {
@@ -69,6 +70,7 @@ const tracks: ReadonlyArray<NavTrack> = [
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    QuillModule.forRoot(quillGlobalConfig),
 
   ],
   providers: [
