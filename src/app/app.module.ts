@@ -31,6 +31,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { RemoveClueFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/remove-clue-form/remove-clue-form.component';
 import { InfoPanelComponent } from './ui/general/guides/info-panel/info-panel.component';
+import { ClueTextChunkComponent } from './ui/clues/clue-text-chunk/clue-text-chunk.component';
+import { TipComponent } from './ui/general/guides/tip/tip.component';
+import { TipInstanceFactory } from './ui/general/guides/tip/tip-instance';
 
 const quillGlobalConfig = {
     modules: {
@@ -64,10 +67,12 @@ const tracks: ReadonlyArray<NavTrack> = [
     BloggerComponent,
     ClueEditorControlComponent,
     ClueTextControlComponent,
+    ClueTextChunkComponent,
     ClueAnnotatorFormComponent,
     EditClueFormComponent,
     RemoveClueFormComponent,
     InfoPanelComponent,
+    TipComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,6 +91,7 @@ const tracks: ReadonlyArray<NavTrack> = [
     {provide: IActivePuzzle, useExisting: PuzzleManagementService},
     {provide: NAV_TRACKS, useValue: tracks},
     {provide: NAV_PROCESSOR, useClass: UIProcessService},
+    TipInstanceFactory,
   ],
   entryComponents: [
     ClueAnnotatorFormComponent,

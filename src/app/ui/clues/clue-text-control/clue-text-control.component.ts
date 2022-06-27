@@ -37,6 +37,10 @@ export class ClueTextControlComponent implements ControlValueAccessor, OnInit {
     constructor() {
     }
 
+
+    ngOnInit() {
+    }
+
     writeValue(chunks: TextChunk[]) {
         if (chunks !== undefined) {
             this.chunks = [];
@@ -49,14 +53,12 @@ export class ClueTextControlComponent implements ControlValueAccessor, OnInit {
             ));
         }
     }
+
     registerOnChange(fn) {
         this.propagateChange = fn;
     }
 
     registerOnTouched() {
-    }
-
-    ngOnInit() {
     }
 
     public onMouseUp() {
