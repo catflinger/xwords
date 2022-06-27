@@ -16,6 +16,7 @@ import { solveTrack } from './services/navigation/tracks/solve-track';
 import { UIProcessService } from './services/navigation/ui-process.service';
 import { IActivePuzzle, IPuzzleManager, PuzzleManagementService } from './services/puzzles/puzzle-management.service';
 import { AppComponent } from './ui/app/app.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const quillGlobalConfig = {
     modules: {
@@ -47,6 +48,7 @@ const tracks: ReadonlyArray<NavTrack> = [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    NgbModule,
   ],
   providers: [
     HttpClient,
