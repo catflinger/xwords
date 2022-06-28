@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class WordpressIdPipe implements PipeTransform {
 
-    transform(content: string) {
-        return content ? "Published" : "";
+    transform(id: string | number) {
+        return id ? "Published" : "";
     }
 
 }

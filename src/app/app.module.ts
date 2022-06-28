@@ -16,7 +16,7 @@ import { solveTrack } from './services/navigation/tracks/solve-track';
 import { UIProcessService } from './services/navigation/ui-process.service';
 import { IActivePuzzle, IPuzzleManager, PuzzleManagementService } from './services/puzzles/puzzle-management.service';
 import { AppComponent } from './ui/app/app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './ui/general/home/home.component';
 import { WordpressIdPipe } from './ui/general/wordpress-id.pipe';
 import { ClueDialogComponent } from './ui/puzzle-editing/tabbed-dialogs/clue-dialog/clue-dialog.component';
@@ -35,6 +35,16 @@ import { ClueTextChunkComponent } from './ui/clues/clue-text-chunk/clue-text-chu
 import { TipComponent } from './ui/general/guides/tip/tip.component';
 import { TipInstanceFactory } from './ui/general/guides/tip/tip-instance';
 import { SettingsComponent } from './ui/general/settings/settings.component';
+import { AlertComponent } from './ui/general/guides/alert/alert.component';
+import { PuzzleInfoFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/puzzle-info-form/puzzle-info-form.component';
+import { AddClueFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/add-clue-form/add-clue-form.component';
+import { PublishOptionsFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/publish-options-form/publish-options-form.component';
+import { CheatFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/cheat-form/cheat-form.component';
+import { ClueTextComponent } from './ui/clues/clue-text/clue-text.component';
+import { GridComponent } from './ui/grid/grid/grid.component';
+import { ClueListComponent } from './ui/clues/clue-list/clue-list.component';
+import { ClueListItemComponent } from './ui/clues/clue-list-item/clue-list-item.component';
+import { GridFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/grid-form/grid-form.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -61,6 +71,7 @@ const tracks: ReadonlyArray<NavTrack> = [
 @NgModule({
   declarations: [
     AppComponent,
+    AlertComponent,
     HomeComponent,
     WordpressIdPipe,
     ClueDialogComponent,
@@ -75,6 +86,20 @@ const tracks: ReadonlyArray<NavTrack> = [
     InfoPanelComponent,
     TipComponent,
     SettingsComponent,
+    PuzzleInfoFormComponent,
+    AddClueFormComponent,
+    PublishOptionsFormComponent,
+    CheatFormComponent,
+    ClueTextComponent,
+    GridComponent,
+    ClueListComponent,
+    ClueListItemComponent,
+    PuzzleInfoFormComponent,
+    AddClueFormComponent,
+    PublishOptionsFormComponent,
+    GridFormComponent,
+    CheatFormComponent
+
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,4 @@
+<div class="canvasContainer">
+    <input #editor [ngStyle]="model.style" type="text" maxlength="1" [value]="model.text" (keydown)="onInput($event)">
+    <canvas #gridCanvas class="gridCanvas" [height]="canvasHeight" [width]="canvasWidth" (click)="onCanvasClick($event)"></canvas>
+</div>
