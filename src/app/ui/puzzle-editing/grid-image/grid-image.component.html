@@ -1,0 +1,47 @@
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <h5>{{puzzle.info.title}}</h5>
+    </div>
+</div>
+
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <app-grid 
+            #gridControl
+            [caption]="form.value.caption">
+        </app-grid>
+    </div>
+
+    <div class="col border border-secondary rounded p-3">
+        <form class="form" [formGroup]="form">
+            <div class="form-group">
+                <label class="form-label" for="caption">Caption displayed below image</label>
+                <input id="caption" type="text" class="form-control" formControlName="caption" placeholder="(optional)">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="filename">File name</label>
+                <input id="filename" type="text" class="form-control" formControlName="filename">
+                <div class="text-danger" *ngIf="form.controls.filename.hasError('required')">Please enter a filename for the download</div>
+                <div class="text-danger" *ngIf="form.controls.filename.hasError('pattern')">Only letters, numbers, hyphen and spaces allowed here</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="encoding">Image type</label>
+                <select id="encoding" class="form-control" formControlName="encoding">
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                    <option value="gif">gif</option>
+                    <option value="webp">webp</option>
+                    <option value="paul">paul</option>
+                </select>
+                <div class="text-danger" *ngIf="form.controls.encoding.hasError('required')">Please select an encoding for the image</div>
+            </div>
+        </form>
+        <button type="button" class="btn btn-primary mr-3" (click)="onDownload()" [disabled]="!form.valid">Download image</button>
+    </div>
+</div>
+
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <button type="button" class="btn btn-primary mr-3" (click)="onClose()">Back</button>
+    </div>
+</div>

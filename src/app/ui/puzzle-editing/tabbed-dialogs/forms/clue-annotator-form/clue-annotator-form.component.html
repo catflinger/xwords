@@ -41,7 +41,7 @@
             <app-tip group="none" [suppressable]="false" *ngIf="showAnnotation">{{clue.annotation}}</app-tip>
 
             <div formArrayName="answers" class="form-group" *ngFor="let item of answersFormArray.controls; index as i; trackBy: trackAnswersBy">
-                <div [formGroup]="item">
+                <div [formGroupName]="i">
 
                     <div class="float-left">
                         <label [for]="item.value.id">{{item.value.caption}}</label>

@@ -1,6 +1,6 @@
 <div class="modal-body" *ngIf="puzzle">
 
-    <ul ngbNav #nav="ngbNav" [(activeId)]="activeId" class="nav-tabs">
+    <ul #nav="ngbNav" [(activeId)]="activeId" class="nav-tabs" ngbNav>
 
         <li ngbNavItem="PuzzleInfoFormComponent">
             <a ngbNavLink>General</a>

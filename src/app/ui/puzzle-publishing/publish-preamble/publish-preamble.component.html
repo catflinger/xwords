@@ -1,0 +1,38 @@
+<h3>preamble</h3>
+<form [formGroup]="form" *ngIf="puzzle">
+
+    <div class="row" *ngIf="puzzle">
+        <div class="col">
+            <div class="mt-4">
+                <p>Enter the title to be displayed on the fifteensquared home page</p>
+                <input id="title" type="text" class="w-100 pl-2" formControlName="title">
+            </div>
+
+            <div class="mt-4">
+                <p>Comment to be displayed below the title on the home page</p>
+                <quill-editor formControlName="header" format="object"></quill-editor>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" *ngIf="puzzle">
+        <div class="col">
+            <div class="mt-4">
+                <p>further comment inside your blog</p>
+                <quill-editor formControlName="body" format="object"></quill-editor>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" *ngIf="puzzle">
+        <div class="col">
+            <div class="mt-4">
+                <button type="button" class="btn btn-primary mr-3" (click)="onContinue()">Continue</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="onBack()">Back</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="onPreview()">Preview</button>
+            </div>
+        </div>
+    </div>
+
+</form>

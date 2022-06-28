@@ -1,0 +1,16 @@
+<h3>Create Puzzle</h3>
+
+<form class="form mt-3" [formGroup]="form">
+
+    <div class="form-group mt-3">
+        <label for="title">Title</label>
+        <input id="title" type="text" class="form-control" formControlName="title"
+            placeholder="Enter a title for your puzzle...">
+    </div>
+
+    <div class="formGroup mt-5">
+        <button class="btn btn-primary mr-3" type="button" [disabled]="!form.valid"
+            (click)="onContinue()">Continue</button>
+        <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>

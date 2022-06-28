@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col">
+        <h3>Grid highlights</h3>
+        <p>Click on cells in the grid to add shading, to highlight a theme for example</p>
+    </div>
+</div>
+
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <app-grid (cellClick)="onCellClick($event)" [options]="{ hideShading: false, hideHighlight: true }"></app-grid>
+    </div>
+
+    <div class="col-2">
+        <div class="mt-3">
+            <button type="button" class="btn btn-outline-primary mr-3 mt-3" (click)="onDownload()"
+                title="Take a snapshot of the grid and download it to you computer">Download</button>
+            <button type="button" class="btn btn-outline-primary mt-3" (click)="onClone()"
+                title="Make another copy of this grid and save it to your home page">Clone grid</button>
+        </div>
+    </div>
+
+
+    <div class="col">
+        <p>shading colour</p>
+        <form [formGroup]="form">
+            <app-color-control name="color" formControlName="color"></app-color-control>
+        </form>
+        <div *ngIf="colorsUsed.length > 0">
+            <p>colours used</p>
+            <div>
+                <div class="d-inline-block border m-2" style="height:30px; width: 30px" *ngFor="let c of colorsUsed"
+                    [ngStyle]="{'background-color': c}" (click)="onColorUsed(c)" [title]="cssColorNameFromValue(c)"></div>
+            </div>
+        </div>
+        <p class="mt-5"><button type="button" class="btn btn-link" (click)="onClearAll()">clear all shading</button></p>
+    </div>
+</div>
+
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <button type="button" class="btn btn-primary mr-3" (click)="onContinue()">Continue</button>
+        <button type="button" class="btn btn-primary" (click)="onBack()">Back</button>
+    </div>
+</div>

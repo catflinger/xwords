@@ -1,0 +1,80 @@
+<h3>Backups</h3>
+
+<ngb-alert type="info" [dismissible]="false">
+    <p>
+        By default puzzles are only visible on the computer and the browser that created them.  
+        For example: if you open a puzzle in Chrome then it won't be visible in Internet Explorer.
+        If you open a puzzle on your laptop then it will not be visible on your phone.
+        Also, if you delete your browser's local data then you will lose all your puzzles in that browser.
+    </p>
+    <p>
+    Backups are useful if you want to move a puzzle between computers, or to keep a puzzle after deleteing
+    your browser's local storage.  You can backup a puzzle from one location and restore it at another.
+    </p>
+</ngb-alert>
+
+<ng-container *ngIf="appStatus && creds && creds.authenticated">
+    <div class="mt-5">
+        <button type="button" class="btn btn-primary" (click)="onMakeBackup()">Make a backup</button>
+    </div>
+
+    <div class="mt-5" *ngIf="puzzleBackups.length">
+        <h4>Puzzle backups</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Title</th>
+                    <th>Origin</th>
+                    <th>Location</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let backup of puzzleBackups">
+                    <td>{{backup.date | date:'mediumDate'}}</td>
+                    <td>{{backup.date | date:'shortTime'}}</td>
+                    <td>{{backup.caption}}</td>
+                    <td>{{backup.origin}}</td>
+                    <td>{{backup.host}}</td>
+                    <td><button type="button" class="btn btn-primary" (click)="onRestore(backup)">Restore</button></td>
+                    <td><button type="button" class="btn btn-primary" (click)="onDelete(backup)">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-5" *ngIf="settingsBackups.length">
+        <h4>Settings backups</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Title</th>
+                    <th>Origin</th>
+                    <th>Location</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let backup of settingsBackups">
+                    <td>{{backup.date | date:'mediumDate'}}</td>
+                    <td>{{backup.date | date:'shortTime'}}</td>
+                    <td>{{backup.caption}}</td>
+                    <td>{{backup.origin}}</td>
+                    <td>{{backup.host}}</td>
+                    <td><button type="button" class="btn btn-primary" (click)="onRestoreSettings(backup)">Restore</button></td>
+                    <td><button type="button" class="btn btn-primary" (click)="onDelete(backup)">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="mt-5">
+        <button type="button" class="btn btn-primary" (click)="onRefresh()" [disabled]="appStatus.busy">Refresh</button>
+    </div>
+</ng-container>

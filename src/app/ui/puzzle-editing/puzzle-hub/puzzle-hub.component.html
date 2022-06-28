@@ -1,0 +1,112 @@
+<div class="row mt-3">
+    <div class="col">
+        <h3>Puzzle Manager</h3>
+    </div>
+    <div class="col">
+        <strong *ngIf="puzzle"> {{puzzle.info.title}}</strong>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">Step 1: Add some more information about this puzzle</div>
+    <div class="col">
+        <button type="button" class="btn btn-outline-primary" (click)="onEditInfo()">Add Info</button>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">Step 2: {{puzzle.grid ? 'Edit the' : 'Add a'}} grid (optional)</div>
+    <div class="col" *ngIf="!puzzle.grid">
+        <button type="button" class="btn btn-primary" (click)="onAddGrid()">Add grid</button>
+    </div>
+    <div class="col" *ngIf="puzzle.grid">
+        <button type="button" class="btn btn-outline-primary mr-3" (click)="onEditGrid()">Edit grid</button>
+        <button type="button" class="btn btn-outline-primary" (click)="onDeleteGrid()">Delete grid</button>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">Step 3: {{puzzle.clues ? 'Edit the' : 'Add some'}} clues</div>
+
+    <div class="col" *ngIf="puzzle.clues">
+        <button type="button" class="btn btn-outline-primary mr-3" (click)="onEditClues()">Edit clues</button>
+        <button type="button" class="btn btn-outline-primary mr-3" (click)="onDeleteClues()">Delete clues</button>
+        <button type="button" class="btn btn-outline-primary" *ngIf="puzzle.parseable" (click)="onReloadClues()">Reload clues</button>
+    </div>
+
+    <div class="col" *ngIf="!puzzle.clues">
+        <div class="row p-3 border-top" *ngIf="puzzle.grid">
+            <div class="col">
+                Create a set of empty clues numbered to match the grid.
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary mr-3" (click)="onAddCluesGrid()">Grid</button>
+            </div>
+        </div>
+
+        <div class="row p-3 border-top">
+            <div class="col">
+                I already have the clues in text format.  I want to use these.
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary mr-3" (click)="onAddCluesText()">Text</button>
+            </div>
+        </div>
+
+        <div class="row p-3 border-top">
+            <div class="col">
+                I want to enter the clues myself
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary mr-3" (click)="onAddCluesManual()">Manual</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">When you are happy that everything is ready mark the puzzle as finished.</div>
+    <div class="col">
+        <button type="button" class="btn btn-primary" (click)="onMarkFinished()">Mark as finished</button>
+    </div>
+</div>
+
+<div class="row mt-5 bg-light" *ngIf="puzzle">
+
+    <div class="col" *ngIf="puzzle.grid">
+        <app-grid [options]="{ hideShading: true }" (cellClick)="onCellClick($event)"></app-grid>
+    </div>
+
+    <div class="col" *ngIf="puzzle.clues">
+        <h5>across</h5>
+        <table>
+            <tbody>
+                <tr *ngFor="let clue of acrossClues" (click)="onRowClick(clue.id)">
+                    <app-clue-list-item [clueId]="clue.id" [options]="{showSolved: false}">
+                    </app-clue-list-item>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col" *ngIf="puzzle.clues">
+        <h5>down</h5>
+        <table>
+            <tbody>
+                <tr *ngFor="let clue of downClues" (click)="onRowClick(clue.id)">
+                    <app-clue-list-item [clueId]="clue.id" [options]="{showSolved: false}">
+                    </app-clue-list-item>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col"></div>
+    <div class="col">
+        <button type="button" class="btn btn-outline-primary" (click)="onClose()">Close</button>
+    </div>
+</div>

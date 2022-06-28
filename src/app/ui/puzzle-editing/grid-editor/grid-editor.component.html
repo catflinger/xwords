@@ -1,0 +1,219 @@
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <h5>{{puzzle.info.title}}</h5>
+    </div>
+</div>
+
+<div class="row justify-content-center" *ngIf="puzzle">
+    <div class="col">
+        <app-grid #gridControl (cellClick)="onCellClick($event)" (barClick)="onBarClick($event)"
+            (gridText)="onGridText($event)" (gridNavigation)="onGridNavigation($event)" [options]="options">
+        </app-grid>
+    </div>
+
+    <div class="col">
+        <app-tip key="gridEditor">
+            <p>
+                These tools allow you to configure your grid. Select one of the tab headings below:
+            </p>
+            <ul>
+                <li>Grid - for setting the light and dark cells/bars</li>
+                <li>Text - for writing letters into the lights</li>
+                <li>Colours - for highlighting a theme</li>
+                <li>Title - change grid title</li>
+            </ul>
+        </app-tip>
+
+        <ul ngbNav #nav="ngbNav" [(activeId)]="tool" class="nav-tabs" (navChange)="onTabChange($event)">
+
+            <li ngbNavItem="grid">
+                <a ngbNavLink>{{puzzle?.grid?.properties.style === 'barred' ? 'Bars' : 'Lights'}}</a>
+                <ng-template ngbNavContent>
+                    <div class="w-100 mt-5">
+                        Click on the grid to add or remove
+                        <span *ngIf="barred">bars</span>
+                        <span *ngIf="!barred">lights and dark cells</span>
+                    </div>
+                    <div class="form-check mt-5">
+                        <input id="symmetrical" type="checkbox" class="form-check-input" [checked]="symmetrical"
+                            (change)="onSymmetrical(!symmetrical)" />
+                        <label for="symmetrical" class="form-check-label">Grid is symmetrical </label>
+                    </div>
+                </ng-template>
+            </li>
+
+            <li ngbNavItem="text">
+                <a ngbNavLink>Text</a>
+                <ng-template ngbNavContent>
+                    <div class="mt-5">
+                        <div class="mb-5">
+                            Click on a cell in the grid to enter text
+                        </div>
+
+                        <app-tip key="gridEditorText">
+                            <p>
+                                You can control how the cursor will move after entering a letter into the grid:
+                            </p>
+                            <ul>
+                                <li>Select cell - enter a letter then stop</li>
+                                <li>Select in sequence - move to the next cell in the grid</li>
+                                <li>Select empty cells - move to the next empty cell in the grid</li>
+                                <li>Select entries - select the entire grid entry and move to the next cell in that
+                                    entry</li>
+                            </ul>
+                        </app-tip>
+
+                        <div class="form-check">
+                            <input type="radio" name="selectSingle" class="form-check-input"
+                                [value]="gridEditors.cellEditor" [(ngModel)]="options.editor"
+                                (change)="onOptionChange()">
+                            <label class="form-check-label">Select cell</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" name="selectSingle" class="form-check-input"
+                                [value]="gridEditors.cellEditorFluid" [(ngModel)]="options.editor"
+                                (change)="onOptionChange()">
+                            <label class="form-check-label">Select in sequence</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" name="selectSingle" class="form-check-input"
+                                [value]="gridEditors.cellEditorEmptyFluid" [(ngModel)]="options.editor"
+                                (change)="onOptionChange()">
+                            <label class="form-check-label">Select empty cells</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" name="selectSingle" class="form-check-input"
+                                [value]="gridEditors.entryEditor" [(ngModel)]="options.editor"
+                                (change)="onOptionChange()">
+                            <label class="form-check-label">Select entries</label>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+
+            <li ngbNavItem="color">
+                <a ngbNavLink>Colours</a>
+                <ng-template ngbNavContent>
+                    <div class="mt-5">
+                        Choose a colour then click a cell to apply highlighting
+                    </div>
+                    <div class="mt-5">
+                        <form [formGroup]="form">
+                            <app-color-control formControlName="shadingColor">
+                            </app-color-control>
+                        </form>
+                    </div>
+                    <div *ngIf="colorsUsed.length > 0">
+                        <p>colours used</p>
+                        <div>
+                            <div class="d-inline-block border m-2" style="height:30px; width: 30px" *ngFor="let c of colorsUsed"
+                                [ngStyle]="{'background-color': c}" (click)="onColorUsed(c)" [title]="cssColorNameFromValue(c)"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-link pl-1" (click)="onClearAll()">clear all
+                            shading</button>
+                    </div>
+                </ng-template>
+            </li>
+
+            <li ngbNavItem="properties">
+                <a ngbNavLink>Title</a>
+                <ng-template ngbNavContent>
+                    <form [formGroup]="form">
+                        <div class="form-group mt-5">
+                            <label for="title">Title</label>
+                            <input id="title" type="text" class="form-control" formControlName="title">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" [disabled]="!form.valid || form.pristine"
+                                (click)="onSubmit()">Save</button>
+                        </div>
+                    </form>
+                </ng-template>
+            </li>
+
+            <li ngbNavItem="captions">
+                <a ngbNavLink>Numbers</a>
+                <ng-template ngbNavContent>
+                    <div class="form-check mt-5">
+                        <input id="showCaptions" type="checkbox" class="form-check-input" [checked]="showCaptions"
+                            (change)="onShowCaptions()" />
+                        <label for="showCaptions" class="form-check-label">Show grid numbers</label>
+                    </div>
+
+                    <div class="form-check mt-5">
+                        <input id="numbered" type="checkbox" class="form-check-input" [checked]="numbered"
+                            (change)="onNumbered()" />
+                        <label for="numbered" class="form-check-label">Number cells automatically</label>
+                    </div>
+
+                    <div class="mt-5" [style.display]="!numbered ? 'block' : 'none'">
+
+                        <div [formGroup]="captionForm">
+                            <div class="form-group mt-3">
+                                <label for="title">Click a cell and enter a new caption</label>
+                                <input #captionControl id="title" type="text" [maxLength]="2" class="form-control"
+                                    formControlName="caption">
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-primary" [disabled]="!form.valid"
+                                    (click)="onCaptionSubmit()">Apply</button>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" class="btn btn-link pl-1" (click)="onClearCaptions()">Clear
+                                    all</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </ng-template>
+            </li>
+
+            <li ngbNavItem="cells">
+                <a ngbNavLink>Cells</a>
+                <ng-template ngbNavContent>
+                    <div class="mt-3">
+                        This tab allows you to hide a cell in the grid. This is for advanced grids where the grid may
+                        contain holes or may not be completely rectangular.
+                    </div>
+                    <div class="mt-5">
+                        Click the grid to hide/unhide a cell.
+                    </div>
+                    <div class="mt-5">
+                        <button type="button" class="btn btn-link pl-1" (click)="onClearHidden()">Remove all hidden cells</button>
+                    </div>
+                </ng-template>
+            </li>
+
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="my-3"></div>
+
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">
+            <button type="button" class="btn btn-outline-primary mr-3" (click)="onNina()">Nina Helper</button>
+            <button type="button" class="btn btn-outline-primary mr-3" (click)="onDownload()">Download image</button>
+            <button type="button" class="btn btn-outline-primary mr-3" (click)="onClone()"
+                title="Make another copy of this grid and save it to your home page">Clone grid</button>
+    </div>
+</div>
+
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">
+        <button type="button" class="btn btn-primary mr-3" (click)="onClose()">Close</button>
+        <button type="button" class="btn btn-primary mr-3" (click)="onContinue()">Continue</button>
+    </div>
+</div>
+
+<a #downloadLink class="invisible" target="_self" [download]="filename" [href]="dataUrl"></a>

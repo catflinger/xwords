@@ -1,0 +1,34 @@
+<div *ngIf="puzzle">
+    <div class="row">
+        <div class="col">
+            <h5 *ngIf="puzzle">{{puzzle.info.title}}</h5>
+        </div>
+    </div>
+
+    <div class="row mt-3" *ngIf="event">
+        <div class="col">
+            <app-jigsaw-grid-view [jigsaw]="event.jigsaw">    </app-jigsaw-grid-view>
+            <div>
+                Progress: {{event.status | titlecase}}
+            </div>
+            <div>
+                {{event.message}}
+            </div>
+        </div>
+
+        <div class="col" *ngIf="event.jigsaw">
+            <h5>Answers</h5>
+            <app-jigsaw-clues-view [answers]="event.jigsaw.answers"></app-jigsaw-clues-view>
+        </div>
+
+    </div>
+
+    <div class="row  mb-5">
+        <div class="col text-left">
+            <button type="button" class="btn btn-primary mr-3" (click)="onStartFill()">Start</button>
+            <button type="button" class="btn btn-secondary mr-3" (click)="onStop()">Stop</button>
+            <button type="button" class="btn btn-primary mr-3" (click)="onSave()">Save</button>
+            <button type="button" class="btn btn-primary mr-3" (click)="onBack()">Cancel</button>
+        </div>
+    </div>
+</div>

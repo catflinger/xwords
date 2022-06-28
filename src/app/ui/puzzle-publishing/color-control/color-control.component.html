@@ -1,0 +1,8 @@
+<div [formGroup]="form" class="form-group">
+    <select class="form-control" [ngStyle]="{ 'background-color' : form.value.colorValue }" formControlName="colorValue">
+        <option *ngFor="let option of options" [ngValue]="option.value"
+            [ngStyle]="{ 'background-color' : option.value }">
+            {{option.caption}}
+        </option>
+    </select>
+</div>

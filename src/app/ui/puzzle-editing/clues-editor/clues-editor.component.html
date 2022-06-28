@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col">
+        <h3>Clues Editor</h3><strong *ngIf="puzzle">{{puzzle.info.title}}</strong>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <app-clue-edit-list group="across"></app-clue-edit-list>
+    </div>
+    <div class="col">
+        <app-clue-edit-list group="down"></app-clue-edit-list>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="puzzle">
+    <div class="col">
+        <button type="button" class="btn btn-primary mr-3" (click)="onAddClue('across')">Add across clue</button>
+        <button type="button" class="btn btn-primary mr-3" (click)="onAddClue('down')">Add down clue</button>
+        <button type="button" class="btn btn-primary mr-3" (click)="onContinue()">Close</button>
+    </div>
+</div>

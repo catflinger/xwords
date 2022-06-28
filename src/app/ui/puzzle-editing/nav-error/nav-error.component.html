@@ -1,0 +1,22 @@
+<h3>An error has occurred</h3>
+
+<div *ngIf="provisionError">
+    <div>Text Parsing Error</div>
+    <div>{{provisionError}}</div>
+</div>
+
+<div *ngIf="appData && appData.errorMessage">
+    <div>Navigation App Data Error</div>
+    <div>{{appData.errorMessage}}</div>
+</div>
+
+<div *ngIf="localError">
+    <div>Error attempting to load error data</div>
+    <div>{{localError}}</div>
+</div>
+
+<h5>Nav History</h5>
+<div *ngFor="let item of navHistory">
+    <div>{{item}}</div>
+</div>
+

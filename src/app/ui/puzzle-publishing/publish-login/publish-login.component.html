@@ -1,0 +1,10 @@
+<h3>Login <span *ngIf="settings.sandbox">(Using Sandbox)</span></h3>
+
+<app-login-control
+    *ngIf="appStatus" 
+    [options]="{ continueButtonText: 'Continue', cancelButtonText: 'Back'}"
+    (close)="onClose($event)"
+    >
+</app-login-control>
+
+
