@@ -36,9 +36,9 @@
     <div class="row" *ngIf="!form.get('caption').valid">
         <div class="col text-danger" *ngIf="form.value.options.captionStyle === 'numbered'">
             The clue caption is invalid: expected
-            <strong class="font-weight-bold">2</strong> or
-            <strong class="font-weight-bold">8, 21</strong> or
-            <strong class="font-weight-bold">8, 3 Down</strong> for example
+            <strong class="fw-bold">2</strong> or
+            <strong class="fw-bold">8, 21</strong> or
+            <strong class="fw-bold">8, 3 Down</strong> for example
         </div>
         <div class="col text-danger" *ngIf="form.value.options.captionStyle === 'alphabetical'">
             The clue caption is invalid: expected an upper case letter
