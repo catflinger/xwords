@@ -24,7 +24,7 @@
 
 <div class="row">
     <div class="col">
-        <button [disabled]="appStatus.busy || !form.valid" type="button" class="btn btn-primary mr-3" (click)="onLogin()">{{continueButtonText}}</button>
+        <button [disabled]="appStatus.busy || !form.valid" type="button" class="btn btn-primary me-3" (click)="onLogin()">{{continueButtonText}}</button>
         <button [disabled]="appStatus.busy" type="button" class="btn btn-primary" (click)="onCancel()">{{cancelButtonText}}</button>
     </div>
 </div>

@@ -9,7 +9,7 @@
 
     <div class="row mt-3" *ngIf="parseError" >
         <div class="col form-group">
-            <button type="button" class="btn btn-primary mr-3" (click)="onAmend()" [disabled]="!form.valid">Amend</button>
+            <button type="button" class="btn btn-primary me-3" (click)="onAmend()" [disabled]="!form.valid">Amend</button>
             <button type="button" class="btn btn-primary" (click)="onCancel()">Cancel</button>
         </div>
     </div>
@@ -36,7 +36,7 @@
 
     <div class="row mt-3"  *ngIf="!parseError">
         <div class="col form-group">
-            <button type="button" class="btn btn-primary mr-3" (click)="onParse()" [disabled]="!form.valid">Continue</button>
+            <button type="button" class="btn btn-primary me-3" (click)="onParse()" [disabled]="!form.valid">Continue</button>
             <button type="button" class="btn btn-primary" (click)="onCancel()">Cancel</button>
         </div>
     </div>

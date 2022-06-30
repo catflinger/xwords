@@ -36,12 +36,12 @@
                 <div class="text-danger" *ngIf="form.controls.encoding.hasError('required')">Please select an encoding for the image</div>
             </div>
         </form>
-        <button type="button" class="btn btn-primary mr-3" (click)="onDownload()" [disabled]="!form.valid">Download image</button>
+        <button type="button" class="btn btn-primary me-3" (click)="onDownload()" [disabled]="!form.valid">Download image</button>
     </div>
 </div>
 
 <div class="row" *ngIf="puzzle">
     <div class="col">
-        <button type="button" class="btn btn-primary mr-3" (click)="onClose()">Back</button>
+        <button type="button" class="btn btn-primary me-3" (click)="onClose()">Back</button>
     </div>
 </div>

@@ -20,7 +20,7 @@
         <button type="button" class="btn btn-primary" (click)="onAddGrid()">Add grid</button>
     </div>
     <div class="col" *ngIf="puzzle.grid">
-        <button type="button" class="btn btn-outline-primary mr-3" (click)="onEditGrid()">Edit grid</button>
+        <button type="button" class="btn btn-outline-primary me-3" (click)="onEditGrid()">Edit grid</button>
         <button type="button" class="btn btn-outline-primary" (click)="onDeleteGrid()">Delete grid</button>
     </div>
 </div>
@@ -29,8 +29,8 @@
     <div class="col">Step 3: {{puzzle.clues ? 'Edit the' : 'Add some'}} clues</div>
 
     <div class="col" *ngIf="puzzle.clues">
-        <button type="button" class="btn btn-outline-primary mr-3" (click)="onEditClues()">Edit clues</button>
-        <button type="button" class="btn btn-outline-primary mr-3" (click)="onDeleteClues()">Delete clues</button>
+        <button type="button" class="btn btn-outline-primary me-3" (click)="onEditClues()">Edit clues</button>
+        <button type="button" class="btn btn-outline-primary me-3" (click)="onDeleteClues()">Delete clues</button>
         <button type="button" class="btn btn-outline-primary" *ngIf="puzzle.parseable" (click)="onReloadClues()">Reload clues</button>
     </div>
 
@@ -40,7 +40,7 @@
                 Create a set of empty clues numbered to match the grid.
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary mr-3" (click)="onAddCluesGrid()">Grid</button>
+                <button type="button" class="btn btn-primary me-3" (click)="onAddCluesGrid()">Grid</button>
             </div>
         </div>
 
@@ -49,7 +49,7 @@
                 I already have the clues in text format.  I want to use these.
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary mr-3" (click)="onAddCluesText()">Text</button>
+                <button type="button" class="btn btn-primary me-3" (click)="onAddCluesText()">Text</button>
             </div>
         </div>
 
@@ -58,7 +58,7 @@
                 I want to enter the clues myself
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary mr-3" (click)="onAddCluesManual()">Manual</button>
+                <button type="button" class="btn btn-primary me-3" (click)="onAddCluesManual()">Manual</button>
             </div>
         </div>
 

@@ -16,7 +16,8 @@ import { Grid } from 'src/app/model/puzzle-model/grid';
 import { ClueDialogService } from '../../clue-dialog.service';
 import { TabbedDialogFormBase } from '../tabbed-dialog-form-base';
 
-type AnswerTextKlass = "editorEntry" | "gridEntry" | "placeholder" | "pointing" | "separator" | "clash";
+// "placeholder" clashes with the new bootstrap 5 Placeholder component
+type AnswerTextKlass = "editorEntry" | "gridEntry" | "xw-placeholder" | "pointing" | "separator" | "clash";
 
 class AnswerTextChunk {
     constructor(
@@ -155,8 +156,9 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     public ngAfterViewInit() {
+        console.log(`ngAfterViewInit children length = ${this.children.length}`)
         if (this.children.length) {
-            this.children.first.nativeElement.focus();
+            setTimeout(() => this.children.first.nativeElement.focus(), 0);
         }
     }
 
@@ -322,7 +324,7 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                     result.push(answerChunks[answerChunkIndex]);
                     answerChunkIndex++;
                 } else {
-                    result.push(new AnswerTextChunk("_", "placeholder"));
+                    result.push(new AnswerTextChunk("_", "xw-placeholder"));
                 }
             } else {
                 result.push(new AnswerTextChunk(format[formatIndex], "separator"));
@@ -360,7 +362,7 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                     //     - a placeholder
 
                     let letter = "_";
-                    let klass: AnswerTextKlass = "placeholder";
+                    let klass: AnswerTextKlass = "xw-placeholder";
 
                     let gridEntry = cell.content && cell.content.trim().length > 0 ? cell.content : null;
                     let editorEntry = answer.length > index ? answer.charAt(index) : null;

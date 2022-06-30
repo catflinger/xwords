@@ -15,10 +15,6 @@ export class ClueTextChunkComponent implements OnInit {
     ngOnInit() {
     }
 
-    public cssClass(): string {
-        return this.chunk.isDefinition ? "definition" : "plain";
-    };
-
     public containsDomElement(target: any): boolean {
         let result = false;
 
