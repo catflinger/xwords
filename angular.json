@@ -38,7 +38,6 @@
                     "configurations": {
                         "production": {
                             "baseHref": "/angular/",
-                            "deployUrl": "/angular/",
                             "budgets": [
                                 {
                                     "type": "initial",
