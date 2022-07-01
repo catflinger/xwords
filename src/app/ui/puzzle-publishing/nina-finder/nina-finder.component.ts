@@ -8,6 +8,8 @@ import { NavService } from '../../../services/navigation/nav.service';
 import { AppTrackData } from '../../../services/navigation/tracks/app-track-data';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 import { filter, map, mergeMap, reduce, tap, toArray } from 'rxjs/operators';
+import { ScratchpadService } from '../../grid/scratchpad.service';
+import { SpotlightLetter } from 'src/app/modifiers/grid-modifiers/spotlightLetter';
 
 
 class PangramLetter {
@@ -64,7 +66,8 @@ export class NinaFinderComponent implements OnInit {
     constructor(
         private navService: NavService<AppTrackData>,
         private appService: AppService,
-        private activePuzzle: IActivePuzzle, 
+        private activePuzzle: IActivePuzzle,
+        private scratchpad: ScratchpadService,
     ) {
         this.clearPangramCounter();
     }
@@ -122,6 +125,10 @@ export class NinaFinderComponent implements OnInit {
 
     public reverseString(line: string) {
         return [...line].reverse().join("");
+    }
+
+    public onLetterClick(letter: string) {
+        this.scratchpad.update(new SpotlightLetter(letter));
     }
 
     private clearPangramCounter() {

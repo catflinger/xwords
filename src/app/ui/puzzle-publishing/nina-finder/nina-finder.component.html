@@ -5,23 +5,17 @@
     </div>
 </div>
 
-<div class="row mt-2" *ngIf="puzzle">
-    <div class="col">
-        <button type="button" class="btn btn-primary" (click)="onBack()">Back</button>
-    </div>
-</div>
-
 <div class="row mt-3" *ngIf="puzzle">
     <div class="col">
-        <app-grid (cellClick)="onCellClick($event)" [options]="{ hideShading: false, hideHighlight: true }"></app-grid>
+        <app-grid-explorer></app-grid-explorer>
     </div>
     <div class="col">
 
-        <div class="fw-bold">Pangram</div>
+        <div class="fw-bold">Letters used</div>
 
         <div class="grid-container p-0">
             <div class="grid-item border border-dark p-0" *ngFor="let entry of pangramCounter">
-                <div class="border-bottom border-dark p-2 fw-bold" [ngClass]="{'text-danger': !entry.count}">
+                <div class="border-bottom border-dark p-2 fw-bold" [ngClass]="{'text-danger': !entry.count}" (click)="onLetterClick(entry.letter)">
                     {{entry.letter}}</div>
                 <div class="p-2">{{entry.count || null}}</div>
             </div>
