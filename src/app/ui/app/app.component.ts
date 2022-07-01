@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AppService, AppStatus } from 'src/app/ui/general/app.service';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { IActivePuzzle } from 'src/app/services/puzzles/puzzle-management.service';
 import { AuthService, Credentials } from 'src/app/services/app/auth.service';
 import { NavService } from '../../services/navigation/nav.service';
@@ -8,6 +8,8 @@ import { AppTrackData } from '../../services/navigation/tracks/app-track-data';
 import { AppSettingsService } from 'src/app/services/app/app-settings.service';
 import { AppSettings } from 'src/app/services/common';
 import { TraceService } from 'src/app/services/app/trace.service';
+import { NavigationStart, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-root',
@@ -30,6 +32,8 @@ export class AppComponent implements OnInit, OnDestroy {
         private appService: AppService,
         private settingsService: AppSettingsService,
         public traceService: TraceService,
+        public router: Router,
+        private modalService: NgbModal,
         private detref: ChangeDetectorRef,
         ) {
     }
@@ -53,17 +57,14 @@ export class AppComponent implements OnInit, OnDestroy {
             this.detref.detectChanges();
         }));
 
-        // this.subs.push(this.router.events
-        //     .pipe(
-        //         filter(event => event instanceof NavigationStart)
-        //     )
-        //     .subscribe((event: NavigationStart) => {
-        //         this.modalService.dismissAll();
-        //         if (event.restoredState) {
-        //             this.appService.setAlert("danger", "Please don't use the browser's back or forward button to navigate.  Use the buttons in the app instead.");
-        //           }
-        //         this.detref.detectChanges();
-        // }));
+        this.subs.push(this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationStart)
+            )
+            .subscribe((event: NavigationStart) => {
+                this.modalService.dismissAll();
+                this.detref.detectChanges();
+        }));
 
     }
 
