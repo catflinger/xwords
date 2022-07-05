@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
@@ -35,6 +35,7 @@ export class GridExplorerComponent implements OnInit {
     // Maybe it would just add complexity and dependencies for no great benefit.
 
     @ViewChild('gridCanvas', { static: false }) canvas: ElementRef;
+    @Output() cellClick = new EventEmitter<GridCell>();
 
     public canvasHeight: number = 0;
     public canvasWidth: number = 0;
@@ -124,7 +125,7 @@ export class GridExplorerComponent implements OnInit {
         let cell: GridCell = this.puzzle.grid.cellAt(i, j);
         if (cell) {
             // for all grids emit an event to say a cell has been clicked
-            //this.cellClick.emit(cell);
+            this.cellClick.emit(cell);
 
             //TO DO: need to start coding here...
 

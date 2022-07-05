@@ -9,8 +9,15 @@ import { AppTrackData } from '../../../services/navigation/tracks/app-track-data
 import { Grid } from 'src/app/model/puzzle-model/grid';
 import { filter, map, mergeMap, reduce, tap, toArray } from 'rxjs/operators';
 import { ScratchpadService } from '../../grid/scratchpad.service';
-import { SpotlightLetter } from 'src/app/modifiers/grid-modifiers/spotlightLetter';
-
+import { SpotLetter } from 'src/app/modifiers/grid-modifiers/spot-letter';
+import { SpotClear } from 'src/app/modifiers/grid-modifiers/spot-clear';
+import { SpotRow } from 'src/app/modifiers/grid-modifiers/spot-row';
+import { SpotColumn } from 'src/app/modifiers/grid-modifiers/spot-column';
+import { ClearShading } from 'src/app/modifiers/grid-modifiers/clear-shading';
+import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { SpotDiagonalUp } from 'src/app/modifiers/grid-modifiers/spot-diagonal-up';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { SpotDiagonalDown } from 'src/app/modifiers/grid-modifiers/spot-diagonal-down';
 
 class PangramLetter {
     private _count: number = 0;
@@ -63,16 +70,28 @@ export class NinaFinderComponent implements OnInit {
     public diagonals: string[] = [];
     public diagonals2: string[] = [];
 
+    public activePanel: string = "letterPanel";
+
+    public form: FormGroup;
+
     constructor(
         private navService: NavService<AppTrackData>,
         private appService: AppService,
         private activePuzzle: IActivePuzzle,
         private scratchpad: ScratchpadService,
+        private formBuilder: FormBuilder,
     ) {
         this.clearPangramCounter();
     }
 
     public ngOnInit() {
+
+        this.form = this.formBuilder.group({
+            diagonal: "both",
+            rowcol: "both"
+        });
+
+        this.form.valueChanges.subscribe(() => this.scratchpad.update(new ClearShading()));
 
         if (!this.activePuzzle.hasPuzzle) {
             this.navService.goHome();
@@ -116,6 +135,32 @@ export class NinaFinderComponent implements OnInit {
 
     public onCellClick(cell: GridCell) {
         this.appService.clear();
+
+        if (this.activePanel === "rowcolPanel") {
+            let mods: IPuzzleModifier[] = [new SpotClear()];
+            const mode = this.form.value.rowcol;
+
+            if (mode === "row" || mode === "both") {
+                mods.push(new SpotRow(cell));
+            }
+            if (mode === "col" || mode === "both") {
+                mods.push(new SpotColumn(cell));
+            }
+            this.scratchpad.update(...mods);
+
+        } else if (this.activePanel === "diagonalPanel") {
+
+            let mods: IPuzzleModifier[] = [new SpotClear()];
+            const mode = this.form.value.diagonal;
+
+            if (mode === "rising" || mode === "both") {
+                mods.push(new SpotDiagonalUp(cell));
+            } 
+            if (mode === "falling" || mode === "both") {
+                mods.push(new SpotDiagonalDown(cell));
+            }
+            this.scratchpad.update(...mods);
+        }
     }
 
     public onBack() {
@@ -128,7 +173,16 @@ export class NinaFinderComponent implements OnInit {
     }
 
     public onLetterClick(letter: string) {
-        this.scratchpad.update(new SpotlightLetter(letter));
+        this.scratchpad.update(
+            new SpotClear(),
+            new SpotLetter(letter)
+        );
+    }
+
+    public onTabChange() {
+        this.scratchpad.update(
+            new ClearShading(),
+        );
     }
 
     private clearPangramCounter() {

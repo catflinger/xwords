@@ -6,20 +6,77 @@
 </div>
 
 <div class="row mt-3" *ngIf="puzzle">
-    <div class="col">
-        <app-grid-explorer></app-grid-explorer>
+    <div class="col-6">
+        <app-grid-explorer (cellClick)="onCellClick($event)"></app-grid-explorer>
     </div>
-    <div class="col">
 
-        <div class="fw-bold">Letters used</div>
+    <div class="col-6">
+        <div class="w-100" [formGroup]="form">
 
-        <div class="grid-container p-0">
-            <div class="grid-item border border-dark p-0" *ngFor="let entry of pangramCounter">
-                <div class="border-bottom border-dark p-2 fw-bold" [ngClass]="{'text-danger': !entry.count}" (click)="onLetterClick(entry.letter)">
-                    {{entry.letter}}</div>
-                <div class="p-2">{{entry.count || null}}</div>
-            </div>
+            <ul ngbNav #nav="ngbNav" [(activeId)]="activePanel" class="nav-tabs" (activeIdChange)="onTabChange()">
+                <li [ngbNavItem]="'letterPanel'">
+                    <a ngbNavLink>Letters used</a>
+                    <ng-template ngbNavContent>
+                        <p>click a letter in this table to see where it occurs in the grid</p>
+                        <div class="grid-container p-0">
+                            <div class="grid-item border border-dark p-0" *ngFor="let entry of pangramCounter"
+                                (click)="onLetterClick(entry.letter)">
+                                <div class="border-bottom border-dark p-2 fw-bold"
+                                    [ngClass]="{'text-danger': !entry.count}">
+                                    {{entry.letter}}</div>
+                                <div class="p-2">{{entry.count || null}}</div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="'rowcolPanel'">
+                    <a ngbNavLink>Rows and columns</a>
+                    <ng-template ngbNavContent>
+                        <p>Click on a cell in the grid to highlight the containing row and column</p>
+
+                        <div class="btn-group" role="group" aria-label="Row or column choice">
+                            <input type="radio" formControlName="rowcol" [value]="'row'" class="btn-check" id="btnradio4"
+                                autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio4">row</label>
+
+                            <input type="radio" formControlName="rowcol" [value]="'col'" class="btn-check" id="btnradio5"
+                                autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio5">column</label>
+
+                            <input type="radio" formControlName="rowcol" [value]="'both'" class="btn-check" id="btnradio6"
+                                autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio6">both</label>
+                        </div>
+
+                    </ng-template>
+                </li>
+
+                <li [ngbNavItem]="'diagonalPanel'">
+                    <a ngbNavLink>Diagonals</a>
+                    <ng-template ngbNavContent>
+                        <p>Click on a cell in the grid to highlight the containing diagonals</p>
+
+                            <div class="btn-group" role="group" aria-label="Diagonal choice">
+                                <input type="radio" formControlName="diagonal" [value]="'rising'" class="btn-check" id="btnradio1"
+                                    autocomplete="off">
+                                <label class="btn btn-outline-primary" for="btnradio1">rising diagonal</label>
+
+                                <input type="radio" formControlName="diagonal" [value]="'falling'" class="btn-check" id="btnradio2"
+                                    autocomplete="off">
+                                <label class="btn btn-outline-primary" for="btnradio2">falling diagonal</label>
+
+                                <input type="radio" formControlName="diagonal" [value]="'both'" class="btn-check" id="btnradio3"
+                                    autocomplete="off">
+                                <label class="btn btn-outline-primary" for="btnradio3">both</label>
+                            </div>
+                    </ng-template>
+                </li>
+            </ul>
+
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
         </div>
+
 
     </div>
 
@@ -80,24 +137,28 @@
         <div class="row mt-5" *ngIf="barred">
             <div class="col">
                 <div class="fw-bold">Diagonals from top-left corner</div>
-                <div class="wide font-monospace" *ngFor="let line of diagonals; let i = index"><span [ngClass]="{'fw-bold': i % 2}">{{line}}</span></div>
+                <div class="wide font-monospace" *ngFor="let line of diagonals; let i = index"><span
+                        [ngClass]="{'fw-bold': i % 2}">{{line}}</span></div>
             </div>
 
             <div class="col">
                 <div class="fw-bold">(reversed)</div>
-                <div class="wide font-monospace" *ngFor="let line of diagonals; let i = index"><span [ngClass]="{'fw-bold': i % 2}">{{ reverseString(line) }}</span></div>
+                <div class="wide font-monospace" *ngFor="let line of diagonals; let i = index"><span
+                        [ngClass]="{'fw-bold': i % 2}">{{ reverseString(line) }}</span></div>
             </div>
         </div>
 
-        <div class="row mt-5"  *ngIf="barred">
+        <div class="row mt-5" *ngIf="barred">
             <div class="col">
                 <div class="fw-bold">Diagonals from top-right corner</div>
-                <div class="wide font-monospace" *ngFor="let line of diagonals2; let i = index"><span [ngClass]="{'fw-bold': i % 2}">{{line}}</span></div>
+                <div class="wide font-monospace" *ngFor="let line of diagonals2; let i = index"><span
+                        [ngClass]="{'fw-bold': i % 2}">{{line}}</span></div>
             </div>
 
             <div class="col">
                 <div class="fw-bold">(reversed)</div>
-                <div class="wide font-monospace" *ngFor="let line of diagonals2; let i = index"><span [ngClass]="{'fw-bold': i % 2}">{{ reverseString(line) }}</span></div>
+                <div class="wide font-monospace" *ngFor="let line of diagonals2; let i = index"><span
+                        [ngClass]="{'fw-bold': i % 2}">{{ reverseString(line) }}</span></div>
             </div>
         </div>
 

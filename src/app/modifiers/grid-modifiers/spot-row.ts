@@ -1,17 +1,16 @@
 import { IPuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from 'src/app/model/interfaces';
+import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 
-export class SpotlightLetter implements IPuzzleModifier {
+export class SpotRow implements IPuzzleModifier {
 
-    constructor(private letter: string) { }
+    constructor(private cell: GridCell) { }
 
     exec(puzzle: IPuzzle) {
         if (puzzle.grid) {
             puzzle.grid.cells.forEach((cell) => {
-                if (this.letter === cell.content) {
+                if (this.cell.y === cell.y) {
                     cell.shading =  "lightyellow";
-                } else {
-                    cell.shading = "lightgrey";
                 }
             });
         }
