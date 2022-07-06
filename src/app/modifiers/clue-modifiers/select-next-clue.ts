@@ -1,8 +1,8 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { Clear } from '../puzzle-modifiers/clear';
 import { IPuzzle } from '../../model/interfaces';
 
-export class SelectNextClue implements IPuzzleModifier {
+export class SelectNextClue implements PuzzleModifier {
     constructor(public readonly clueId: string) { }
 
     exec(puzzle: IPuzzle) {

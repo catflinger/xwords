@@ -1,9 +1,9 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { IClue } from '../../model/interfaces';
 
 
-export class Cheat implements IPuzzleModifier {
+export class Cheat implements PuzzleModifier {
     constructor(private clueIds?: string[]) { }
 
     public exec(puzzle: IPuzzle) {

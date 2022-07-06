@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Puzzle } from '../../model/puzzle-model/puzzle';
-import { IPuzzleModifier } from '../../modifiers/puzzle-modifier';
+import { PuzzleModifier } from '../../modifiers/puzzle-modifier';
 import { IPuzzle } from 'src/app/model/interfaces';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class ScratchpadService {
         return this.bsActive.asObservable();
     }
 
-    public use(puzzle:IPuzzle, ...reducers: IPuzzleModifier[]): void {
+    public use(puzzle:IPuzzle, ...reducers: PuzzleModifier[]): void {
         if (puzzle) {
             let copy = JSON.parse(JSON.stringify(puzzle));
             reducers.forEach(reducer => reducer.exec(copy));
@@ -28,7 +28,7 @@ export class ScratchpadService {
             this.bsActive.next(null);
         }
     }
-    public update(...reducers: IPuzzleModifier[]): void {
+    public update(...reducers: PuzzleModifier[]): void {
         let current = this.bsActive.value;
 
         if (current) {

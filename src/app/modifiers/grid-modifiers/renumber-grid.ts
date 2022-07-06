@@ -1,8 +1,8 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { GridStyle, ClueGroup } from 'src/app/model/interfaces';
 import { IPuzzle, IGrid, IGridCell } from '../../model/interfaces';
 
-export class RenumberGid implements IPuzzleModifier {
+export class RenumberGid implements PuzzleModifier {
     constructor() { }
 
     exec(puzzle: IPuzzle) {

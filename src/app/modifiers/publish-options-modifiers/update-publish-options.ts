@@ -1,4 +1,4 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle, Layouts } from '../../model/interfaces';
 import { Spacing } from 'src/app/model/interfaces';
 
@@ -12,7 +12,7 @@ export type PublishOptionsUpdate = {
 
 };
 
-export class UpdatePublsihOptions implements IPuzzleModifier {
+export class UpdatePublsihOptions implements PuzzleModifier {
     constructor(private options: PublishOptionsUpdate) { }
 
     exec(puzzle: IPuzzle) {

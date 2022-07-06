@@ -1,6 +1,6 @@
 import { WritingDirection, GridNavigation } from 'src/app/model/interfaces';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
-import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { UpdateCell } from 'src/app//modifiers/grid-modifiers/update-cell';
 import { SelectCellsForEdit } from 'src/app//modifiers/grid-modifiers/select-cells-for-edit';
 import { Clear } from 'src/app//modifiers/puzzle-modifiers/clear';
@@ -15,8 +15,8 @@ export class GridCellEditorEmptyFluid extends GridCellEditor {
         super();
     }
 
-    public onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): IPuzzleModifier[] {
-        let result: IPuzzleModifier[] = [];
+    public onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): PuzzleModifier[] {
+        let result: PuzzleModifier[] = [];
         let context = this.getEditContext(puzzle);
 
         result.push(new Clear());

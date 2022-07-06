@@ -1,5 +1,5 @@
 import { IPuzzle, ClueGroup, IClue } from '../../model/interfaces';
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -8,7 +8,7 @@ interface ClueRef {
     group: ClueGroup | null,
 }
 
-export class SetRedirects implements IPuzzleModifier {
+export class SetRedirects implements PuzzleModifier {
     constructor() { }
 
     exec(puzzle: IPuzzle) {

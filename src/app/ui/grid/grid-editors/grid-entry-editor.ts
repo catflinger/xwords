@@ -1,6 +1,6 @@
 import { WritingDirection, GridNavigation, Direction } from 'src/app/model/interfaces';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
-import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { UpdateCell } from 'src/app//modifiers/grid-modifiers/update-cell';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 import { GridEditor, EditContext } from './grid-editor';
@@ -14,8 +14,8 @@ export class GridEntryEditor extends GridEditor {
         super();
     }
 
-    public startEdit(puzzle: Puzzle, entryCell: GridCell): IPuzzleModifier[] {
-        let result: IPuzzleModifier[] = [];
+    public startEdit(puzzle: Puzzle, entryCell: GridCell): PuzzleModifier[] {
+        let result: PuzzleModifier[] = [];
 
         result.push(new Clear());
         let entry = puzzle.grid.getGridEntryForCell(entryCell.id);
@@ -33,8 +33,8 @@ export class GridEntryEditor extends GridEditor {
         return result;
     }
 
-    public onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): IPuzzleModifier[] {
-        let result: IPuzzleModifier[] = [];
+    public onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): PuzzleModifier[] {
+        let result: PuzzleModifier[] = [];
         let context = this.getEditContext(puzzle);
 
         // update the text
@@ -45,8 +45,8 @@ export class GridEntryEditor extends GridEditor {
         return result;
     };
 
-    public onGridNavigation(puzzle: Puzzle, navigation: GridNavigation, position?: { x: number, y: number }): IPuzzleModifier[] {
-        let result: IPuzzleModifier[] = [];
+    public onGridNavigation(puzzle: Puzzle, navigation: GridNavigation, position?: { x: number, y: number }): PuzzleModifier[] {
+        let result: PuzzleModifier[] = [];
         let context = this.getEditContext(puzzle);
         let writingDirection: WritingDirection;
         let ctx: EditContext;
@@ -105,7 +105,7 @@ export class GridEntryEditor extends GridEditor {
         }
     }
 
-    private makeNextCellEditable(puzzle: Puzzle, context: EditContext, writingDirection: WritingDirection, result: IPuzzleModifier[]) {
+    private makeNextCellEditable(puzzle: Puzzle, context: EditContext, writingDirection: WritingDirection, result: PuzzleModifier[]) {
         let nextIndex: number;
 
         switch (writingDirection) {
@@ -132,11 +132,11 @@ export class GridEntryEditor extends GridEditor {
         }
     }
 
-    protected onUnderflow(puzzle: Puzzle, context: EditContext, result: IPuzzleModifier[]) {
+    protected onUnderflow(puzzle: Puzzle, context: EditContext, result: PuzzleModifier[]) {
         result.push(new Clear());
     }
 
-    protected onOverflow(puzzle: Puzzle, context: EditContext, result: IPuzzleModifier[]) {
+    protected onOverflow(puzzle: Puzzle, context: EditContext, result: PuzzleModifier[]) {
         result.push(new Clear());
     }
 

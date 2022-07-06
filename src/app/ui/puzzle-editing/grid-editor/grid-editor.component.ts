@@ -17,7 +17,7 @@ import { ClearShading } from 'src/app//modifiers/grid-modifiers/clear-shading';
 import { AppService } from '../../general/app.service';
 import { NavService } from '../../../services/navigation/nav.service';
 import { AppTrackData } from '../../../services/navigation/tracks/app-track-data';
-import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { GridComponent, BarClickEvent, GridTextEvent, GridNavigationEvent } from '../../grid/grid/grid.component';
 import { SetGridCaptions } from 'src/app/modifiers/grid-modifiers/set-grid-captions';
 import { SelectCellsForEdit } from 'src/app/modifiers/grid-modifiers/select-cells-for-edit';
@@ -225,7 +225,7 @@ export class GridEditorComponent implements OnInit, OnDestroy {
                 const symCell = this.getSymCell(cell);
                 if (this.puzzle.grid.properties.style === "standard") {
                     const newVal = !cell.light;
-                    let mods: IPuzzleModifier[] = [new UpdateCell(cell.id, { light: newVal })];
+                    let mods: PuzzleModifier[] = [new UpdateCell(cell.id, { light: newVal })];
 
                     if (symCell) {
                         mods.push(new UpdateCell(symCell.id, { light: newVal }));
@@ -271,7 +271,7 @@ export class GridEditorComponent implements OnInit, OnDestroy {
                 break;
                         
             case "cells":
-                let mods: IPuzzleModifier[] = [
+                let mods: PuzzleModifier[] = [
                     new UpdateCell(cell.id, { 
                         hidden: !cell.hidden,
                         light: cell.hidden,
@@ -298,7 +298,7 @@ export class GridEditorComponent implements OnInit, OnDestroy {
 
     public onBarClick(event: BarClickEvent) {
         this.appService.clear();
-        let updates: IPuzzleModifier[] = [];
+        let updates: PuzzleModifier[] = [];
 
         if (this.tool === "grid" && this.puzzle.grid.properties.style === "barred") {
             const cell = event.cell;

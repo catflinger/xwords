@@ -1,8 +1,8 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class ValidateLetterCounts implements IPuzzleModifier {
+export class ValidateLetterCounts implements PuzzleModifier {
     public constructor() {}
 
     public exec(puzzle: IPuzzle) {

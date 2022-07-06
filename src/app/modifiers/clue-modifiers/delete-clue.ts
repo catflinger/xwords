@@ -1,7 +1,7 @@
 import { IPuzzle } from '../../model/interfaces';
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 
-export class DeleteClue implements IPuzzleModifier {
+export class DeleteClue implements PuzzleModifier {
     constructor(
         private id: string,
     ) { }

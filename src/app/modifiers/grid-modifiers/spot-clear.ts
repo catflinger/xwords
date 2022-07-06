@@ -1,7 +1,7 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from 'src/app/model/interfaces';
 
-export class SpotClear implements IPuzzleModifier {
+export class SpotClear implements PuzzleModifier {
 
     constructor() { }
 

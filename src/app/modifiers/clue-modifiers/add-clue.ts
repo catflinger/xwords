@@ -1,9 +1,9 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle, ClueGroup, IClue } from '../../model/interfaces';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 import { ClueBuffer } from 'src/app/services/parsing/text/clue-buffer';
 
-export class AddClue implements IPuzzleModifier {
+export class AddClue implements PuzzleModifier {
     constructor(
         private caption: string,
         private group: ClueGroup,

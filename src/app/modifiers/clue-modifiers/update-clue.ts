@@ -1,4 +1,4 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle, ClueGroup } from '../../model/interfaces';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 
@@ -9,7 +9,7 @@ interface UpdateClueArgs {
     text?: string;
 }
 
-export class UpdateClue implements IPuzzleModifier {
+export class UpdateClue implements PuzzleModifier {
     constructor(private args: UpdateClueArgs) { }
 
     exec(puzzle: IPuzzle) {

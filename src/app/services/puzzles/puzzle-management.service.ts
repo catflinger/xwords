@@ -5,7 +5,7 @@ import { LocalStorageService } from '../storage/local-storage.service';
 import { Puzzle } from '../../model/puzzle-model/puzzle';
 import { HttpPuzzleSourceService } from './http-puzzle-source.service';
 import { Clear } from '../../modifiers/puzzle-modifiers/clear';
-import { IPuzzleModifier } from '../../modifiers/puzzle-modifier';
+import { PuzzleModifier } from '../../modifiers/puzzle-modifier';
 import { PuzzleProvider, IPuzzleSummary, latestPuzzleVersion } from '../../model/interfaces';
 import { InitAnnotationWarnings } from '../../modifiers/puzzle-modifiers/init-annotation-warnings';
 import { OpenPuzzleParamters } from '../../ui/general/app.service';
@@ -33,18 +33,18 @@ export abstract class IActivePuzzle {
     abstract get puzzle(): Puzzle;
     abstract hasPuzzle: boolean;
     abstract clear(id?: string);
-    abstract update(...reducers: IPuzzleModifier[]): void;
+    abstract update(...reducers: PuzzleModifier[]): void;
     abstract commit(): void;
     abstract discard(): void;
-    abstract updateAndCommit(...reducers: IPuzzleModifier[]): void;
+    abstract updateAndCommit(...reducers: PuzzleModifier[]): void;
     abstract cloneAsGrid(): void;
 }
 export abstract class IPuzzleManager {
     // TO DO: rename these to make it clearer exactly what each one does
     // at teh moment some of the name sound quite similar
-    abstract newPuzzle(provider: PuzzleProvider, reducers?: IPuzzleModifier[]): void;
+    abstract newPuzzle(provider: PuzzleProvider, reducers?: PuzzleModifier[]): void;
     abstract observePuzzleList(): Observable<IPuzzleSummary[]>;
-    abstract openPuzzle(id: string, modifiers?: IPuzzleModifier[]): Promise<Puzzle>;
+    abstract openPuzzle(id: string, modifiers?: PuzzleModifier[]): Promise<Puzzle>;
     abstract openArchivePuzzle(params: OpenPuzzleParamters): Promise<Puzzle>;
     abstract loadPuzzleFromPdf(params: OpenPuzzleParamters): Promise<string>;
 
@@ -112,7 +112,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         return this.bsActive.value;
     }
 
-    public newPuzzle(provider: PuzzleProvider, reducers?: IPuzzleModifier[]): Puzzle {
+    public newPuzzle(provider: PuzzleProvider, reducers?: PuzzleModifier[]): Puzzle {
         let result: Puzzle = null;
 
         let puzzle: Puzzle = this.makeEmptyPuzzle(provider);
@@ -142,7 +142,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         }
     }
 
-    public update(...reducers: IPuzzleModifier[]): void {
+    public update(...reducers: PuzzleModifier[]): void {
         let puzzle = this.getMutableCopy(this.bsActive.value);
         //let puzzle = this.bsActive.value;
 
@@ -173,7 +173,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         }
     }
 
-    public updateAndCommit(...reducers: IPuzzleModifier[]) {
+    public updateAndCommit(...reducers: PuzzleModifier[]) {
         let puzzle = this.getMutableCopy(this.bsActive.value);
         //let puzzle = this.bsActive.value;
 
@@ -217,14 +217,14 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         return this.bsList.value;
     }
 
-    public openPuzzle(id: string, modifiers?: IPuzzleModifier[]): Promise<Puzzle> {
+    public openPuzzle(id: string, modifiers?: PuzzleModifier[]): Promise<Puzzle> {
         return this.localStorageService.getPuzzle(id)
         .then((puzzle) => {
             if (puzzle) {
 
                 // TEMPORARY puzzle modofication for backward compatibility for existing puzzles from grid work June 2022
                 // these modifiers can be removed after a few weeks
-                let tempMods: IPuzzleModifier[] = [new RenumberGid(), new SetGridCaptions()];
+                let tempMods: PuzzleModifier[] = [new RenumberGid(), new SetGridCaptions()];
 
                 this.usePuzzle(puzzle, tempMods);
             }
@@ -333,7 +333,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         this.bsList.next(list);
     }
 
-    private usePuzzle(puzzle: IPuzzle, modifiers?: IPuzzleModifier[]) {
+    private usePuzzle(puzzle: IPuzzle, modifiers?: PuzzleModifier[]) {
 
         // reset to unused state
         new Clear().exec(puzzle);

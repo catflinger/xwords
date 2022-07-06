@@ -1,7 +1,7 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from 'src/app/model/interfaces';
 
-export class ClearHiddenCells implements IPuzzleModifier {
+export class ClearHiddenCells implements PuzzleModifier {
     constructor() { }
 
     exec(puzzle: IPuzzle) {

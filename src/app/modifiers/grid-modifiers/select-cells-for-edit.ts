@@ -1,8 +1,8 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 
-export class SelectCellsForEdit implements IPuzzleModifier {
+export class SelectCellsForEdit implements PuzzleModifier {
     constructor(private cells: GridCell[]) { }
 
     exec(puzzle: IPuzzle) {

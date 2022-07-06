@@ -1,7 +1,7 @@
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 import { Direction, WritingDirection, GridNavigation } from 'src/app/model/interfaces';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
-import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { JsonPipe } from '@angular/common';
 
 export class EditContext { 
@@ -20,9 +20,9 @@ export abstract class GridEditor {
     
     constructor() {}
 
-    public abstract startEdit(puzzle: Puzzle, entryCell: GridCell): IPuzzleModifier[];
-    public abstract onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): IPuzzleModifier[];
-    public abstract onGridNavigation(puzzle: Puzzle, navigation: GridNavigation, position?: { x: number, y: number }): IPuzzleModifier[];
+    public abstract startEdit(puzzle: Puzzle, entryCell: GridCell): PuzzleModifier[];
+    public abstract onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): PuzzleModifier[];
+    public abstract onGridNavigation(puzzle: Puzzle, navigation: GridNavigation, position?: { x: number, y: number }): PuzzleModifier[];
     
     protected getEditContext(puzzle: Puzzle): EditContext {
         let cells: GridCell[] = [];

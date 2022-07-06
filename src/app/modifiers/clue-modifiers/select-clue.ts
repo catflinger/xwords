@@ -1,9 +1,9 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { Clear } from '../puzzle-modifiers/clear';
 import { IPuzzle, IClue } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class SelectClue implements IPuzzleModifier {
+export class SelectClue implements PuzzleModifier {
     constructor(
         public readonly clueId: string,
         private followRedirects: boolean = false,

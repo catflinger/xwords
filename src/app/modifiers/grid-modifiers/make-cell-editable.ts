@@ -1,7 +1,7 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class MakeCellEditable implements IPuzzleModifier {
+export class MakeCellEditable implements PuzzleModifier {
     constructor(private cellId: string) { }
 
     exec(puzzle: IPuzzle) {

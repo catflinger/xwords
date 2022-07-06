@@ -1,7 +1,7 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { CaptionStyle, IPuzzle } from '../../model/interfaces';
 
-export class UpdateProvision implements IPuzzleModifier {
+export class UpdateProvision implements PuzzleModifier {
     constructor(
         private args: { 
             captionStyle?: CaptionStyle,

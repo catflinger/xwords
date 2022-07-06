@@ -1,10 +1,10 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle, IClue } from 'src/app/model/interfaces';
 import { Clear } from '../puzzle-modifiers/clear';
 import { SelectClue } from './select-clue';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class SelectClueByCell implements IPuzzleModifier {
+export class SelectClueByCell implements PuzzleModifier {
     constructor(
         private cellId: string,
         private followRedirects: boolean = false,

@@ -1,4 +1,4 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle, IPuzzleProvision, ITextParsingError } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 import { InitAnnotationWarnings } from '../puzzle-modifiers/init-annotation-warnings';
@@ -16,7 +16,7 @@ import { TraceService } from 'src/app/services/app/trace.service';
 //     clueGroup: ClueGroup 
 // }
 
-export class ParseText implements IPuzzleModifier {
+export class ParseText implements PuzzleModifier {
 
     constructor(
         private textParsingService: TextParsingService,

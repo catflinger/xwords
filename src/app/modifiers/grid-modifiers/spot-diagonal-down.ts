@@ -1,10 +1,10 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IGrid, IGridCell, IPuzzle } from 'src/app/model/interfaces';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 import { Observable, range } from 'rxjs';
 import { filter, map } from "rxjs/operators";
 
-export class SpotDiagonalDown implements IPuzzleModifier {
+export class SpotDiagonalDown implements PuzzleModifier {
 
     constructor(private cell: GridCell) {
     }

@@ -1,10 +1,10 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { IClue } from '../../model/interfaces';
 import { ClueBuffer } from 'src/app/services/parsing/text/clue-buffer';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class SetGridReferences implements IPuzzleModifier {
+export class SetGridReferences implements PuzzleModifier {
     constructor(private clueIds?: string[]) { }
 
     public exec(puzzle: IPuzzle) {

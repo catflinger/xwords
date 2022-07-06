@@ -9,7 +9,7 @@ import { Clear } from 'src/app/modifiers/puzzle-modifiers/clear';
 import { Subscription } from 'rxjs';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
 import { ClueGroup } from 'src/app/model/interfaces';
-import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { HousekeepClues } from 'src/app/modifiers/clue-modifiers/housekeep-clues';
 import { SortClues } from 'src/app/modifiers/clue-modifiers/sort-clues';
 import { SetGridReferences } from 'src/app/modifiers/clue-modifiers/set-grid-references';

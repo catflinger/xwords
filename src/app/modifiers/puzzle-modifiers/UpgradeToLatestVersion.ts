@@ -1,9 +1,9 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle, latestPuzzleVersion } from '../../model/interfaces';
 import { SetGridReferences } from '../clue-modifiers/set-grid-references';
 import { GridLink } from 'src/app/model/puzzle-model/grid-link';
 
-export class UpgradeToLatestVersion implements IPuzzleModifier {
+export class UpgradeToLatestVersion implements PuzzleModifier {
     constructor() { }
 
     exec(puzzle: IPuzzle) {

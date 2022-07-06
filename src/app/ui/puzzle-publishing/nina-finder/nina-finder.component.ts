@@ -14,7 +14,7 @@ import { SpotClear } from 'src/app/modifiers/grid-modifiers/spot-clear';
 import { SpotRow } from 'src/app/modifiers/grid-modifiers/spot-row';
 import { SpotColumn } from 'src/app/modifiers/grid-modifiers/spot-column';
 import { ClearShading } from 'src/app/modifiers/grid-modifiers/clear-shading';
-import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { SpotDiagonalUp } from 'src/app/modifiers/grid-modifiers/spot-diagonal-up';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpotDiagonalDown } from 'src/app/modifiers/grid-modifiers/spot-diagonal-down';
@@ -137,7 +137,7 @@ export class NinaFinderComponent implements OnInit {
         this.appService.clear();
 
         if (this.activePanel === "rowcolPanel") {
-            let mods: IPuzzleModifier[] = [new SpotClear()];
+            let mods: PuzzleModifier[] = [new SpotClear()];
             const mode = this.form.value.rowcol;
 
             if (mode === "row" || mode === "both") {
@@ -150,7 +150,7 @@ export class NinaFinderComponent implements OnInit {
 
         } else if (this.activePanel === "diagonalPanel") {
 
-            let mods: IPuzzleModifier[] = [new SpotClear()];
+            let mods: PuzzleModifier[] = [new SpotClear()];
             const mode = this.form.value.diagonal;
 
             if (mode === "rising" || mode === "both") {

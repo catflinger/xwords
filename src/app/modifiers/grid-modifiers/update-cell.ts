@@ -1,7 +1,7 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class UpdateCell implements IPuzzleModifier {
+export class UpdateCell implements PuzzleModifier {
     constructor(
         public cellId: string,
         public args: {

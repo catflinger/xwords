@@ -4,7 +4,7 @@
 
 import { IPuzzle } from '../model/interfaces';
 
-export interface IPuzzleModifier {
+export interface PuzzleModifier {
     
     // return any truthy value to cancel the update
     exec(puzzle: IPuzzle): void;

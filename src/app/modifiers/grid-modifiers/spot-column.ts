@@ -1,8 +1,8 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from 'src/app/model/interfaces';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 
-export class SpotColumn implements IPuzzleModifier {
+export class SpotColumn implements PuzzleModifier {
 
     constructor(private cell: GridCell) { }
 

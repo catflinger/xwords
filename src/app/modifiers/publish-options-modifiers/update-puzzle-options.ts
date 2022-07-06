@@ -1,7 +1,7 @@
 import { GridLinkMethod, IPuzzle } from '../../model/interfaces';
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 
-export class UpdatePuzzleOptions implements IPuzzleModifier {
+export class UpdatePuzzleOptions implements PuzzleModifier {
     constructor(
         private linkMethod: GridLinkMethod
     ) { }

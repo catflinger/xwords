@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 import { ClueGroup } from 'src/app/model/interfaces';
@@ -8,7 +8,7 @@ import { IClue } from '../../model/interfaces';
 import { RenumberGid } from '../grid-modifiers/renumber-grid';
 import { GridReference } from 'src/app/model/puzzle-model/grid-reference';
 
-export class CreateClues implements IPuzzleModifier {
+export class CreateClues implements PuzzleModifier {
     constructor() { }
 
     exec(puzzle: IPuzzle) {

@@ -1,7 +1,7 @@
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 import { Direction, WritingDirection, GridNavigation } from 'src/app/model/interfaces';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
-import { IPuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { Clear } from 'src/app//modifiers/puzzle-modifiers/clear';
 import { SelectCellsForEdit } from 'src/app//modifiers/grid-modifiers/select-cells-for-edit';
 import { MakeCellEditable } from 'src/app//modifiers/grid-modifiers/make-cell-editable';
@@ -13,8 +13,8 @@ export class GridCellEditor extends GridEditor {
         super();
     }
 
-    public startEdit(puzzle: Puzzle, entryCell: GridCell): IPuzzleModifier[] {
-        let result: IPuzzleModifier[] = [];
+    public startEdit(puzzle: Puzzle, entryCell: GridCell): PuzzleModifier[] {
+        let result: PuzzleModifier[] = [];
 
         result.push(new Clear());
         result.push(new SelectCellsForEdit([entryCell]));
@@ -22,8 +22,8 @@ export class GridCellEditor extends GridEditor {
         return result;
     }
 
-    public onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): IPuzzleModifier[] {
-        let result: IPuzzleModifier[] = [];
+    public onGridText(puzzle: Puzzle, text: string, writingDirection: WritingDirection): PuzzleModifier[] {
+        let result: PuzzleModifier[] = [];
         let context = this.getEditContext(puzzle);
 
         if (context.editCell) {
@@ -34,8 +34,8 @@ export class GridCellEditor extends GridEditor {
         return result;
     }
 
-    public onGridNavigation(puzzle: Puzzle, navigation: GridNavigation, position?: { x: number, y: number }): IPuzzleModifier[] {
-        let result: IPuzzleModifier[] = [];
+    public onGridNavigation(puzzle: Puzzle, navigation: GridNavigation, position?: { x: number, y: number }): PuzzleModifier[] {
+        let result: PuzzleModifier[] = [];
         let context = this.getEditContext(puzzle);
 
         result.push(new Clear());

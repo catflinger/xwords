@@ -1,8 +1,8 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { TextStyleName } from 'src/app/model/interfaces';
 
-export class UpdatePublsihOptionTextStyle implements IPuzzleModifier {
+export class UpdatePublsihOptionTextStyle implements PuzzleModifier {
     constructor(
         private textStyleName: TextStyleName, 
         private color: string, 

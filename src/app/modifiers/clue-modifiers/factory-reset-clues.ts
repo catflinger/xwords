@@ -1,7 +1,7 @@
-import { IPuzzleModifier } from '../puzzle-modifier';
+import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class FactoryResetClues implements IPuzzleModifier {
+export class FactoryResetClues implements PuzzleModifier {
     constructor(
     ) { }
 
