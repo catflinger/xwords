@@ -12,7 +12,7 @@ export class SpotDiagonalDown extends PuzzleModifier {
 
     public exec(puzzle: IPuzzle) {
         if (puzzle.grid) {
-            this.getDiagonalFalling(puzzle.grid, this.cell).subscribe(cell => cell.shading = "lightyellow");
+            this.getDiagonalFalling(puzzle.grid, this.cell).subscribe(cell => this.spotlight(cell));
         }
     }
 

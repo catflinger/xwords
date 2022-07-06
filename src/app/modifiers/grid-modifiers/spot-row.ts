@@ -10,7 +10,7 @@ export class SpotRow extends PuzzleModifier {
         if (puzzle.grid) {
             puzzle.grid.cells.forEach((cell) => {
                 if (this.cell.y === cell.y) {
-                    cell.shading =  "lightyellow";
+                    this.spotlight(cell);
                 }
             });
         }

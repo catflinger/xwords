@@ -222,9 +222,12 @@ export interface IGridCell {
 
     // decorations: in addition to visual appearance light also indicates the cell is part of a light in the crossword sense (a grid entry cell)
     light: boolean;
-    shading: string;
     rightBar: boolean;
     bottomBar: boolean;
+
+    // colours: text colour (contents only, not caption) and background colour
+    textColor: string;
+    shading: string;
 
     // indicates this cell is a placeholder and is not shown in the grid (useful for advanced puzzles where grid contains holes)
     hidden: boolean;

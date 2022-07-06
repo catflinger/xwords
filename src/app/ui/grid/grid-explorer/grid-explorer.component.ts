@@ -17,7 +17,7 @@ class GridParametersSpotlight implements GridParameters {
     public readonly cellPadding = 2;
     public readonly captionFont = "9px serif";
     public readonly textFont = "20px sans-serif";
-    public readonly gridColor = "black";
+    public readonly gridColor = "grey";
     public readonly highlightColor = "BurlyWood";
     public readonly conflictColor = "Tomato";
 }

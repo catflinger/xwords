@@ -11,6 +11,7 @@ export class GridCell implements IGridCell {
     public readonly rightBar: boolean;
     public readonly bottomBar: boolean;
     public readonly highlight: boolean;
+    public readonly textColor: string;
     public readonly shading: string;
     public readonly edit: boolean;
     public readonly hidden: boolean;
@@ -26,6 +27,7 @@ export class GridCell implements IGridCell {
         this.rightBar = data.rightBar;
         this.bottomBar = data.bottomBar;
         this.highlight = data.highlight;
+        this.textColor = data.textColor ?? null;
         this.shading = data.shading;
         this.edit = data.edit;
         this.hidden = !!data.hidden;

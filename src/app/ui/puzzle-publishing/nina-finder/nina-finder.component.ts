@@ -91,7 +91,7 @@ export class NinaFinderComponent implements OnInit {
             rowcol: "both"
         });
 
-        this.form.valueChanges.subscribe(() => this.scratchpad.update(new ClearShading()));
+        this.form.valueChanges.subscribe(() => this.scratchpad.update(new SpotClear()));
 
         if (!this.activePuzzle.hasPuzzle) {
             this.navService.goHome();
@@ -181,7 +181,7 @@ export class NinaFinderComponent implements OnInit {
 
     public onTabChange() {
         this.scratchpad.update(
-            new ClearShading(),
+            new SpotClear(),
         );
     }
 

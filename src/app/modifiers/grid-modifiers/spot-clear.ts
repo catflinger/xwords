@@ -8,7 +8,8 @@ export class SpotClear extends PuzzleModifier {
     exec(puzzle: IPuzzle) {
         if (puzzle.grid) {
             puzzle.grid.cells.forEach((cell) => {
-                cell.shading = "lightgrey";
+                cell.shading = null;
+                cell.textColor = null;
             });
         }
 

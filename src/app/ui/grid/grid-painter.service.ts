@@ -3,6 +3,7 @@ import { GridParameters, GridControlOptions, GridParametersSmall } from '../comm
 import { Grid } from 'src/app/model/puzzle-model/grid';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 import { GridProperties } from 'src/app/model/puzzle-model/grid-properties';
+import { IGridCell } from 'src/app/model/interfaces';
 
 export class GridDisplayInfo {
     public top: number;
@@ -96,7 +97,6 @@ export class GridPainterService {
             const showConflicts = options?.showConflicts;
             const hideShading = options?.hideShading;
             const hideHighlight = options?.hideHighlight;
-            const cellText = (cell.content && cell.content.trim()) ? cell.content.trim().charAt(0) : null;
 
             // highlight cells that are in focus
             let bgColor: string = null;
@@ -122,14 +122,12 @@ export class GridPainterService {
             }
 
             // draw the cell context
-            if (cellText) {
-                this.drawContent(
-                    context,
-                    left,
-                    top,
-                    cellText,
-                    gridParams);
-            }
+            this.drawContent(
+                context,
+                left,
+                top,
+                cell,
+                gridParams);
 
             // draw in bars
             if (cell.rightBar) {
@@ -229,17 +227,26 @@ export class GridPainterService {
             top + gridParams.cellPadding);
     }
 
-    private drawContent(context: CanvasRenderingContext2D, left: number, top: number, content: string, gridParams: GridParameters) {
-        context.font = gridParams.textFont;
-        context.textAlign = "center";
-        context.textBaseline = "middle";
-        context.direction = "ltr";
-        context.fillStyle = gridParams.gridColor;
-
-        context.fillText(
-            content,
-            left + gridParams.cellSize / 2,
-            top + gridParams.cellSize / 2);
+    private drawContent(context: CanvasRenderingContext2D, left: number, top: number, cell: IGridCell, gridParams: GridParameters) {
+        const cellText = (cell.content && cell.content.trim()) ? cell.content.trim().charAt(0) : null;
+        
+        if (cellText) {
+            context.save();
+            
+            context.strokeStyle = cell.textColor ?? gridParams.gridColor;
+            context.fillStyle = cell.textColor ?? gridParams.gridColor;
+            context.font = gridParams.textFont;
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            context.direction = "ltr";
+    
+            context.fillText(
+                cell.content,
+                left + gridParams.cellSize / 2,
+                top + gridParams.cellSize / 2);
+    
+            context.restore();
+            }
     }
 
     private drawGridCaption(context: CanvasRenderingContext2D, caption: string, gridParams: GridParameters, gridProps: GridProperties) {

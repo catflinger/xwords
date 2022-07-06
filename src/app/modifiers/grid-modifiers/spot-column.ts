@@ -10,7 +10,7 @@ export class SpotColumn extends PuzzleModifier {
         if (puzzle.grid) {
             puzzle.grid.cells.forEach((cell) => {
                 if (this.cell.x === cell.x) {
-                    cell.shading =  "lightyellow";
+                    this.spotlight(cell);
                 }
             });
         }

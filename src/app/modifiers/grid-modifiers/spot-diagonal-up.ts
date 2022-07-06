@@ -12,7 +12,7 @@ export class SpotDiagonalUp extends PuzzleModifier {
 
     public exec(puzzle: IPuzzle) {
         if (puzzle.grid) {
-            this.getDiagonalRising(puzzle.grid, this.cell).subscribe(cell => cell.shading = "lightyellow");
+            this.getDiagonalRising(puzzle.grid, this.cell).subscribe(cell => this.spotlight(cell));
         }
     }
 
