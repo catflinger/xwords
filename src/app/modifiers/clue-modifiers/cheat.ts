@@ -3,8 +3,8 @@ import { IPuzzle } from '../../model/interfaces';
 import { IClue } from '../../model/interfaces';
 
 
-export class Cheat implements PuzzleModifier {
-    constructor(private clueIds?: string[]) { }
+export class Cheat extends PuzzleModifier {
+    constructor(private clueIds?: string[]) {  super(); }
 
     public exec(puzzle: IPuzzle) {
 

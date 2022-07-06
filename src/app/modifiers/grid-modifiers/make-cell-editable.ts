@@ -1,8 +1,8 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class MakeCellEditable implements PuzzleModifier {
-    constructor(private cellId: string) { }
+export class MakeCellEditable extends PuzzleModifier {
+    constructor(private cellId: string) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle && puzzle.grid) {

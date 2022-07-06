@@ -2,8 +2,8 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { GridStyle, ClueGroup } from 'src/app/model/interfaces';
 import { IPuzzle, IGrid, IGridCell } from '../../model/interfaces';
 
-export class RenumberGid implements PuzzleModifier {
-    constructor() { }
+export class RenumberGid extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         let counter = 1;

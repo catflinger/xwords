@@ -2,8 +2,8 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class SyncGridContent implements PuzzleModifier {
-    constructor() { }
+export class SyncGridContent extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (!puzzle || !puzzle.clues || !puzzle.grid) {

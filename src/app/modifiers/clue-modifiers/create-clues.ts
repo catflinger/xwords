@@ -8,8 +8,8 @@ import { IClue } from '../../model/interfaces';
 import { RenumberGid } from '../grid-modifiers/renumber-grid';
 import { GridReference } from 'src/app/model/puzzle-model/grid-reference';
 
-export class CreateClues implements PuzzleModifier {
-    constructor() { }
+export class CreateClues extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {

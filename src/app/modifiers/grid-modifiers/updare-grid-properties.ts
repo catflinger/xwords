@@ -2,10 +2,10 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle, GridStyle } from '../../model/interfaces';
 import { GridSize } from 'src/app/model/puzzle-model/grid-size';
 
-export class UpdateGridProperties implements PuzzleModifier {
+export class UpdateGridProperties extends PuzzleModifier {
     constructor(
         public args: { style?: GridStyle, size?: GridSize, symmetrical?: boolean, numbered?: boolean, showCaptions?: boolean },
-    ) { }
+    ) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {

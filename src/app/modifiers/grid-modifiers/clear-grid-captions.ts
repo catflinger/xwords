@@ -1,8 +1,8 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class ClearGridCaptions implements PuzzleModifier {
-    constructor() { }
+export class ClearGridCaptions extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle.grid) {

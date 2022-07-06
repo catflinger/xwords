@@ -1,8 +1,8 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class ValidatePuzzle implements PuzzleModifier {
-    constructor() { }
+export class ValidatePuzzle extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {

@@ -3,13 +3,14 @@ import { IPuzzle, ClueGroup, IClue } from '../../model/interfaces';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 import { ClueBuffer } from 'src/app/services/parsing/text/clue-buffer';
 
-export class AddClue implements PuzzleModifier {
+export class AddClue extends PuzzleModifier {
     constructor(
         private caption: string,
         private group: ClueGroup,
         private text: string,
         private clueId?: string,
     ) { 
+        super();
     }
 
     exec(puzzle: IPuzzle) {

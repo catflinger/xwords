@@ -9,8 +9,8 @@ interface UpdateClueArgs {
     text?: string;
 }
 
-export class UpdateClue implements PuzzleModifier {
-    constructor(private args: UpdateClueArgs) { }
+export class UpdateClue extends PuzzleModifier {
+    constructor(private args: UpdateClueArgs) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle && this.args) {

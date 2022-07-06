@@ -1,14 +1,14 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { CaptionStyle, IPuzzle } from '../../model/interfaces';
 
-export class UpdateProvision implements PuzzleModifier {
+export class UpdateProvision extends PuzzleModifier {
     constructor(
         private args: { 
             captionStyle?: CaptionStyle,
             hasLetterCount?: boolean,
             hasClueGroupHeadings?: boolean,
         },
-    ) { }
+    ) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (this.args.captionStyle !== undefined) {

@@ -12,8 +12,8 @@ export type PublishOptionsUpdate = {
 
 };
 
-export class UpdatePublsihOptions implements PuzzleModifier {
-    constructor(private options: PublishOptionsUpdate) { }
+export class UpdatePublsihOptions extends PuzzleModifier {
+    constructor(private options: PublishOptionsUpdate) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (!this.options) {

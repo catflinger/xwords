@@ -16,13 +16,13 @@ import { TraceService } from 'src/app/services/app/trace.service';
 //     clueGroup: ClueGroup 
 // }
 
-export class ParseText implements PuzzleModifier {
+export class ParseText extends PuzzleModifier {
 
     constructor(
         private textParsingService: TextParsingService,
         private providerService: ProviderService,
         private traceService: TraceService,
-    ) { }
+    ) {  super(); }
 
     public exec(puzzle: IPuzzle): void {
         this.traceService.clearTrace();

@@ -3,11 +3,11 @@ import { Clear } from '../puzzle-modifiers/clear';
 import { IPuzzle, IClue } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class SelectClue implements PuzzleModifier {
+export class SelectClue extends PuzzleModifier {
     constructor(
         public readonly clueId: string,
         private followRedirects: boolean = false,
-    ) { }
+    ) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {

@@ -1,8 +1,8 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class InitAnnotationWarnings implements PuzzleModifier {
-    constructor() { }
+export class InitAnnotationWarnings extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {

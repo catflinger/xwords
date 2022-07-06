@@ -8,8 +8,8 @@ interface ClueRef {
     group: ClueGroup | null,
 }
 
-export class SetRedirects implements PuzzleModifier {
-    constructor() { }
+export class SetRedirects extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle && puzzle.clues) {

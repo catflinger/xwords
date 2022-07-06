@@ -2,8 +2,10 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class ValidateLetterCounts implements PuzzleModifier {
-    public constructor() {}
+export class ValidateLetterCounts extends PuzzleModifier {
+    public constructor() {
+        super();
+    }
 
     public exec(puzzle: IPuzzle) {
         if (puzzle && puzzle.clues && puzzle.grid) {

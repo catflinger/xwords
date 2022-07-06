@@ -6,13 +6,13 @@ import { SyncGridContent } from '../grid-modifiers/sync-grid-content';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 import { QuillDelta } from 'src/app/model/puzzle-model/quill-delta';
 
-export class AnnotateClue implements PuzzleModifier {
+export class AnnotateClue extends PuzzleModifier {
     constructor(
         private id: string,
         private answers: ReadonlyArray<string>,
         private comment: QuillDelta,
         private chunks: TextChunk[],
-        private warnings: ClueValidationWarning[]) { }
+        private warnings: ClueValidationWarning[]) {  super(); }
 
     exec(puzzle: IPuzzle) {
         let clue = puzzle.clues.find((c) => c.id === this.id);

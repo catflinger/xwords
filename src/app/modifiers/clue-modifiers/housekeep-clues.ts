@@ -1,8 +1,8 @@
 import { IPuzzle } from '../../model/interfaces';
 import { PuzzleModifier } from '../puzzle-modifier';
 
-export class HousekeepClues implements PuzzleModifier {
-    constructor() { }
+export class HousekeepClues extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle && puzzle.clues) {

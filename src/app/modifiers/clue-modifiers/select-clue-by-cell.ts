@@ -4,11 +4,11 @@ import { Clear } from '../puzzle-modifiers/clear';
 import { SelectClue } from './select-clue';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class SelectClueByCell implements PuzzleModifier {
+export class SelectClueByCell extends PuzzleModifier {
     constructor(
         private cellId: string,
         private followRedirects: boolean = false,
-    ) { }
+    ) {  super(); }
 
     exec(puzzle: IPuzzle) {
         new Clear().exec(puzzle);

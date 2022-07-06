@@ -4,9 +4,10 @@ import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 import { Observable, range } from 'rxjs';
 import { filter, map } from "rxjs/operators";
 
-export class SpotDiagonalDown implements PuzzleModifier {
+export class SpotDiagonalDown extends PuzzleModifier {
 
     constructor(private cell: GridCell) {
+        super();
     }
 
     public exec(puzzle: IPuzzle) {

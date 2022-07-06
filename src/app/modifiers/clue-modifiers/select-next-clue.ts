@@ -2,8 +2,8 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { Clear } from '../puzzle-modifiers/clear';
 import { IPuzzle } from '../../model/interfaces';
 
-export class SelectNextClue implements PuzzleModifier {
-    constructor(public readonly clueId: string) { }
+export class SelectNextClue extends PuzzleModifier {
+    constructor(public readonly clueId: string) {  super(); }
 
     exec(puzzle: IPuzzle) {
         new Clear().exec(puzzle);

@@ -2,7 +2,7 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { PuzzleProvider } from 'src/app/model/interfaces';
 
-export class UpdateInfo implements PuzzleModifier {
+export class UpdateInfo extends PuzzleModifier {
     constructor(
         private args: { 
             wordPressId?:  number, 
@@ -14,7 +14,7 @@ export class UpdateInfo implements PuzzleModifier {
             instructions?: string,
             ready?: boolean,
         },
-    ) { }
+    ) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (this.args.wordPressId !== undefined) {

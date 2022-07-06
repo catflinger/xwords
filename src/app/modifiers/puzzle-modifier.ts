@@ -4,8 +4,8 @@
 
 import { IPuzzle } from '../model/interfaces';
 
-export interface PuzzleModifier {
+export abstract class PuzzleModifier {
     
     // return any truthy value to cancel the update
-    exec(puzzle: IPuzzle): void;
+    abstract exec(puzzle: IPuzzle): void;
 };

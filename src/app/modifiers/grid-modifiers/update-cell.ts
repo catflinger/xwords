@@ -1,7 +1,7 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class UpdateCell implements PuzzleModifier {
+export class UpdateCell extends PuzzleModifier {
     constructor(
         public cellId: string,
         public args: {
@@ -13,7 +13,7 @@ export class UpdateCell implements PuzzleModifier {
             bottomBar?: boolean,
             hidden?: boolean,
         }
-    ) { }
+    ) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {

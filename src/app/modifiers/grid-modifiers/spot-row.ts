@@ -2,9 +2,9 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from 'src/app/model/interfaces';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 
-export class SpotRow implements PuzzleModifier {
+export class SpotRow extends PuzzleModifier {
 
-    constructor(private cell: GridCell) { }
+    constructor(private cell: GridCell) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle.grid) {

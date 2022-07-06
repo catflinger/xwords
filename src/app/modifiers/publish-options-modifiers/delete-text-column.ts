@@ -1,8 +1,8 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 
-export class DeleteTextColumn implements PuzzleModifier {
-    constructor(private index: number) { }
+export class DeleteTextColumn extends PuzzleModifier {
+    constructor(private index: number) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (this.index > 0) {

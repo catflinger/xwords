@@ -2,10 +2,10 @@ import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class AddGrid implements PuzzleModifier {
+export class AddGrid extends PuzzleModifier {
     constructor(
         public args: {grid: Grid}
-    ) { }
+    ) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {

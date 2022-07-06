@@ -4,8 +4,8 @@ import { IClue } from '../../model/interfaces';
 import { ClueBuffer } from 'src/app/services/parsing/text/clue-buffer';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 
-export class SetGridReferences implements PuzzleModifier {
-    constructor(private clueIds?: string[]) { }
+export class SetGridReferences extends PuzzleModifier {
+    constructor(private clueIds?: string[]) {  super(); }
 
     public exec(puzzle: IPuzzle) {
 

@@ -3,8 +3,8 @@ import { IPuzzle, latestPuzzleVersion } from '../../model/interfaces';
 import { SetGridReferences } from '../clue-modifiers/set-grid-references';
 import { GridLink } from 'src/app/model/puzzle-model/grid-link';
 
-export class UpgradeToLatestVersion implements PuzzleModifier {
-    constructor() { }
+export class UpgradeToLatestVersion extends PuzzleModifier {
+    constructor() {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle) {
