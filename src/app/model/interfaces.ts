@@ -271,6 +271,8 @@ export interface IPuzzle {
     notes: IPuzzleAnnotation;
     provision: IPuzzleProvision;
     grid: IGrid;
+
+    wordsearch?: string;
 };
 
 

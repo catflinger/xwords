@@ -17,7 +17,7 @@
                 <li [ngbNavItem]="'letterPanel'">
                     <a ngbNavLink>Letters used</a>
                     <ng-template ngbNavContent>
-                        <p>click a letter in this table to see where it occurs in the grid</p>
+                        <p class="mt-3">click a letter in this table to see where it occurs in the grid</p>
                         <div class="grid-container p-0">
                             <div class="grid-item border border-dark p-0" *ngFor="let entry of pangramCounter"
                                 (click)="onLetterClick(entry.letter)">
@@ -32,7 +32,7 @@
                 <li [ngbNavItem]="'rowcolPanel'">
                     <a ngbNavLink>Rows and columns</a>
                     <ng-template ngbNavContent>
-                        <p>Click on a cell in the grid to highlight the containing row and column</p>
+                        <p class="mt-3">Click on a cell in the grid to highlight the containing row and column</p>
 
                         <div class="btn-group" role="group" aria-label="Row or column choice">
                             <input type="radio" formControlName="rowcol" [value]="'row'" class="btn-check" id="btnradio4"
@@ -54,7 +54,7 @@
                 <li [ngbNavItem]="'diagonalPanel'">
                     <a ngbNavLink>Diagonals</a>
                     <ng-template ngbNavContent>
-                        <p>Click on a cell in the grid to highlight the containing diagonals</p>
+                        <p class="mt-3">Click on a cell in the grid to highlight the containing diagonals</p>
 
                             <div class="btn-group" role="group" aria-label="Diagonal choice">
                                 <input type="radio" formControlName="diagonal" [value]="'rising'" class="btn-check" id="btnradio1"
@@ -69,6 +69,16 @@
                                     autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btnradio3">both</label>
                             </div>
+                    </ng-template>
+                </li>
+                
+                <li [ngbNavItem]="'wordsearchPanel'">
+                    <a ngbNavLink>Wordsearch</a>
+                    <ng-template ngbNavContent>
+                        <p class="mt-3">Type a list of words to find in the grid</p>
+                        <textarea formControlName="wordsearch" class="form-control" autocomplete="off"></textarea>
+                        <button type="button" class="btn btn-primary mt-3" (click)="onWordsearch()">Search</button>
+
                     </ng-template>
                 </li>
             </ul>

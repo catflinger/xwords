@@ -23,6 +23,8 @@ export class Puzzle implements IPuzzle {
     public readonly clues: Clue[];
     //public readonly linked: boolean;
 
+    public readonly wordsearch?: string;
+
     public revision: number;
 
     constructor(data: any) {
@@ -30,6 +32,8 @@ export class Puzzle implements IPuzzle {
         this.version = data.version ? data.version : 0;
 
         this.revision = data.revision ? data.revision : 0;
+
+        this.wordsearch = data.wordsearch ?? "";
 
         this.uncommitted = !!data.uncommitted;
 

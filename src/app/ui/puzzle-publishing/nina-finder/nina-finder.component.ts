@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
 import { range, Subscription } from 'rxjs';
 import { IActivePuzzle } from 'src/app/services/puzzles/puzzle-management.service';
@@ -18,6 +18,8 @@ import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { SpotDiagonalUp } from 'src/app/modifiers/grid-modifiers/spot-diagonal-up';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpotDiagonalDown } from 'src/app/modifiers/grid-modifiers/spot-diagonal-down';
+import { UpdatePuzzle } from 'src/app/modifiers/puzzle-modifiers/update-puzzle';
+import { WordsearchService } from 'src/app/services/puzzles/wordsearch.service';
 
 class PangramLetter {
     private _count: number = 0;
@@ -45,7 +47,8 @@ class PangramLetter {
 @Component({
   selector: 'app-nina-finder',
   templateUrl: './nina-finder.component.html',
-  styleUrls: ['./nina-finder.component.css']
+  styleUrls: ['./nina-finder.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NinaFinderComponent implements OnInit {
     private subs: Subscription[] = [];
@@ -79,7 +82,9 @@ export class NinaFinderComponent implements OnInit {
         private appService: AppService,
         private activePuzzle: IActivePuzzle,
         private scratchpad: ScratchpadService,
+        private wordsearchService: WordsearchService,
         private formBuilder: FormBuilder,
+        private changeRef: ChangeDetectorRef,
     ) {
         this.clearPangramCounter();
     }
@@ -88,7 +93,8 @@ export class NinaFinderComponent implements OnInit {
 
         this.form = this.formBuilder.group({
             diagonal: "both",
-            rowcol: "both"
+            rowcol: "both",
+            wordsearch: "",
         });
 
         this.form.valueChanges.subscribe(() => this.scratchpad.update(new SpotClear()));
@@ -123,14 +129,23 @@ export class NinaFinderComponent implements OnInit {
                             .subscribe(result => {
                                 this.diagonals2 = result;
                             });
+
+                            this.form.patchValue({ wordsearch: puzzle.wordsearch ?? ""});
                         }
+
+                        this.changeRef.detectChanges();
                     }
             ));
         }
     }
 
-    public ngOnDestroy(){
+    public ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    public onWordsearch() {
+        this.activePuzzle.updateAndCommit(new UpdatePuzzle({ wordsearch: this.form.value.wordsearch}));
+        this.wordsearchService.searchGrid(this.puzzle.grid, this.form.value.wordsearch);
     }
 
     public onCellClick(cell: GridCell) {
