@@ -63,7 +63,7 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
         private formBuilder: FormBuilder,
         private modalService: NgbModal,
         private detRef: ChangeDetectorRef,
-    ) { 
+    ) {
         super(editorService)
     }
 
@@ -156,7 +156,6 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     public ngAfterViewInit() {
-        console.log(`ngAfterViewInit children length = ${this.children.length}`)
         if (this.children.length) {
             setTimeout(() => this.children.first.nativeElement.focus(), 0);
         }

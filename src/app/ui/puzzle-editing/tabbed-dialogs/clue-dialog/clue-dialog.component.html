@@ -2,7 +2,7 @@
 
     <ng-container *ngIf="showTabs">
 
-        <ul ngbNav #nav="ngbNav" [(activeId)]="activeId" class="nav-tabs" (navChange)="onNavChange($event)">
+        <ul ngbNav #nav="ngbNav" [destroyOnHide]="true" [(activeId)]="activeId" class="nav-tabs" (navChange)="onNavChange($event)">
 
             <li ngbNavItem="ClueAnnotatorComponent">
                 <a ngbNavLink>Solve and annotate</a>

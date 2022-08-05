@@ -81,9 +81,7 @@ export class EditClueFormComponent extends TabbedDialogFormBase implements OnIni
         super.ngOnDestroy();
     }
 
-    protected onSave() {
-        let result: boolean = false;
-
+    protected onSave(): Promise<boolean> {
 
         if (this.clue) {
 
@@ -103,6 +101,6 @@ export class EditClueFormComponent extends TabbedDialogFormBase implements OnIni
             );
         }
 
-        return Promise.resolve(result);
+        return Promise.resolve(false);
     }
 }

@@ -58,9 +58,6 @@ export class ClueDialogService {
         if (this.currentInstance) {
             return this.currentInstance.save()
             .then((cancel) => {
-                if (!cancel) {
-                    this.currentInstance = null;
-                }
                 return cancel;
             });
         } else {
