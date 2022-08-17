@@ -25,6 +25,8 @@ import { ClearGridCaptions } from 'src/app/modifiers/grid-modifiers/clear-grid-c
 import { ClearHiddenCells } from 'src/app/modifiers/grid-modifiers/clear-hidden-cells';
 import { distinct, filter, map, toArray } from 'rxjs/operators';
 import { cssColorNameFromValue} from "../../puzzle-publishing/color-control/colors";
+import { FrameStoreService } from 'src/app/services/storage/frame-store.service';
+import { Frame } from 'src/app/services/storage/frame';
 
 type ToolType = "grid" | "text" | "color" | "properties" | "captions" | "cells";
 
@@ -55,6 +57,8 @@ export class GridEditorComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public tool: ToolType = "grid";
     public colorsUsed: string[] = [];
+
+    public frames: readonly Frame[] = [];
     
     private gridEditor: GridEditor;
 
@@ -64,6 +68,7 @@ export class GridEditorComponent implements OnInit, OnDestroy {
         private activePuzzle: IActivePuzzle,
         private formBuilder: FormBuilder,
         private gridEditorService: GridEditorService,
+        private frameStore: FrameStoreService,
         private detRef: ChangeDetectorRef,
     ) { }
 
@@ -83,6 +88,14 @@ export class GridEditorComponent implements OnInit, OnDestroy {
         if (!this.activePuzzle.hasPuzzle) {
             this.navService.goHome();
         } else {
+
+            this.subs.push(
+                this.frameStore.observe().subscribe(frames => {
+                    this.frames = frames;
+                    this.detRef.detectChanges();
+                })
+            );
+
             this.subs.push(
                 this.activePuzzle.observe().subscribe(
                     (puzzle) => {
@@ -149,6 +162,11 @@ export class GridEditorComponent implements OnInit, OnDestroy {
         this.appService.clear();
         this.activePuzzle.updateAndCommit(new Clear());
         this.navService.navigate("nina");
+    }
+
+    public onMakeGif() {
+        this.appService.clear();
+        this.navService.navigate("gif");
     }
 
     public onClone() {
@@ -363,6 +381,12 @@ export class GridEditorComponent implements OnInit, OnDestroy {
 
     public onColorUsed(color: string) {
         this.form.patchValue({shadingColor: color});
+    }
+
+    public onCaptureFrame() {
+        let dataUrl = this.gridControl.getDataUrl("png");
+
+        this.frameStore.addFrame(dataUrl);
     }
 
     private getSymCell(cell: GridCell): GridCell {

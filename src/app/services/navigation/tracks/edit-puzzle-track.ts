@@ -13,6 +13,15 @@ export const editPuzzleTrack: NavTrack = {
                 "close": "abandon",
                 "image": "image",
                 "nina": "nina-finder",
+                "gif": "gif-maker"
+            }
+        },
+        {
+            name: "gif-maker",
+            type: "route",
+            route: "/gif-maker",
+            actions: {
+                "back": "edit-grid",
             }
         },
         {

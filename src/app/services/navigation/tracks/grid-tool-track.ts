@@ -25,8 +25,17 @@ export const gridToolTrack: NavTrack = {
             actions: {
                 "continue": "publish",
                 "nina": "nina-finder",
+                "gif": "gif-maker",
                 "image": "image",
                 "close": "home",
+            }
+        },
+        {
+            name: "gif-maker",
+            type: "route",
+            route: "/gif-maker",
+            actions: {
+                "back": "edit",
             }
         },
         {

@@ -1,0 +1,11 @@
+<h3>Make an animated gif</h3>
+
+<div class="mt-5">
+    <img *ngFor="let frame of frames" [src]="frame.data" [alt]="frame.id" class="thumbnail me-3 mt-3">
+</div>
+
+<div class="row mt-5">
+    <div class="col">
+        <button type="button" class="btn btn-primary me-3" (click)="onBack()">Back</button>
+    </div>
+</div>

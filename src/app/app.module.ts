@@ -97,6 +97,7 @@ import { GridFillerComponent } from './ui/puzzle-solving/jigsaw/grid-filler/grid
 import { GridViewComponent } from './ui/grid/grid-view/grid-view.component';
 import { CluesViewComponent } from './ui/clues/clues-view/clues-view.component';
 import { GridExplorerComponent } from './ui/grid/grid-explorer/grid-explorer.component';
+import { GifMakerComponent } from './ui/grid/gif-maker/gif-maker.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -221,6 +222,7 @@ const tracks: ReadonlyArray<NavTrack> = [
 
     WordpressIdPipe,
      GridExplorerComponent,
+     GifMakerComponent,
   ],
   imports: [
     BrowserModule,

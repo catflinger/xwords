@@ -7,6 +7,7 @@ import { BackupsComponent } from './ui/backup/backups/backups.component';
 import { HomeComponent } from './ui/general/home/home.component';
 import { LoginComponent } from './ui/general/login/login.component';
 import { SettingsComponent } from './ui/general/settings/settings.component';
+import { GifMakerComponent } from './ui/grid/gif-maker/gif-maker.component';
 import { ArchiveComponent } from './ui/puzzle-editing/archive/archive.component';
 import { CluesEditorComponent } from './ui/puzzle-editing/clues-editor/clues-editor.component';
 import { CluesStartComponent } from './ui/puzzle-editing/clues-start/clues-start.component';
@@ -72,6 +73,7 @@ const routes: Routes = [
     { path: "grid-editor", component: GridEditorComponent },
     { path: "grid-image", component: GridImageComponent },
     { path: "nina-finder", component: NinaFinderComponent },
+    { path: "gif-maker", component: GifMakerComponent },
     { path: "clues-start", component: CluesStartComponent },
     { path: "clues-editor", component: CluesEditorComponent },
     { path: "puzzle-info", component: PuzzleInfoComponent },
