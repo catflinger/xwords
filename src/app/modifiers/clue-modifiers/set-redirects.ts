@@ -95,7 +95,7 @@ export class SetRedirects extends PuzzleModifier {
                 let group: ClueGroup = null;
 
                 if (match && match.groups["direction"]) {
-                    group = match.groups["direction"] as ClueGroup;
+                    group = match.groups["direction"].toLowerCase() as ClueGroup;
                 }
                 
                 result = { 
