@@ -57,7 +57,7 @@ export class Line {
     private get hasEndMarker(): boolean {
         if (!this.options.hasLetterCount) {
             return true;
-        } else if ((new RegExp(String.raw`^(\s*The)?\s*Chambers\s+Dictionary\s+\(2014\)\s*$`, "i").test(this.text))) {
+        } else if ((new RegExp(String.raw`^(\s*The)?\s*Chambers\s+Dictionary\s+\(20\d\d\)\s*$`, "i").test(this.text))) {
             return false;
         } else {
             let exp: RegExp = new RegExp(String.raw`\(\d[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
