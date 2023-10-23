@@ -30,6 +30,10 @@ export class LocalStorageService {
         return Promise.resolve();
     }
 
+    public deleteAllPuzzles() {
+        this.listPuzzles().forEach(puzzle => this.deletePuzzle(puzzle.id));
+    }
+
     public listPuzzles(): IPuzzleSummary[] {
         let result: IPuzzleSummary[] = [];
 
@@ -44,6 +48,7 @@ export class LocalStorageService {
                 let puzzle = new Puzzle(data);
 
                 result.push({
+                    id: puzzle.info.id,
                     info: puzzle.info,
                     ready: puzzle.ready,
                     gridable: puzzle.gridable,

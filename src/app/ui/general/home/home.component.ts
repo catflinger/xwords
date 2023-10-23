@@ -11,6 +11,8 @@ import { UpdateInfo } from 'src/app/modifiers/puzzle-modifiers/update-info';
 import { AppSettingsService } from 'src/app/services/app/app-settings.service';
 import { AppSettings } from 'src/app/services/common';
 import { LocalStorageService } from 'src/app/services/storage/local-storage.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-home',
@@ -34,16 +36,19 @@ export class HomeComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private settingsService: AppSettingsService,
         private localStotage: LocalStorageService,
+        private modalService: NgbModal,
         private changeRef: ChangeDetectorRef,
     ) { }
 
     public ngOnInit() {
 
-        this.subs.push(combineLatest(
-            this.appService.getObservable(),
-            this.authService.observe(),
-            this.puzzleManagement.observePuzzleList(),
-            this.settingsService.observe())
+        this.subs.push(
+            combineLatest([
+                this.appService.getObservable(),
+                this.authService.observe(),
+                this.puzzleManagement.observePuzzleList(),
+                this.settingsService.observe()
+            ])
             .subscribe(
                 result => {
                     this.appStatus = result[0];
@@ -126,5 +131,17 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.trace = this.localStotage.getPuzzleRaw(item.info.id);
             }
         } catch {}
+    }
+
+    public onDeleteAll() {
+        this.appService.clear();
+        let dialog = this.modalService.open(ConfirmModalComponent);
+        dialog.componentInstance.message = "Warning: all puzzles will be deleted. Do you wish to Continue?";
+        dialog.result.then(cancel => {
+            if (!cancel) {
+                this.puzzleManagement.deleteAllPuzzles();
+            }
+        });
+
     }
 }

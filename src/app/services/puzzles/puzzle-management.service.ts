@@ -50,6 +50,7 @@ export abstract class IPuzzleManager {
 
     abstract addPuzzle(Puzzle);
     abstract deletePuzzle(id: string): Promise<void>;
+    abstract deleteAllPuzzles();
 
     abstract getPuzzleList(): IPuzzleSummary[];
 }
@@ -292,6 +293,12 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                 this.clear();
                 this.refreshPuzzleList();
             });
+    }
+
+    public deleteAllPuzzles() {
+        this.localStorageService.deleteAllPuzzles();
+        this.clear();
+        this.refreshPuzzleList();
     }
 
     public loadPuzzleFromPdf(params: OpenPuzzleParamters): Promise<string> {

@@ -282,6 +282,7 @@ export abstract class ILinkWarning {
 }
 
 export abstract class IPuzzleSummary {
+    abstract readonly id: string;
     abstract readonly info: IPuzzleInfo;
     abstract readonly ready: boolean;
     abstract readonly blogable: boolean;
