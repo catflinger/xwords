@@ -126,6 +126,8 @@ export class TextParsingService {
             case "ended":
                 if (context.textParsingOptions.allowPostamble) {
                     // this is OK, it will happen when the solutions from last weeks puzzle appear at the end of a PDF
+                    const token = context.tokenGroup.current as TextToken;
+                    context.addPostamble(token.text);
                 } else {
                     throw new TextParsingError({
                         code: "acrossMarker_ended", 
@@ -167,6 +169,8 @@ export class TextParsingService {
             case "ended":
                 if (context.textParsingOptions.allowPostamble) {
                     // this is probably OK, down markers can appear in solutions to last week's puzzle
+                    const token = context.tokenGroup.current as TextToken;
+                    context.addPostamble(token.text);
                 } else {
                     throw new TextParsingError({
                         code: "downMarker_ended", 
@@ -284,7 +288,8 @@ export class TextParsingService {
                 // This situation is ambiguous.  Probably indicates something htat caused the down clues to end early
                 // but we can't be sure at this stage
                 context.addWarning(context.tokenGroup.current.lineNumber, "Found another clue after the end of the puzzle.");
-            } else {
+                context.addPostamble(token.text);
+        } else {
                 throw new TextParsingError({
                     code: "clueStart_ended",
                     tokens: context.tokenGroup,
@@ -332,6 +337,7 @@ export class TextParsingService {
                     // This situation is ambiguous.  Probably indicates something htat caused the down clues to end early
                     // but we can't be sure at this stage
                     context.addWarning(context.tokenGroup.current.lineNumber, "Found a clue after the end of the puzzle.");
+                    context.addPostamble(token.text);
                 } else {
                         throw new TextParsingError({
                             code: "clueEnd_ended",
@@ -389,6 +395,7 @@ export class TextParsingService {
                         // in postamble mode the down clues are over when a completed down clue is followed by
                         // something not recognisable as part of another clue
                         context.state = "ended";
+                        context.addPostamble(token.text);
                     } else {
                         throw new TextParsingError({
                             code: "text_down",

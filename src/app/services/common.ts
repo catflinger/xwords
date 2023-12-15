@@ -5,13 +5,14 @@ import { environment } from 'src/environments/environment';
 export const apiHosts = {
     primary: "crosswords.drurys.org",
     //secondary: "drurys2.org",
-    development: "localhost:44301",
+    //development: "localhost:44301",
+    development: "localhost:49323",
 }
 
 export function getApiRoot() {
     return environment.production ? 
         "/api/" :
-        "https://" + apiHosts.development + "/api/";
+        "http://" + apiHosts.development + "/api/";
 } 
 
 export enum ApiResponseStatus {

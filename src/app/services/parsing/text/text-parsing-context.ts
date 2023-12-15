@@ -13,6 +13,7 @@ export interface IParseContext {
     readonly clues: ReadonlyArray<Clue>;
     readonly buffer: ClueBuffer;
     readonly preamble: ReadonlyArray<string>;
+    readonly postamble: ReadonlyArray<string>;
     readonly tokenGroup: TokenGroup;
     readonly error: TextParsingError;
     readonly warnings: ReadonlyArray<TextParsingWarning>;
@@ -26,6 +27,7 @@ export class ParseContext implements IParseContext {
     private _error: TextParsingError = null;
     private _warnings: TextParsingWarning[] = [];
     private _preamble: string[] = [];
+    private _postamble: string[] = [];
 
     constructor(
         public readonly textParsingOptions: TextParsingOptions,
@@ -52,9 +54,14 @@ export class ParseContext implements IParseContext {
         this._preamble.push(text);
     }
 
+    public addPostamble(text: string) {
+        this._postamble.push(text);
+    }
+
     public get clues(): ReadonlyArray<Clue> { return this._clues; }
     public get warnings(): ReadonlyArray<TextParsingWarning> { return this._warnings; }
     public get preamble(): ReadonlyArray<string> { return this._preamble; }
+    public get postamble(): ReadonlyArray<string> { return this._postamble; }
 
     public get hasContent(): boolean { return this._clueBuffer !== null; }
     public get buffer(): ClueBuffer { return this._clueBuffer; }
@@ -79,47 +86,4 @@ export class ParseContext implements IParseContext {
         }
         this._clueBuffer = null;
     }
-
-    // private makeAnswerFormat(letterCount: string): string {
-    //     let result: string = "";
-
-    //     const startMarker = new RegExp(String.raw`^\(`);
-    //     const endMarker = new RegExp(String.raw`\d words\)$`);
-
-    //     let parts: string[] = letterCount
-    //         .trim()
-    //         .replace(startMarker, "")
-    //         .trim()
-    //         .replace(endMarker, "")
-    //         .trim()
-    //         .replace(")", "")
-    //         .trim()
-    //         .split(",");
-
-    //     parts.forEach((part) => {
-    //         let exp = new RegExp(/(\d{1,2})|([^0-9 ])/g);
-    //         let match;
-
-    //         if (part.trim().length > 0) {
-    //             let partResult = "";
-
-    //             while ((match = exp.exec(part)) !== null) {
-    //                 if (match[1] !== null && match[1] !== undefined ) {
-    //                     let count = parseInt(match[1]);
-    //                     partResult += ",".repeat(count);
-    //                 } else {
-    //                     partResult += match[2];
-    //                 }
-    //             };
-
-    //             if (partResult && result) {
-    //                 result += "/";
-    //             }
-    //             result += partResult;
-
-    //         }
-    //     });
-
-    //     return result;
-    // }
 }

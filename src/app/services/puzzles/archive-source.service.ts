@@ -39,7 +39,7 @@ export class ArchiveService {
 
     public getList(provider: PuzzleProvider): Promise<void> {
 
-        return this.http.get(getApiRoot() + "archive/" + provider)
+        return this.http.get(getApiRoot() + "archive/" + provider + "/")
         .toPromise()
         .then((data: ArchiveResponse) => {
             if (data) {

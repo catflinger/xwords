@@ -32,7 +32,8 @@ export class ParseText extends PuzzleModifier {
         parseData.rawData = puzzle.provision.source;
         parseData.grid = puzzle.grid ? new Grid(puzzle.grid) : null;
 
-        let parser = this.textParsingService.parser(parseData, this.getParsingOptions(puzzle.info.provider, puzzle.provision));
+        let textParsingOptions = this.getParsingOptions(puzzle.info.provider, puzzle.provision);
+        let parser = this.textParsingService.parser(parseData, textParsingOptions);
         let context = parser.next();
 
         while(!context.done) {
@@ -56,9 +57,19 @@ export class ParseText extends PuzzleModifier {
         
             new InitAnnotationWarnings().exec(puzzle);
 
-            for (let line of context.value.preamble) {
-                if (!puzzle.info.title) {
+            console.log(`Premable line count: ${context.value.preamble.length}`);
+            console.log(`Postamble line count: ${context.value.postamble.length}`);
 
+            let lines = textParsingOptions.allowPostamble ? 
+                [...context.value.preamble].concat(context.value.postamble) :
+                context.value.preamble;
+
+                for (let line of lines) {
+
+                console.log(line);
+
+                if (!puzzle.info.title) {
+ 
                     // first look for an FT style title
                     let titleExpression = new RegExp(String.raw`(no|no\.|crossword)\s+(?<serialNumber>[0-9,]+)\s+(set)?\s*by\s+(?<setter>[A-Za-z]+)`, "i");
 
@@ -70,7 +81,7 @@ export class ParseText extends PuzzleModifier {
                         let serialNumber = match.groups["serialNumber"].toString();
                         let provider = this.providerService.getProviderString(puzzle.info.provider);
                         
-                        puzzle.info.title = `${provider} ${serialNumber} by ${setter}`;
+                        puzzle.info.title = `${provider} ${serialNumber}     ${setter}`;
                         puzzle.info.setter = setter;
 
                     } else {
@@ -125,10 +136,14 @@ export class ParseText extends PuzzleModifier {
         }
 
         if (provider === "ft") {
+            options.allowPostamble = true;
+            options.allowPreamble = true;
             options.allowTypos = true;
         }
 
         if (provider === "azed" || provider === "pdf") {
+            options.allowPostamble = true;
+            options.allowPreamble = true;
             options.azedFeatures = true;
         }
 
