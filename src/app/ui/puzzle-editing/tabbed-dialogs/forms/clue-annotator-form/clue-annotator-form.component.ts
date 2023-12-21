@@ -104,14 +104,14 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
 
                             puzzle.publishOptions.textCols.forEach((col, index) => {
                                 let answerText = "";
-                                
+
                                 if (index  === 0) {
                                     const key = this.editorService.lastKeyPress.take();
                                     answerText = key ? key : this.clue.answers[0];
-                                
+
                                 } else if (index < this.clue.answers.length){
                                     answerText = this.clue.answers[index];
-                                
+
                                 } else {
                                     answerText = "";
                                 }
@@ -264,7 +264,7 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                             this.detRef.detectChanges();
                             return cancel;
                         });
-                } else if (this.clue.solution && answer !== this.clean(this.clue.solution)) {
+                } else if (this.clue.solution && answer && answer !== this.clean(this.clue.solution)) {
                     result = this.showSaveWarning("Warning: the answer does match the publsihed solution")
                         .then((cancel): boolean => {
                             if (!cancel) {
