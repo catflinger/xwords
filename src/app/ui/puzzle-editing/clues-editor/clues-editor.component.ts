@@ -11,6 +11,9 @@ import { SelectClue } from 'src/app//modifiers/clue-modifiers/select-clue';
 import { AddClue } from 'src/app/modifiers/clue-modifiers/add-clue';
 import { ClueGroup } from 'src/app/model/interfaces';
 import { SortClues } from 'src/app/modifiers/clue-modifiers/sort-clues';
+import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
+import { SelectClueByCell } from 'src/app/modifiers/clue-modifiers/select-clue-by-cell';
+import { AppService } from '../../general/app.service';
 
 @Component({
     selector: 'app-clues-editor',
@@ -38,6 +41,7 @@ export class CluesEditorComponent implements OnInit, OnDestroy {
         private navService: NavService<AppTrackData>,
         private activePuzzle: IActivePuzzle,
         private detRef: ChangeDetectorRef,
+        private appService: AppService,
     ) { }
 
     public ngOnInit() {
@@ -62,6 +66,13 @@ export class CluesEditorComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    public onCellClick(cell: GridCell) {
+        this.appService.clear();
+        if (cell) {
+            this.activePuzzle.update(new SelectClueByCell(cell.id));
+        }
     }
 
     public onClueClick(clue: Clue) {
