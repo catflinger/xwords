@@ -77,6 +77,10 @@ export class ClueDialogComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onAnnotatorClose() {
+        this.onSave();
+    }
+
     public onSave() {
         if (this.editorService.isActive) {
             this.editorService.save()

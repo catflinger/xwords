@@ -39,6 +39,7 @@ class AnswerTextChunk {
 export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements OnInit, AfterViewInit, OnDestroy {
 
     @Output() dirty = new EventEmitter<void>();
+    @Output() requestSave = new EventEmitter<void>();
 
     @ViewChildren("answer", { read: ElementRef }) children: QueryList<ElementRef>;
 
@@ -93,6 +94,7 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                     this.clue = null;
 
                     if (puzzle) {
+
                         this.clue = puzzle.getSelectedClue();
                         if (this.clue) {
 
@@ -224,6 +226,12 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
         return this.appSettings.general.showCommentValidation.enabled &&
             this.warnings.length &&
             !this.clue.redirect;
+    }
+
+    public onAnswerSubmit(i: number) {
+        if (i === 0) {
+            this.requestSave.emit();
+        }
     }
 
     protected onSave(): Promise<boolean> {

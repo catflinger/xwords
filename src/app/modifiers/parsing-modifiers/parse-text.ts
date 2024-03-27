@@ -57,8 +57,8 @@ export class ParseText extends PuzzleModifier {
         
             new InitAnnotationWarnings().exec(puzzle);
 
-            console.log(`Premable line count: ${context.value.preamble.length}`);
-            console.log(`Postamble line count: ${context.value.postamble.length}`);
+            // console.log(`Premable line count: ${context.value.preamble.length}`);
+            // console.log(`Postamble line count: ${context.value.postamble.length}`);
 
             let lines = textParsingOptions.allowPostamble ? 
                 [...context.value.preamble].concat(context.value.postamble) :
@@ -66,7 +66,7 @@ export class ParseText extends PuzzleModifier {
 
                 for (let line of lines) {
 
-                console.log(line);
+                // console.log(line);
 
                 if (!puzzle.info.title) {
  

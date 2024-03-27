@@ -55,13 +55,15 @@
                             *ngIf="clue.annotation">annotation</button>
                     </div>
 
-                    <input 
-                        [attr.id]="item.value.id" 
-                        class="form-control" 
+                    <input
+                        [attr.id]="item.value.id"
+                        class="form-control"
                         [ngClass]="{'text-uppercase': !i}"
-                        #answer 
-                        formControlName="answer" 
-                        (input)="onChange(i)">
+                        #answer
+                        formControlName="answer"
+                        (input)="onChange(i)"
+                        (keyup.enter)="onAnswerSubmit(i)"
+                    >
                 </div>
             </div>
         </div>
