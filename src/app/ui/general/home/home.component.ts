@@ -136,7 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public onDeleteAll() {
         this.appService.clear();
         let dialog = this.modalService.open(ConfirmModalComponent);
-        dialog.componentInstance.message = "Warning: all puzzles will be deleted. Do you wish to Continue?";
+        dialog.componentInstance.message = "Warning: all puzzles and grids will be deleted. Do you wish to Continue?";
         dialog.result.then(cancel => {
             if (!cancel) {
                 this.puzzleManagement.deleteAllPuzzles();

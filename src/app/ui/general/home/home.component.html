@@ -54,9 +54,6 @@
         </div>
     </div>
 
-    <div class="mt-3" *ngIf="puzzleList.length > 0">
-        <button type="button" class="btn btn-primary" (click)="onDeleteAll()">Delete all</button>
-    </div>
 </ng-container>
 
 <ng-container *ngIf="appStatus && gridList &&  gridList.length > 0">
@@ -85,6 +82,12 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="appStatus">
+    <div class="mt-3" *ngIf="(gridList &&  gridList.length > 0) || (puzzleList && puzzleList.length > 0)">
+        <button type="button" class="btn btn-primary" (click)="onDeleteAll()">Delete Everything</button>
     </div>
 </ng-container>
 
