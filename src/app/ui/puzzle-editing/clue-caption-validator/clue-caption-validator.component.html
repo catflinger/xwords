@@ -1,0 +1,27 @@
+<div class="bg-warning rounded p-3" *ngIf="suggestions.length > 0">
+    <div lass="mt-3">
+        <p>
+            <b>The puzzle below appears to have some errors in the clue numbering.</b>
+            This is usually caused by ambigous spacing between the digits of the clue number.
+            Please review each potential error and indicate if you would like to apply the suggested fix.
+        </p>
+        <table class="table mt-3">
+            <thead>
+                <th>Original clue</th>
+                <th>Suggested changes</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of suggestions">
+                    <td><b>{{item.originalCaption}}</b> {{item.originalText}}</td>
+                    <td><b>{{item.suggestedCaption}}</b> {{item.suggestedText}}</td>
+                    <td><button class="btn btn-primary" (click)="onSuggestion(item)">Fix</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <button class="btn btn-primary me-3" (click)="onFixAll()" *ngIf="suggestions.length > 1">Fix all</button>
+            <button class="btn btn-primary" (click)="onIgnore()">Hide this warning</button>
+        </div>
+    </div>
+</div>

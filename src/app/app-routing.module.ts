@@ -35,6 +35,7 @@ import { PublishComponent } from './ui/puzzle-publishing/publish/publish.compone
 import { BloggerComponent } from './ui/puzzle-solving/blogger/blogger.component';
 import { GridFillerComponent } from './ui/puzzle-solving/jigsaw/grid-filler/grid-filler.component';
 import { SolverComponent } from './ui/puzzle-solving/solver/solver.component';
+import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.component';
 
 
 const routes: Routes = [
@@ -84,6 +85,7 @@ const routes: Routes = [
     { path: "backup", component: BackupComponent },
     { path: "backup-settings", component: BackupSettingsComponent },
     { path: "backup-options/:id", component: BackupOptionsComponent },
+    { path: "scratchpad", component: ScratchpadComponent },
 
     // default routes
     { path: "", redirectTo: "/home", pathMatch: "full" },

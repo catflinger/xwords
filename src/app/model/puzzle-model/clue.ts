@@ -83,23 +83,20 @@ export class Clue implements IClue {
         this.warnings = warnings;
     }
 
-    // public getDisplayCaption(captionStyle: CaptionStyle) {
-    //     let result = "";
+    public get totalLetterCount(): number {
+        let total = 0;
 
-    //     if (captionStyle === "numbered") {
-    //         result = this.caption;
-    //         let exp = new RegExp(String.raw`(across|down)`, "i");
+        let matches = this.letterCount.match(/(?<mumbers>\d+)/g);
 
-    //         if (!exp.test(this.caption)) {
-    //             result += " " + this.group;
-    //         }
-        
-    //     } else if (captionStyle === "alphabetical") {
-    //         result = this.caption;
-    //     }
+        if (matches) {
+            total = matches.reduce(
+                (total, match) => total + parseInt(match),
+                0
+            );
+        }
 
-    //     return result;
-    // }
+        return total;
+    }
 
     public static validateAnnotation(answer: string, comment: QuillDelta, chunks: readonly TextChunk[]): ClueValidationWarning[] {
         let warnings: ClueValidationWarning[] = [];

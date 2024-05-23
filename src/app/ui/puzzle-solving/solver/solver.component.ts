@@ -26,6 +26,7 @@ export class SolverComponent implements OnInit, OnDestroy {
 
     public puzzle: Puzzle = null;
     public appSettings: AppSettings = null;
+    public hideSuggestions = false;
 
     private subs: Subscription[] = [];
     private _showEditor = false;
@@ -152,6 +153,10 @@ export class SolverComponent implements OnInit, OnDestroy {
 
     public onJigsaw() {
         this.navService.navigate("jigsaw");
+    }
+
+    public onIgnoreSuggestions() {
+        this.hideSuggestions = true;
     }
 
     public onCellClick(cell: GridCell) {

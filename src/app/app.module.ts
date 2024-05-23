@@ -97,6 +97,8 @@ import { GridFillerComponent } from './ui/puzzle-solving/jigsaw/grid-filler/grid
 import { GridViewComponent } from './ui/grid/grid-view/grid-view.component';
 import { CluesViewComponent } from './ui/clues/clues-view/clues-view.component';
 import { GridExplorerComponent } from './ui/grid/grid-explorer/grid-explorer.component';
+import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.component';
+import { ClueCaptionValidatorComponent } from './ui/puzzle-editing/clue-caption-validator/clue-caption-validator.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -220,7 +222,11 @@ const tracks: ReadonlyArray<NavTrack> = [
     ValidatePuzzleComponent,
 
     WordpressIdPipe,
-     GridExplorerComponent,
+    GridExplorerComponent,
+
+     ScratchpadComponent,
+       ClueCaptionValidatorComponent,
+
   ],
   imports: [
     BrowserModule,

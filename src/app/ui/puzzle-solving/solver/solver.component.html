@@ -5,6 +5,10 @@
         </div>
     </div>
 
+    <div>
+        <app-clue-caption-validator (ignore)="onIgnoreSuggestions()" *ngIf="!hideSuggestions"></app-clue-caption-validator>
+    </div>
+
     <div class="row" *ngIf="showEditor">
         <div class="col">
             <app-clue-dialog (close)="onEditorClose()"></app-clue-dialog>
