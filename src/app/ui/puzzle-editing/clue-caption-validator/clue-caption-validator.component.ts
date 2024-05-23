@@ -4,6 +4,7 @@ import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
 import { FixClue } from 'src/app/modifiers/clue-modifiers/fix-clue';
 import { SetGridReferences } from 'src/app/modifiers/clue-modifiers/set-grid-references';
 import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
+import { Clear } from 'src/app/modifiers/puzzle-modifiers/clear';
 import { ClueEditSugestion, ClueNumberValidationService } from 'src/app/services/parsing/validation/clue-number-validation';
 import { IActivePuzzle } from 'src/app/services/puzzles/puzzle-management.service';
 
@@ -50,7 +51,10 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
     }
 
     public onSuggestion(item) {
-        this.activePuzzle.updateAndCommit(new FixClue([item]), new SetGridReferences());
+        this.activePuzzle.updateAndCommit(
+            new FixClue([item]),
+            new Clear(),
+            new SetGridReferences());
     }
 
     public onIgnore() {
@@ -58,7 +62,9 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
     }
 
     public onFixAll() {
-        this.activePuzzle.updateAndCommit(new FixClue(this.suggestions), new SetGridReferences());
+        this.activePuzzle.updateAndCommit(
+            new FixClue(this.suggestions), 
+            new SetGridReferences());
     }
 
     private Refresh() {
