@@ -20,6 +20,7 @@ export interface IClueEditorForm {
 export class ClueDialogComponent implements OnInit, OnDestroy {
     @Output() close = new EventEmitter<void>();
 
+    @Input()
     public activeId: string = "ClueAnnotatorComponent";
     
     public puzzle: Puzzle = null;

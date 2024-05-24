@@ -15,6 +15,8 @@ import { ClueDialogComponent } from '../../puzzle-editing/tabbed-dialogs/clue-di
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PuzzleDialogComponent } from '../../puzzle-editing/tabbed-dialogs/puzzle-dialog/puzzle-dialog.component';
 import { AppService } from '../../general/app.service';
+import { ClueEditSugestion } from 'src/app/services/parsing/validation/clue-number-validation';
+import { SelectClue } from 'src/app/modifiers/clue-modifiers/select-clue';
 
 @Component({
   selector: 'app-solver',
@@ -171,7 +173,7 @@ export class SolverComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onFix() {
+    public onOptions() {
         let modalRef = this.modalService.open(PuzzleDialogComponent, { 
             backdrop: "static",
             size: "lg",
@@ -190,6 +192,17 @@ export class SolverComponent implements OnInit, OnDestroy {
         this._showEditor = false;
     }
 
+    public onFixClue(suggestion: ClueEditSugestion) {
+        this.activePuzzle.updateAndCommit(new SelectClue(suggestion.clueId));
+        setTimeout(
+            () => {
+            this.openEditor(null);
+            this.detRef.detectChanges();
+            },
+            100
+        );
+    }
+
     private openEditor(key: string) {
         if (this._showEditor) {
             //???????
@@ -205,6 +218,8 @@ export class SolverComponent implements OnInit, OnDestroy {
                     backdrop: "static",
                     size: "lg",
                 });
+
+                modalRef.componentInstance.activeId = "ClueTextEditorComponent";
 
                 modalRef.componentInstance.close.subscribe(() => {
                     modalRef.close();

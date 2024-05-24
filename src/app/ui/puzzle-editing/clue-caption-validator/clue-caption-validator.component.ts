@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
 import { FixClue } from 'src/app/modifiers/clue-modifiers/fix-clue';
 import { SetGridReferences } from 'src/app/modifiers/clue-modifiers/set-grid-references';
+import { SortClues } from 'src/app/modifiers/clue-modifiers/sort-clues';
 import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { Clear } from 'src/app/modifiers/puzzle-modifiers/clear';
 import { ClueEditSugestion, ClueNumberValidationService } from 'src/app/services/parsing/validation/clue-number-validation';
@@ -18,7 +19,10 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
     @Output()
-    public ignore: EventEmitter<void> = new EventEmitter<void>();
+    public ignore = new EventEmitter<void>();
+
+    @Output()
+    public edit = new EventEmitter<ClueEditSugestion>();
 
     public puzzle: Puzzle = null;
     public suggestions: ReadonlyArray<ClueEditSugestion> = [];
@@ -50,11 +54,12 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
         this.Refresh();
     }
 
-    public onSuggestion(item) {
-        this.activePuzzle.updateAndCommit(
-            new FixClue([item]),
-            new Clear(),
-            new SetGridReferences());
+    public onAccept(item: ClueEditSugestion) {
+        this.commitFix([item]);
+    }
+
+    public onEdit(item: ClueEditSugestion) {
+        this.edit.emit(item);
     }
 
     public onIgnore() {
@@ -62,9 +67,7 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
     }
 
     public onFixAll() {
-        this.activePuzzle.updateAndCommit(
-            new FixClue(this.suggestions),
-            new SetGridReferences());
+        this.commitFix(this.suggestions);
     }
 
     private Refresh() {
@@ -75,5 +78,13 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
         }
 
         this.detRef.detectChanges();
+    }
+
+    private commitFix(suggestions: readonly ClueEditSugestion[]) {
+        this.activePuzzle.updateAndCommit(
+            new FixClue(suggestions),
+            new Clear(),
+            new SortClues(),
+            new SetGridReferences());
     }
 }

@@ -6,7 +6,7 @@
     </div>
 
     <div>
-        <app-clue-caption-validator (ignore)="onIgnoreSuggestions()" *ngIf="!hideSuggestions"></app-clue-caption-validator>
+        <app-clue-caption-validator (ignore)="onIgnoreSuggestions()" (edit)="onFixClue($event)" *ngIf="!hideSuggestions"></app-clue-caption-validator>
     </div>
 
     <div class="row" *ngIf="showEditor">
@@ -43,7 +43,7 @@
             <button type="button" class="btn btn-primary me-3" (click)="onBack()">Back</button>
         </div>
         <div class="col text-end">
-            <button type="button" class="btn btn-link me-3" (click)="onFix()">puzzle options...</button>
+            <button type="button" class="btn btn-link me-3" (click)="onOptions()">puzzle options...</button>
         </div>
     </div>
 
