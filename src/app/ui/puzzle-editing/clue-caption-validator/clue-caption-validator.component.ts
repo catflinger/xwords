@@ -9,10 +9,10 @@ import { ClueEditSugestion, ClueNumberValidationService } from 'src/app/services
 import { IActivePuzzle } from 'src/app/services/puzzles/puzzle-management.service';
 
 @Component({
-  selector: 'app-clue-caption-validator',
-  templateUrl: './clue-caption-validator.component.html',
-  styleUrls: ['./clue-caption-validator.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-clue-caption-validator',
+    templateUrl: './clue-caption-validator.component.html',
+    styleUrls: ['./clue-caption-validator.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
@@ -38,7 +38,7 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
                         this.puzzle = puzzle;
                         this.Refresh();
                     }
-            ));
+                ));
         }
     }
 
@@ -63,7 +63,7 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
 
     public onFixAll() {
         this.activePuzzle.updateAndCommit(
-            new FixClue(this.suggestions), 
+            new FixClue(this.suggestions),
             new SetGridReferences());
     }
 
@@ -75,5 +75,5 @@ export class ClueCaptionValidatorComponent implements OnInit, OnDestroy {
         }
 
         this.detRef.detectChanges();
-}
+    }
 }
