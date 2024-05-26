@@ -196,14 +196,14 @@ export class SolverComponent implements OnInit, OnDestroy {
         this.activePuzzle.updateAndCommit(new SelectClue(suggestion.clueId));
         setTimeout(
             () => {
-            this.openEditor(null);
+            this.openEditor(null, "ClueTextEditorComponent");
             this.detRef.detectChanges();
             },
             100
         );
     }
 
-    private openEditor(key: string) {
+    private openEditor(key: string, tabId = "ClueAnnotatorComponent") {
         if (this._showEditor) {
             //???????
 
@@ -219,7 +219,7 @@ export class SolverComponent implements OnInit, OnDestroy {
                     size: "lg",
                 });
 
-                modalRef.componentInstance.activeId = "ClueTextEditorComponent";
+                modalRef.componentInstance.activeId = tabId;
 
                 modalRef.componentInstance.close.subscribe(() => {
                     modalRef.close();
