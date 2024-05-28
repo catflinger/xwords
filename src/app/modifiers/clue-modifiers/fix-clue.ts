@@ -1,6 +1,7 @@
 import { PuzzleModifier } from '../puzzle-modifier';
 import { IPuzzle } from '../../model/interfaces';
 import { ClueEditSugestion } from 'src/app/services/parsing/validation/clue-number-validation';
+import { UpdateClue } from './update-clue';
 
 export class FixClue extends PuzzleModifier {
 
@@ -9,12 +10,13 @@ export class FixClue extends PuzzleModifier {
     public exec(puzzle: IPuzzle) {
 
         this.suggestions.forEach(suggestion => {
-            let clue = puzzle.clues.find((c) => c.id === suggestion.clueId);
+            const update = new UpdateClue({
+                id: suggestion.clueId,
+                caption: suggestion.suggestedCaption,
+                text: suggestion.suggestedText,
+            });
 
-            if (clue) {
-                clue.caption = suggestion.suggestedCaption;
-                clue.text = suggestion.suggestedText;
-            }
+            update.exec(puzzle);
         });
     }
 }

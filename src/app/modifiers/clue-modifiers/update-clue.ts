@@ -13,6 +13,7 @@ export class UpdateClue extends PuzzleModifier {
     constructor(private args: UpdateClueArgs) {  super(); }
 
     exec(puzzle: IPuzzle) {
+
         if (puzzle && this.args) {
             let clue = puzzle.clues.find((c) => c.id === this.args.id);
 

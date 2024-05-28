@@ -32,24 +32,6 @@ export class AuthService {
         return this.bs.value;
     }
 
-    // public authenticate(username: string, password: string): Promise<void> {
-    //     return this.http.post(getApiRoot() + "authorization/", { username, password, sandbox: this.settingsService.settings.sandbox})
-    //     .toPromise()
-    //     .then((data: ApiResponse) => {
-    //         if (data.success === ApiResponseStatus.OK) {
-    //             this.settingsService.username = username;
-    //             this.bs.next(new Credentials(username, password, true));
-    //         } else {
-    //             this.clearCredentials();
-    //             throw AppResultSymbols.AuthorizationFailure;
-    //         }
-    //     })
-    //     .catch((error) => {
-    //         this.clearCredentials();
-    //         throw error;
-    //     });
-    // }
-
     public authenticate(username: string, password: string): Promise<Symbol> {
         return this.http.post(getApiRoot() + "authorization/", { username, password, sandbox: this.settingsService.settings.sandbox})
         .toPromise()
