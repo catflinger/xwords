@@ -316,6 +316,8 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
             if (result.grid) {
                 let grid = new Grid(result.grid)
                 reducers.push(new AddGrid({ grid }));
+                reducers.push(new RenumberGid());
+                reducers.push(new SetGridCaptions());
             }
             this.newPuzzle("pdf", reducers);
 

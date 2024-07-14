@@ -1,0 +1,30 @@
+<div class="row mt-3">
+    <div class="col">
+        <h3>Guardian and Azed Puzzles</h3>
+       </div>
+</div>
+
+<app-info-panel>
+    <p>
+        I am curretnly experiencing a problem downloading puzzles automatically from the Guardian Media websites.  
+        This includes the Guardian Cryptic, Azed and Everymam.  Until I can find out why requests to the Guardian websites
+        are being refused you will need to download these puzzles manually.
+    </p>
+    <p>
+        The steps to do this are:
+    </p>
+    <ul>
+        <li>Go to <a href="https://www.theguardian.com/crosswords" target="_blank">The Guardian website</a> 
+            and find the puzzle you want</li>
+        <li>Find and click the link named <b>PDF Version</b></li>
+        <li>In your PDF viewer save (or download) the file to your local hard drive</li>
+        <li>Once you have downloaded the PDF file go to the <b>Open PDF page</b> and follow the instructions</li>
+    </ul>
+</app-info-panel>
+    
+<div class="row mt-3">
+    <div class="col">
+        <div>I want to load a puzzle from a PDF file on my computer</div>
+        <button class="btn btn-primary mt-3" (click)="onPdf()">Open a PDF</button>
+    </div>
+</div>

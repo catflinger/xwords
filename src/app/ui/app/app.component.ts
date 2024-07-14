@@ -83,13 +83,14 @@ export class AppComponent implements OnInit, OnDestroy {
         //this.appService.navContext.clear();
         
         if (provider === "azed" || provider === "cryptic" || provider === "prize" || provider === "quiptic" || provider === "everyman") {
-            this.appService.setAlert("danger", "Loading puzzles directly from The Guardian website is not possible at the moment.  Try to save the puzzle from The Guardian to your PC as a PDF file then load it using Puzzles->More->Open pdf.")
+            this.navService.gotoRoute(["guardian"]);
+
         } else if (provider === "independent" || provider === "ios") {
             this.navService.gotoRoute(["indy"]);
-        
+
         } else if (provider === "special" ) {
             this.navService.gotoRoute(["special"]);
-        
+
         } else {
             this.navService.gotoRoute(["archive", provider]);
         }

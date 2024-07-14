@@ -49,7 +49,7 @@ export class TextParsingService {
 
         while(!item.done) {
 
-            // TO DO: have a parse trace setting to display progress in the parse orcess
+            // TO DO: have a parse trace setting to display progress in the parse process
             // console.log(`State is ${context.state} parsing token ${JSON.stringify(item.value.current.type)}`)
 
             context.setGroup(item.value);

@@ -36,6 +36,7 @@ import { BloggerComponent } from './ui/puzzle-solving/blogger/blogger.component'
 import { GridFillerComponent } from './ui/puzzle-solving/jigsaw/grid-filler/grid-filler.component';
 import { SolverComponent } from './ui/puzzle-solving/solver/solver.component';
 import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.component';
+import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
 
 
 const routes: Routes = [
@@ -61,6 +62,7 @@ const routes: Routes = [
     // creating and editing puzzles and grids
     { path: "archive/:provider", component: ArchiveComponent },
     { path: "indy", component: IndyComponent },
+    { path: "guardian", component: GuardianComponent },
     { path: "special", component: SpecialComponent },
     { path: "special-pdf", component: SpecialPdfComponent },
     { path: "special-login", component: SpecialLoginComponent },

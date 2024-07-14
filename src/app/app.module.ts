@@ -99,6 +99,7 @@ import { CluesViewComponent } from './ui/clues/clues-view/clues-view.component';
 import { GridExplorerComponent } from './ui/grid/grid-explorer/grid-explorer.component';
 import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.component';
 import { ClueCaptionValidatorComponent } from './ui/puzzle-editing/clue-caption-validator/clue-caption-validator.component';
+import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -226,6 +227,7 @@ const tracks: ReadonlyArray<NavTrack> = [
 
      ScratchpadComponent,
        ClueCaptionValidatorComponent,
+       GuardianComponent,
 
   ],
   imports: [
