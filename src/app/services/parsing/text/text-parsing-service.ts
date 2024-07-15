@@ -207,6 +207,7 @@ export class TextParsingService {
                         message: "reached end of file and no down clues found"});
                 } else if (context.buffer === null) {
                     // this is good news, the input ends following a completed clue
+
                 } else {
                     throw new TextParsingError({
                         code: "endMarker_down",
@@ -218,6 +219,12 @@ export class TextParsingService {
             case "down":
                 if (context.buffer === null) {
                     // this is good news, the input ends following a completed down clue
+
+                } else if (context.spareClueEnd) {
+                    // looks like we have found the rest of the earlier unfinished clue
+                    context.addClueText(context.spareClueEnd.text);
+                    context.save();
+               
                 } else {
                     throw new TextParsingError({
                         code: "endMarker_down",
@@ -225,12 +232,14 @@ export class TextParsingService {
                         message: "reached the end of the file with an unfinished clue."});
                 }
                 break;
+
             case "orphan":
                 if (context.buffer === null) {
                     // this is good news, the input ends following a completed clue
-                } else {
-                    // don't worry about this, probably just junk at the end of the file
-                    context.discard();
+                } else if (context.spareClueEnd) {
+                    // looks like we have found the rest of the earlier unfinished clue
+                    context.addClueText(context.spareClueEnd.text);
+                    context.save();
                 }
                 break;
             }
@@ -342,6 +351,10 @@ export class TextParsingService {
             case null:
                 if (context.textParsingOptions.allowPreamble) {
                     context.addPreamble(token.text);
+                    
+                    // this may be part of an orphan token, remember it and keep
+                    // an eye out for an unfinished orphan token later on
+                    context.addSpareClueEnd(token);
                 } else {
                     throw new TextParsingError({
                         code: "clueEnd_null",

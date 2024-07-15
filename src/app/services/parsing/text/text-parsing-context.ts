@@ -4,6 +4,7 @@ import { TextParsingError } from 'src/app/model/puzzle-model/text-parsing-error'
 import { TextParsingWarning } from 'src/app/model/puzzle-model/text-parsing-warning';
 import { TokenGroup } from 'src/app/model/puzzle-model/token-group';
 import { TextParsingOptions } from './types';
+import { IParseToken } from 'src/app/model/interfaces';
 
 export type TextParsingState = "across" | "down" | "orphan" | "ended" | null;
 
@@ -24,6 +25,7 @@ export class ParseContext implements IParseContext {
     private _acrossClues: Clue[] = [];
     private _downClues: Clue[] = [];
     private _orphanClues: Clue[] = [];
+    private _spareClueEnd: IParseToken = null;
     private _group: TokenGroup = null;
     private _state: TextParsingState = null;
     private _error: TextParsingError = null;
@@ -62,8 +64,13 @@ export class ParseContext implements IParseContext {
         this._postamble.push(text);
     }
 
+    public addSpareClueEnd(token: IParseToken) {
+        this._spareClueEnd = token;
+    }
+
     public get clues(): ReadonlyArray<Clue> { return this._acrossClues.concat(this._downClues); }
     public get orphans(): ReadonlyArray<Clue> { return this._orphanClues; }
+    public get spareClueEnd(): IParseToken { return this._spareClueEnd }
     public get warnings(): ReadonlyArray<TextParsingWarning> { return this._warnings; }
     public get preamble(): ReadonlyArray<string> { return this._preamble; }
     public get postamble(): ReadonlyArray<string> { return this._postamble; }
