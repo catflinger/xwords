@@ -5,7 +5,7 @@ export const latestPuzzleVersion: number = 1;
 
 /*************************** Type ALIASES FOR IPUZZLE ***************************************/
 
-export type ClueGroup = "across" | "down";
+export type ClueGroup = "across" | "down" | "orphan";
 export type Direction = "across" | "down";
 export type PuzzleProvider = "cryptic" | "prize" | "azed" | "everyman" | "quiptic" | "ft" | "independent" | "ios" | "pdf" | "local" | "text" | "grid" | "grid-text";  
 export type ClueValidationWarning = "missing answer" | "missing comment" | "missing definition";

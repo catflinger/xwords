@@ -46,7 +46,7 @@ export class ClueNumberValidationService {
 
         // console.log(`FULL TEXT: [${fullText}]`)
 
-        if (looksSuspicious.test(fullText)) {
+        if (clue.group != "orphan" && looksSuspicious.test(fullText)) {
             let clueNumber = parseInt(caption);
 
             // console.log(`FULL TEXT: ${fullText.substring(0, 20)}`)

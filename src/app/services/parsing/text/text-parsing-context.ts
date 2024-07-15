@@ -3,14 +3,14 @@ import { ClueBuffer } from './clue-buffer';
 import { TextParsingError } from 'src/app/model/puzzle-model/text-parsing-error';
 import { TextParsingWarning } from 'src/app/model/puzzle-model/text-parsing-warning';
 import { TokenGroup } from 'src/app/model/puzzle-model/token-group';
-import { CaptionStyle } from 'src/app/model/interfaces';
 import { TextParsingOptions } from './types';
 
-export type TextParsingState = "across" | "down" | "ended" | null;
+export type TextParsingState = "across" | "down" | "orphan" | "ended" | null;
 
 export interface IParseContext {
     readonly state: TextParsingState;
     readonly clues: ReadonlyArray<Clue>;
+    readonly orphans: ReadonlyArray<Clue>;
     readonly buffer: ClueBuffer;
     readonly preamble: ReadonlyArray<string>;
     readonly postamble: ReadonlyArray<string>;
@@ -21,7 +21,9 @@ export interface IParseContext {
 
 export class ParseContext implements IParseContext {
     private _clueBuffer: ClueBuffer = null;
-    private _clues: Clue[] = [];
+    private _acrossClues: Clue[] = [];
+    private _downClues: Clue[] = [];
+    private _orphanClues: Clue[] = [];
     private _group: TokenGroup = null;
     private _state: TextParsingState = null;
     private _error: TextParsingError = null;
@@ -33,11 +35,13 @@ export class ParseContext implements IParseContext {
         public readonly textParsingOptions: TextParsingOptions,
     ) {}
 
-
     public addClueText(text: string) {
-        if (this._state === "across" || this._state === "down") {
+        if (this._state === "across" || this._state === "down" || this._state == "orphan") {
             if (!this._clueBuffer) {
-                this._clueBuffer = new ClueBuffer(this.textParsingOptions.captionStyle, text, this._state);
+                this._clueBuffer = new ClueBuffer(
+                    this.textParsingOptions.captionStyle,
+                    text,
+                    this._state);
             } else {
                 this._clueBuffer.add(text);
             }
@@ -58,7 +62,8 @@ export class ParseContext implements IParseContext {
         this._postamble.push(text);
     }
 
-    public get clues(): ReadonlyArray<Clue> { return this._clues; }
+    public get clues(): ReadonlyArray<Clue> { return this._acrossClues.concat(this._downClues); }
+    public get orphans(): ReadonlyArray<Clue> { return this._orphanClues; }
     public get warnings(): ReadonlyArray<TextParsingWarning> { return this._warnings; }
     public get preamble(): ReadonlyArray<string> { return this._preamble; }
     public get postamble(): ReadonlyArray<string> { return this._postamble; }
@@ -77,13 +82,30 @@ export class ParseContext implements IParseContext {
 
     public save() {
 
-        if (this._state === "across" || this._state === "down") {
-            this._clues.push(Clue.makeClue(
+        if (this._state === "across") {
+            this._acrossClues.push(Clue.makeClue(
                 this._clueBuffer.caption,
                 this._clueBuffer.clue,
                 this._clueBuffer.letterCount,
-                this._state));
+                "across"));
+        } else if (this._state === "down") {
+            this._downClues.push(Clue.makeClue(
+                this._clueBuffer.caption,
+                this._clueBuffer.clue,
+                this._clueBuffer.letterCount,
+                "down"));
+        } else if (this._state === "orphan") {
+            this._orphanClues.push(Clue.makeClue(
+                this._clueBuffer.caption,
+                this._clueBuffer.clue,
+                this._clueBuffer.letterCount,
+                "orphan"));
         }
+
+        this._clueBuffer = null;
+    }
+
+    public discard() {
         this._clueBuffer = null;
     }
 }

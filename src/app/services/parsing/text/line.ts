@@ -17,6 +17,8 @@ export class Line {
             result = "acrossMarker";
         } else if (this.hasDownMarker) {
             result = "downMarker";
+        } else if (this.isJunk) {
+            result = "empty";
         } else if (this.hasStartMarker && this.hasEndMarker) {
             result = "clue";
         } else if (this.hasEndMarker || this.hasPartialEndMarker) {
@@ -43,13 +45,14 @@ export class Line {
         } else if (this.options.captionStyle === "alphabetical") {
             let exp = new RegExp(String.raw`^\s*[A-Z]\s`);
             return exp.test(this.text);
-        
-        } else if (this.options && this.options.azedFeatures) {
-            let exp = new RegExp(String.raw`^\*?\s*\d{1,2}\D`, "i");
-            return exp.test(this.text);
+
+        } else  if (/^\s*\d{1,2},\s+\D/.test(this.text)) {
+            //Special case: this line from Azed notes looks like a clue start
+            // 18, cos(set)s; 23, tit l in ree; 27, anag. + t, & lit. 
+            return false;
 
         } else {
-            let exp = new RegExp(String.raw`^\d{1,2}\D`, "i");
+            let exp = new RegExp(String.raw`^\s*\*?\s*\d{1,2}\D`, "i");
             return exp.test(this.text);
         }
     }
@@ -72,7 +75,6 @@ export class Line {
             let exp = new RegExp(String.raw`^\s*[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
             return exp.test(this.text);
         }
-        
     }
 
     private get hasAcrossMarker(): boolean {
@@ -88,6 +90,16 @@ export class Line {
     private get hasDownMarker(): boolean {
         let exp = new RegExp(String.raw`^DOWN$`, "i");
         return exp.test(this.text);
+    }
+
+    private get isJunk(): boolean {
+        const gridNumbersExp = new RegExp(String.raw`^[0-9 ]+$`);
+        const gridAnswersExp = new RegExp(String.raw`^[A-Z ]+$`);
+        const solutionExp = new RegExp(String.raw`^Solution No\.?\s+[,0-9]+$`);
+
+        return gridAnswersExp.test(this.text) ||
+            gridNumbersExp.test(this.text) ||
+            solutionExp.test(this.text);
     }
 
 }

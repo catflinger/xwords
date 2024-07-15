@@ -46,7 +46,7 @@ export class Clue implements IClue {
             this.answers = [""];
         };
 
-        if (typeof data.group === "string" && (data.group === "across" || data.group === "down")) {
+        if (typeof data.group === "string" && (data.group === "across" || data.group === "down" || data.group === "orphan")) {
             this.group = data.group;
         } else {
             throw "unrecognised clue group when reading clue data";
@@ -86,7 +86,7 @@ export class Clue implements IClue {
     public get totalLetterCount(): number {
         let total = 0;
 
-        let matches = this.letterCount.match(/(?<mumbers>\d+)/g);
+        let matches = this.letterCount.match(/(?<numbers>\d+)/g);
 
         if (matches) {
             total = matches.reduce(

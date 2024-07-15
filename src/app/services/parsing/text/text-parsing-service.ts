@@ -9,6 +9,7 @@ import { ClueGroup } from 'src/app/model/interfaces';
 import { TextParsingError } from 'src/app/model/puzzle-model/text-parsing-error';
 import { TextParsingOptions } from './types';
 import { Clue } from 'src/app/model/puzzle-model/clue';
+import { TraceService } from '../../app/trace.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +18,8 @@ export class TextParsingService {
 
     constructor(
         private tokeniser: TokeniserService,
-        ) {}
+        private trace: TraceService,
+     ) {}
 
     public *parser(data: ParseData, textParsingOptions: TextParsingOptions) {
 
@@ -53,6 +55,11 @@ export class TextParsingService {
             // console.log(`State is ${context.state} parsing token ${JSON.stringify(item.value.current.type)}`)
 
             context.setGroup(item.value);
+
+            if (this.trace) {
+                this.trace.addTrace(`TEXTPARSER: ${context.tokenGroup.current.type} [${context.state}] `);
+            }
+
 
             try {
                 switch (context.tokenGroup.current.type) {
@@ -108,8 +115,9 @@ export class TextParsingService {
 
         switch (context.state) {
             case null:
+            case "orphan":
                 context.state = "across";
-                break;
+            break;
 
             case "across":
                 throw new TextParsingError({
@@ -142,7 +150,8 @@ export class TextParsingService {
 
         switch (context.state) {
             case "across":
-                if (context.buffer === null) {
+            case "orphan":
+                    if (context.buffer === null) {
                     context.state = "down";
                 } else {
                     throw new TextParsingError({
@@ -216,7 +225,15 @@ export class TextParsingService {
                         message: "reached the end of the file with an unfinished clue."});
                 }
                 break;
-        }
+            case "orphan":
+                if (context.buffer === null) {
+                    // this is good news, the input ends following a completed clue
+                } else {
+                    // don't worry about this, probably just junk at the end of the file
+                    context.discard();
+                }
+                break;
+            }
     }
 
     private onClueToken(context: ParseContext, grid: Grid) {
@@ -229,14 +246,27 @@ export class TextParsingService {
                     context.addClueText(token.text);
                     context.save();
                 } else {
-                    // even in preamble mode this is probably an error, we don't expect to see a well formatted clue before the first across marker
-                    throw new TextParsingError({
-                        code: "clue_null",
-                        tokens: context.tokenGroup,
-                        message: "Found start of clue before ACROSS or DOWN marker"});
-                }
+                    // we have orphan clues before the first across/down heading
+                    context.state = "orphan";
+                    context.addClueText(token.text);
+                    context.save();
+            }
                 break;
-                
+
+            case "orphan":
+                    if (context.textParsingOptions.hasClueGroupHeadings === true) {
+                        context.state = "orphan";
+                        context.addClueText(token.text);
+                        context.save();
+                    } else {
+                        // we should never get into orphan mode if there are no group headings
+                        throw new TextParsingError({
+                            code: "clue_null",
+                            tokens: context.tokenGroup,
+                            message: "Unexpected orphaned parse state"});
+                    }
+                    break;
+
             case "ended":
                 // we don't expect to se whole clues cropping up in the solutions
                 throw new TextParsingError({
@@ -261,8 +291,10 @@ export class TextParsingService {
 
         switch (context.state) {
             case null:
-                if (context.textParsingOptions.allowPreamble) {
-                    context.addPreamble(token.text);
+                //if (context.textParsingOptions.allowPreamble) {
+                if (context.textParsingOptions.hasClueGroupHeadings === true) {
+                    context.state = "orphan";
+                    context.addClueText(token.text);
                 } else {
                     throw new TextParsingError({
                         code: "clueStart_null",
@@ -273,7 +305,8 @@ export class TextParsingService {
 
             case "across":
             case "down":
-                if (!context.hasContent) {
+            case "orphan":
+                    if (!context.hasContent) {
                     context.addClueText(token.text);
                     if (Clue.isRedirect(context.buffer.clue)) {
                         context.save();
@@ -284,18 +317,21 @@ export class TextParsingService {
                 break;
 
             case "ended": 
-            if (context.textParsingOptions.allowPostamble) {
-                // This situation is ambiguous.  Probably indicates something htat caused the down clues to end early
-                // but we can't be sure at this stage
-                context.addWarning(context.tokenGroup.current.lineNumber, "Found another clue after the end of the puzzle.");
-                context.addPostamble(token.text);
-        } else {
-                throw new TextParsingError({
-                    code: "clueStart_ended",
-                    tokens: context.tokenGroup,
-                    message: "Found clue start after end of down clues"});
-            }
-            break;
+                if (context.textParsingOptions.hasClueGroupHeadings === true) {
+                    context.state = "orphan";
+                    context.addClueText(token.text);
+                } else if (context.textParsingOptions.allowPostamble) {
+                    // This situation is ambiguous.  Probably indicates something that caused the down clues to end early
+                    // but we can't be sure at this stage
+                    context.addWarning(context.tokenGroup.current.lineNumber, "Found another clue after the end of the puzzle.");
+                    context.addPostamble(token.text);
+                } else {
+                    throw new TextParsingError({
+                        code: "clueStart_ended",
+                        tokens: context.tokenGroup,
+                        message: "Found clue start after end of down clues"});
+                }
+                break;
         }
     }
 
@@ -316,6 +352,7 @@ export class TextParsingService {
 
             case "across":
             case "down":
+            case "orphan":
                 if (context.hasContent) {
                     context.addClueText(token.text);
                     context.save();
@@ -348,7 +385,7 @@ export class TextParsingService {
                 break;
         }
     }
-    
+
     private onTextToken(context: ParseContext) {
         const token = context.tokenGroup.current as TextToken;
         const azedExp = /^\s*(name|address|post\s*code)\s*$/i;
@@ -362,6 +399,20 @@ export class TextParsingService {
                         code: "text_null",
                         tokens: context.tokenGroup,
                         message: "Found some text before the ACROSS or DOWN markers."});
+                }
+                break;
+
+            case "orphan":
+
+                if (context.hasContent) {
+                    context.addClueText(token.text);
+
+                } else if (context.textParsingOptions.azedFeatures && azedExp.test(token.text)) {
+                    // extracts from AZED pdfs somethimes mistakenly include address details in the across clues
+                    // ignore these lines
+
+                } else {
+                    // it is possible that text will pop up before or after orphan clues, ignore this
                 }
                 break;
 

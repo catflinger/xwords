@@ -1,5 +1,5 @@
 import { PuzzleModifier } from '../puzzle-modifier';
-import { IPuzzle, IPuzzleProvision, ITextParsingError } from '../../model/interfaces';
+import { ClueGroup, IClue, IGrid, IPuzzle, IPuzzleProvision, ITextParsingError } from '../../model/interfaces';
 import { Grid } from 'src/app/model/puzzle-model/grid';
 import { InitAnnotationWarnings } from '../puzzle-modifiers/init-annotation-warnings';
 import { PuzzleProvider } from 'src/app/model/interfaces';
@@ -9,6 +9,10 @@ import { ParseData } from 'src/app/services/parsing/text/parse-data';
 import { TextParsingOptions } from 'src/app/services/parsing/text/types';
 import { UpdateInfo } from '../puzzle-modifiers/update-info';
 import { TraceService } from 'src/app/services/app/trace.service';
+import { IParseContext, ParseContext } from 'src/app/services/parsing/text/text-parsing-context';
+import { Clue } from 'src/app/model/puzzle-model/clue';
+import { GridReference } from 'src/app/model/puzzle-model/grid-reference';
+import { animateChild } from '@angular/animations';
 
 // interface GridReference {
 //     // for example: 2 down or 23 across
@@ -47,7 +51,7 @@ export class ParseText extends PuzzleModifier {
         // 2) when the errros will be recorded in the puzzle
 
         try {
-            puzzle.clues = JSON.parse(JSON.stringify(context.value.clues));
+            puzzle.clues = this.resolveOrphans(context.value, puzzle.grid);
 
             let error: ITextParsingError = JSON.parse(JSON.stringify(context.value.error));
             puzzle.provision.parseErrors = error ? [error] : [];
@@ -150,4 +154,79 @@ export class ParseText extends PuzzleModifier {
         return options;
     }
 
+    private resolveOrphans(context: IParseContext, gridData: IGrid): IClue[] {
+        let result: IClue[];
+        const orphans = context.orphans;
+        const clues = context.clues;
+
+        if (orphans.length) {
+            const bestFit: ClueGroup = this.getBestFit(orphans, clues, gridData);
+
+            // make a mutable copy of the orphaned clues
+            let iorphans = JSON.parse(JSON.stringify(orphans));
+            iorphans.forEach((orphan: IClue) => orphan.group = bestFit);
+
+            result = JSON.parse(JSON.stringify(clues)).concat(iorphans);
+
+        } else {
+            result = JSON.parse(JSON.stringify(clues));
+        }
+
+        return result;
+    }
+
+    private getBestFit(
+        orphans: ReadonlyArray<Clue>,
+        clues: ReadonlyArray<Clue>,
+        gridData: IGrid
+    ): ClueGroup {
+        let result: ClueGroup;
+
+        if (gridData) {
+            const grid: Grid = new Grid(gridData);
+
+            let acrossCount = 0;
+            let downCount = 0;
+
+            orphans.forEach(orphan => {
+                let firstDigits: number = 0;
+
+                let match = /^\d{1,2}/.exec(orphan.caption);
+                if (match) {
+                    firstDigits = parseInt(match.toString());
+                }
+
+                let acrossRef = grid.getGridEntryFromReference(new GridReference({
+                    id: 0,
+                    // TO DO: think about 1, 2 etc
+                    anchor: firstDigits,
+                    direction: "across"
+                }));
+
+                let downRef = grid.getGridEntryFromReference(new GridReference({
+                    id: 0,
+                    // TO DO: think about 1, 2 etc
+                    anchor: firstDigits,
+                    direction: "down"
+                }));
+
+                if (acrossRef.length) {
+                    acrossCount++;
+                }
+
+                if (acrossRef.length) {
+                    downCount++;
+                }
+            });
+
+            result = acrossCount > downCount ? "across" : "down";
+        } else {
+            const acrossCount = clues.filter(clue => clue.group === "across").length;
+            const downCount = clues.filter(clue => clue.group === "down").length;
+
+            result = acrossCount < downCount ? "across" : "down";
+        }
+
+        return result;
+    }
 }
