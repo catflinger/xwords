@@ -425,7 +425,8 @@ export class TextParsingService {
                     // ignore these lines
 
                 } else {
-                    // it is possible that text will pop up before or after orphan clues, ignore this
+                    // it is possible that text will pop up before or after orphan clues, treat as postamble
+                    context.addPostamble(token.text);
                 }
                 break;
 
@@ -466,6 +467,14 @@ export class TextParsingService {
                             tokens: context.tokenGroup,
                             message: "Expected the start of a new clue"});
                     }
+                }
+                break;
+
+            case "ended":
+                if (context.textParsingOptions.allowPostamble) {
+                    // in postamble mode the down clues are over when a completed down clue is followed by
+                    // something not recognisable as part of another clue
+                    context.addPostamble(token.text);
                 }
                 break;
         }

@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppService } from '../../general/app.service';
 import { NavService } from '../../../services/navigation/nav.service';
 import { AppTrackData } from '../../../services/navigation/tracks/app-track-data';
 import bsCustomFileInput from "bs-custom-file-input";
-import { ProvisionOptions } from '../provision-options-control/provision-options-control.component';
 
 @Component({
     selector: 'app-special-pdf',
@@ -27,7 +26,7 @@ export class SpecialPdfComponent implements OnInit, AfterViewInit {
     public ngOnInit() {
 
         this.form = this.formBuilder.group({
-            file: [],
+            file: ["", Validators.required],
             gridPage: [1, Validators.required],
             textPage: [1, Validators.required],
             provisionOptions: null,

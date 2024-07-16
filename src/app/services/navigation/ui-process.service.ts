@@ -123,7 +123,7 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
 
         try {
             this.activePuzzle.updateAndCommit(
-                new ParseText(this.textParsingService, this.providerService, this.traceService),
+                new ParseText(this.textParsingService, this.traceService),
                 new SyncGridContent());
                 
             const errors = this.activePuzzle.puzzle.provision.parseErrors;
