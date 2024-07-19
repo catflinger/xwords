@@ -1,69 +1,36 @@
-<h3>Guardian and Observer Puzzles</h3>
-
-<p class="mt-3">
-    I am curretnly experiencing a problem downloading puzzles automatically from the Guardian Media websites.
-    This includes the Guardian cryptics, Azed and Everymam. Until I can find out why requests to the Guardian
-    websites
-    are being refused you will need to download these puzzles manually.
-</p>
-
-<div class="mt-3">
-    <ngb-alert type="info" [dismissible]="false">
-        <p>
-            To open a Guardian/Observer puzzle:
-        </p>
-        <ol>
-            <li class="mt-3">Go to <a href="https://www.theguardian.com/crosswords" target="_blank">The Guardian website</a>
-                and find the puzzle you want</li>
-            <li class="mt-3"><div>
-                Find and click the link named <b>PDF Version</b>
-                <img class="d-block mt-2" src="assets/pdflink.png">
-            </div></li>
-            <li class="mt-3">In your PDF viewer save (or download) the file to your local hard drive</li>
-            <li class="mt-3">Once you have downloaded the PDF file click the <b>Open a PDF</b> button below and follow the instructions</li>
-        </ol>
-    </ngb-alert>
+<div class="row my-5">
+    <div class="col">
+        <div class="card w-50  mx-auto text-center">
+            <h5 class="card-header">Latest</h5>
+            <div class="card-body">
+                    <p class="card-text">{{provider | provider }}</p>
+                    <p class="card-text">{{latest | date:"EEEE - d LLLL yyyy"}}</p>
+                <button class="btn btn-primary" (click)="openLatest()">Open</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="mt-3">
-    <div>I want to load a puzzle from a PDF file on my computer</div>
-    <button class="btn btn-primary mt-3" (click)="onPdf()">Open a PDF</button>
+<div class="row mt-5">
+    <div class="col">
+        <h5>Open puzzle by date</h5>
+    </div>
 </div>
 
-<div class="mt-5">
-    <ngb-alert type="info" [dismissible]="false">
-        <p>
-            <b>NOTE on Azed</b>
-        </p>
-        <p>
-            On the Azed web page the link to show a PDF is confusingly named <b>Click here to access print version</b>.
-            Don't panic, this link does exactly the same thing as the <b>PDF Version</b> link on the other crosswords.
-            <img class="d-block mt-2" src="assets/azedpdflink.png">
-        </p>
-    </ngb-alert>
-</div>
+<div class="row mt-3">
+    <div class="col">
+        <form [formGroup]="form">
 
-<div class="mt-5">
-    <ngb-alert type="info" [dismissible]="false">
-        <p>
-            <b>NOTE on Quiptic</b>
-        </p>
-        <p>
-            For some reason the <b>Guardian Quiptic</b> does not have a PDF link at all.
-        </p>
-        <p>
-            To get a PDF for the Quiptic you will need to follow the <b>Print</b> link and then save/download the resulting page as a PDF using your browser's
-            built-in PDF tool.  How you do this depends on your browser.
-            <img class="d-block mt-2" src="assets/quipticpdflink.png">
-        </p>
-        <p>
-            Using Opera browser choose the <b>Page</b> then <b>Save as PDF...</b> menu options
-        </p>
-        <p>
-            Using Chrome on Windows 11 choose <b>Print</b> then select <b>Microsoft Print to PDF</b> as the destination
-        </p>
-        <p>
-            For other browsers and operating systems you can read their help pages to find out more
-        </p>
-    </ngb-alert>
+            <div class="form-group">
+                <label for="datePicker">Puzzle date</label>
+                <input id="datePicker" type="text" class="form-control" formControlName="date"
+                    [bsConfig]="{ dateInputFormat: 'dddd Do MMMM YYYY' }" 
+                    [maxDate]="today" [daysDisabled]="daysDisabled" bsDatepicker>
+            </div>
+
+            <div class="form-group mt-5">
+                <button class="btn btn-primary me-3" type="button" (click)="openPuzzleByDate()">Open</button>
+            </div>
+        </form>
+    </div>
 </div>

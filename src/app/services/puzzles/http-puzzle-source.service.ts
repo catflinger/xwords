@@ -44,6 +44,9 @@ export class HttpPuzzleSourceService {
     public providePuzzle(params: OpenPuzzleParamters): Promise<PdfExtractResponse> {
         const credentials = this.authService.getCredentials();
 
+        // send some identification criteria, get back text and grid extracted from the relevant PDF
+        // the clues needs to be parsed here
+
         if (!credentials.authenticated) {
             return Promise.reject(AppResultSymbols.AuthorizationFailure);
         }
@@ -67,6 +70,9 @@ export class HttpPuzzleSourceService {
     public getPuzzle(params: OpenPuzzleParamters): Promise<PuzzleResponse> {
         const credentials = this.authService.getCredentials();
 
+        // send some identification criteria, get back a parsed puzzle
+        // no client-side parsing neccessary
+
         if (!credentials.authenticated) {
             return Promise.reject(AppResultSymbols.AuthorizationFailure);
         }
@@ -88,6 +94,10 @@ export class HttpPuzzleSourceService {
     }
 
     public getPdfExtract(pdf: Base64Encoded, gridPage: number, textPage: number): Promise<PdfExtractResponse> {
+
+        // send a PDF file, get back the extracted test and grid
+        // the clues needs to be parsed here
+        
         const credentials = this.authService.getCredentials();
 
         if (!credentials.authenticated) {

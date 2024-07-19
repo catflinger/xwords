@@ -45,7 +45,7 @@ export abstract class IPuzzleManager {
     abstract newPuzzle(provider: PuzzleProvider, reducers?: PuzzleModifier[]): void;
     abstract observePuzzleList(): Observable<IPuzzleSummary[]>;
     abstract openPuzzle(id: string, modifiers?: PuzzleModifier[]): Promise<Puzzle>;
-    abstract openArchivePuzzle(params: OpenPuzzleParamters): Promise<Puzzle>;
+    abstract loadArchivePuzzle(params: OpenPuzzleParamters): Promise<Puzzle>;
     abstract loadPuzzleFromPdf(params: OpenPuzzleParamters): Promise<string>;
 
     abstract addPuzzle(Puzzle);
@@ -239,10 +239,17 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         this.usePuzzle(puzzle);
     }
 
-    public openArchivePuzzle(params: OpenPuzzleParamters): Promise<Puzzle> {
+    public loadArchivePuzzle(params: OpenPuzzleParamters): Promise<Puzzle> {
         let result;
 
-        if (params.provider === "ft" || params.provider === "azed") {
+        // this method expects some puzzle identifcation parameters (eg FT 16/02/2024) be provided
+        // the server will get the PDF and extract the data, parsing will be done client side
+
+        if (params.provider === "ft" || 
+            params.provider === "azed" || 
+            params.provider === "cryptic" ||
+            params.provider === "prize") {
+
             result = this.httpPuzzleService.providePuzzle(params).then(pdfExtract => {
                 let reducers = [];
 
@@ -302,6 +309,8 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
     }
 
     public loadPuzzleFromPdf(params: OpenPuzzleParamters): Promise<string> {
+
+        // this method expects a PDF to be provided and will return a parsed puzzle
 
         return this.httpPuzzleService.getPdfExtract(params.sourceDataB64, params.gridPage, params.textPage)
         .then((result) => {

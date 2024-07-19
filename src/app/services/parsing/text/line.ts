@@ -93,13 +93,20 @@ export class Line {
     }
 
     private get isJunk(): boolean {
-        const gridNumbersExp = new RegExp(String.raw`^[0-9 ]+$`);
-        const gridAnswersExp = new RegExp(String.raw`^[A-Z ]+$`);
-        const solutionExp = new RegExp(String.raw`^Solution No\.?\s+[,0-9]+$`);
+        const expressions: RegExp[] = [
+        new RegExp(String.raw`^[0-9 ]+$`),
+        new RegExp(String.raw`^[A-Z ]+$`),
+        new RegExp(String.raw`Solution No\.?\s+[,0-9]+$`),
+        new RegExp(String.raw`The first five correct entries drawn`),
+        RegExp(String.raw`Entries to: The Guardian`),
+        RegExp(String.raw`P.O. Box 17566, Birmingham, B33 3EZ`),
+        RegExp(String.raw`Alex Bellos`),
+        RegExp(String.raw`The Guardian on Monday`)];
 
-        return gridAnswersExp.test(this.text) ||
-            gridNumbersExp.test(this.text) ||
-            solutionExp.test(this.text);
+        return expressions.reduce(
+            (result: boolean, next: RegExp) => result || next.test(this.text),
+            false
+        );
     }
 
 }

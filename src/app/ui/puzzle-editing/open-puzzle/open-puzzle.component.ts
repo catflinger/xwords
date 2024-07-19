@@ -55,12 +55,17 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
     private openPuzzle(params: OpenPuzzleParamters) {
         this.appService.setBusy();
 
-        this.puzzleManagementService.openArchivePuzzle(params).then((puzzle) => {
+        this.puzzleManagementService.loadArchivePuzzle(params).then((puzzle) => {
 
             this.appService.clear();
             this.appService.clearOpenPuzzleParams();
 
-            if (puzzle.info.provider === "ft" || puzzle.info.provider === "azed" ) {
+
+            if (params.provider === "ft" ||
+                params.provider === "azed" ||
+                params.provider === "cryptic" ||
+                params.provider === "prize") {
+
                 this.navService.navigate("parse");
             } else {
                 this.navService.navigate("continue");

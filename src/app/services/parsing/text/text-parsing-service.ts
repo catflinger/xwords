@@ -115,6 +115,7 @@ export class TextParsingService {
 
         switch (context.state) {
             case null:
+            case "down":
             case "orphan":
                 context.state = "across";
             break;
@@ -125,11 +126,11 @@ export class TextParsingService {
                     tokens: context.tokenGroup,
                     message: "Found unexpected ACROSS marker"});
 
-            case "down":
-                throw new TextParsingError({
-                    code: "acrossMarker_down", 
-                    tokens: context.tokenGroup, 
-                    message: "Found ACROSS marker in the down clues"});
+            // case "down":
+            //     throw new TextParsingError({
+            //         code: "acrossMarker_down", 
+            //         tokens: context.tokenGroup, 
+            //         message: "Found ACROSS marker in the down clues"});
 
             case "ended":
                 if (context.textParsingOptions.allowPostamble) {
@@ -149,6 +150,7 @@ export class TextParsingService {
     private onDownMarker(context: ParseContext) {
 
         switch (context.state) {
+            case null:
             case "across":
             case "orphan":
                     if (context.buffer === null) {
@@ -161,12 +163,12 @@ export class TextParsingService {
                 }
                 break;
 
-            case null:
-                // even in preamble mode this is probably an error.  Answers to last weeks clues normally appear at the end of a puzzle
-                throw new TextParsingError({
-                    code: "downMarker_null", 
-                    tokens: context.tokenGroup, 
-                    message: "Found unexpected DOWN marker"});
+            // case null:
+            //     // even in preamble mode this is probably an error.  Answers to last weeks clues normally appear at the end of a puzzle
+            //     throw new TextParsingError({
+            //         code: "downMarker_null", 
+            //         tokens: context.tokenGroup, 
+            //         message: "Found unexpected DOWN marker"});
 
             case "down":
                 // even in preamble mode this is probably an error.  Answers to last weeks clues don't normally start with a down marker
@@ -200,12 +202,14 @@ export class TextParsingService {
                     message: "reached end of file and no clues found"});
 
             case "across":
-                if (context.textParsingOptions.hasClueGroupHeadings) {
-                    throw new TextParsingError({
-                        code: "endMarker_across",
-                        tokens: context.tokenGroup,
-                        message: "reached end of file and no down clues found"});
-                } else if (context.buffer === null) {
+                // if (context.textParsingOptions.hasClueGroupHeadings) {
+                //     throw new TextParsingError({
+                //         code: "endMarker_across",
+                //         tokens: context.tokenGroup,
+                //         message: "reached end of file and no down clues found"});
+                // } else if (context.buffer === null) {
+                
+                if (context.buffer === null) {
                     // this is good news, the input ends following a completed clue
 
                 } else {

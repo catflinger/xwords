@@ -37,6 +37,7 @@ import { GridFillerComponent } from './ui/puzzle-solving/jigsaw/grid-filler/grid
 import { SolverComponent } from './ui/puzzle-solving/solver/solver.component';
 import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.component';
 import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
+import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
 
 
 const routes: Routes = [
@@ -62,12 +63,11 @@ const routes: Routes = [
     // creating and editing puzzles and grids
     { path: "archive/:provider", component: ArchiveComponent },
     { path: "indy", component: IndyComponent },
-    { path: "guardian", component: GuardianComponent },
+    { path: "guardian/:provider", component: GuardianComponent },
     { path: "special", component: SpecialComponent },
     { path: "special-pdf", component: SpecialPdfComponent },
     { path: "special-login", component: SpecialLoginComponent },
     { path: "puzzle-hub", component: PuzzleHubComponent },
-    
     { path: "open-puzzle", component: OpenPuzzleComponent },
     { path: "create-puzzle", component: CreatePuzzleComponent },
     { path: "special-text", component: SpecialTextComponent },
@@ -88,6 +88,7 @@ const routes: Routes = [
     { path: "backup-settings", component: BackupSettingsComponent },
     { path: "backup-options/:id", component: BackupOptionsComponent },
     { path: "scratchpad", component: ScratchpadComponent },
+    { path: "pdf-download-guide", component: PdfDownloadGuideComponent },
 
     // default routes
     { path: "", redirectTo: "/home", pathMatch: "full" },

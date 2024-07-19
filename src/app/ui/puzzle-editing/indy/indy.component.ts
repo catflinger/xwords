@@ -9,6 +9,8 @@ import { AppTrackData } from '../../../services/navigation/tracks/app-track-data
 
 const Sunday = 0;
 
+// TO DO: think about merging this with the very similar Guardian select by date component
+
 @Component({
     selector: 'app-indy',
     templateUrl: './indy.component.html',
