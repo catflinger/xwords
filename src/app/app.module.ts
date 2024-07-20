@@ -100,7 +100,8 @@ import { GridExplorerComponent } from './ui/grid/grid-explorer/grid-explorer.com
 import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.component';
 import { ClueCaptionValidatorComponent } from './ui/puzzle-editing/clue-caption-validator/clue-caption-validator.component';
 import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
-import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
+import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
+import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -229,7 +230,8 @@ const tracks: ReadonlyArray<NavTrack> = [
      ScratchpadComponent,
        ClueCaptionValidatorComponent,
        GuardianComponent,
-       PdfDownloadGuideComponent,
+       PdfDownloadGuideAzedComponent,
+       PdfDownloadGuideQuipticComponent,
 
   ],
   imports: [

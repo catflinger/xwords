@@ -245,8 +245,12 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         // this method expects some puzzle identifcation parameters (eg FT 16/02/2024) be provided
         // the server will get the PDF and extract the data, parsing will be done client side
 
+        // TO DO: combine this list of conditions with the identical list in the openPuzzle()
+        // method of the OpenPuzzleComponent component
+
         if (params.provider === "ft" || 
             params.provider === "azed" || 
+            params.provider === "everyman" ||
             params.provider === "cryptic" ||
             params.provider === "prize") {
 

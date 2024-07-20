@@ -3,11 +3,11 @@ import { NavService } from 'src/app/services/navigation/nav.service';
 import { AppTrackData } from 'src/app/services/navigation/tracks/app-track-data';
 
 @Component({
-  selector: 'app-pdf-download-guide',
-  templateUrl: './pdf-download-guide.component.html',
-  styleUrls: ['./pdf-download-guide.component.css']
+  selector: 'app-pdf-download-guide-quiptic',
+  templateUrl: './pdf-download-guide-quiptic.component.html',
+  styleUrls: ['./pdf-download-guide-quiptic.component.css']
 })
-export class PdfDownloadGuideComponent implements OnInit {
+export class PdfDownloadGuideQuipticComponent implements OnInit {
     constructor(
         private navService: NavService<AppTrackData>,
     ) { }

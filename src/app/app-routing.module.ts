@@ -37,7 +37,8 @@ import { GridFillerComponent } from './ui/puzzle-solving/jigsaw/grid-filler/grid
 import { SolverComponent } from './ui/puzzle-solving/solver/solver.component';
 import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.component';
 import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
-import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
+import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
+import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
 
 
 const routes: Routes = [
@@ -88,7 +89,8 @@ const routes: Routes = [
     { path: "backup-settings", component: BackupSettingsComponent },
     { path: "backup-options/:id", component: BackupOptionsComponent },
     { path: "scratchpad", component: ScratchpadComponent },
-    { path: "pdf-download-guide", component: PdfDownloadGuideComponent },
+    { path: "pdf-download-guide-azed", component: PdfDownloadGuideAzedComponent },
+    { path: "pdf-download-guide-quiptic", component: PdfDownloadGuideQuipticComponent },
 
     // default routes
     { path: "", redirectTo: "/home", pathMatch: "full" },

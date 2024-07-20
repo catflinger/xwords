@@ -82,10 +82,13 @@ export class AppComponent implements OnInit, OnDestroy {
         this.appService.clear();
         //this.appService.navContext.clear();
         
-        if (provider === "azed" || provider === "quiptic" || provider === "everyman") {
-            this.navService.gotoRoute(["pdf-download-guide"]);
-
-        } else if (provider === "cryptic" || provider === "prize") {
+        if (provider === "azed") {
+            this.navService.gotoRoute(["pdf-download-guide-azed"]);
+        
+        } else if (provider === "quiptic") {
+            this.navService.gotoRoute(["pdf-download-guide-quiptic"]);
+    
+        } else if (provider === "cryptic" || provider === "prize" || provider === "everyman") {
             this.navService.gotoRoute(["guardian", provider]);
 
         } else if (provider === "independent" || provider === "ios") {

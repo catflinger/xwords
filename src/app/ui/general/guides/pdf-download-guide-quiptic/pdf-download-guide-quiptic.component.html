@@ -1,0 +1,50 @@
+<h3>Quiptic Puzzles</h3>
+
+<p class="mt-3">
+    I am curretnly experiencing a problem downloading puzzles automatically from the Guardian Media websites.
+    This includes the Guardian quiptic ans everyman. Until I can find out why requests to the Guardian
+    websites are being refused you will need to download these puzzles manually.
+</p>
+
+<div class="mt-3">
+    <ngb-alert type="info" [dismissible]="false">
+        <p>
+            To open a Guardian Quiptic puzzle:
+        </p>
+        <ol>
+            <li class="mt-3">Go to <a href="https://www.theguardian.com/crosswords/series/quiptic" target="_blank">The Guardian website</a>
+                and find the quiptic puzzle you want.</li>
+            <li class="mt-3"><div>
+                Find and click the link named <b>Print</b>.
+                <img class="d-block mt-3" src="assets/quipticpdflink.png">
+            </div></li>
+            <li class="mt-3">The puzzle will open as a simple text and grid image.  Save this page as a PDF file on your computer (see below).</li>
+            <li class="mt-3">Once you have downloaded the PDF file click the <b>Open a PDF</b> button below and follow the instructions.</li>
+        </ol>
+    </ngb-alert>
+</div>
+
+<div class="mt-3">
+    <div>I want to load a puzzle from a PDF file on my computer</div>
+    <button class="btn btn-primary mt-3" (click)="onPdf()">Open a PDF</button>
+</div>
+
+<div class="mt-5">
+    <ngb-alert type="info" [dismissible]="false">
+        <p>
+            <b>NOTE on saving a web page as a PDF file</b>
+        </p>
+        <p>
+            How you save a web page as a PDF file depends on your browser and operating system.
+        </p>
+        <p>
+            Using Opera browser choose the <b>Page</b> menu item then select <b>Save as PDF...</b>
+        </p>
+        <p>
+            Using Chrome or Edge on Windows 11 choose <b>Print</b> menu option (Ctrl+P) and choose <b>Microsoft Print to PDF</b> as the destination printer
+        </p>
+        <p>
+            For other browsers and operating systems you can read the help pages to find out more
+        </p>
+    </ngb-alert>
+</div>

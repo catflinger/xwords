@@ -1,0 +1,30 @@
+<h3>Azed Puzzles</h3>
+
+<p class="mt-3">
+    I am curretnly experiencing a problem downloading puzzles automatically from the Guardian Media websites.
+    This includes Azed and The Guardian quiptic. Until I can find out why requests to the Guardian
+    websites are being refused you will need to download these puzzles manually.
+</p>
+
+<div class="mt-3">
+    <ngb-alert type="info" [dismissible]="false">
+        <p>
+            To open an Azed puzzle:
+        </p>
+        <ol>
+            <li class="mt-3">Go to <a href="https://www.theguardian.com/crosswords/series/azed" target="_blank">The Guardian website</a>
+                and find the Azed puzzle you want</li>
+            <li class="mt-3"><div>
+                Find and click the link named <b>Click here to access print version</b>
+                <img class="d-block mt-3" src="assets/azedpdflink.png">
+            </div></li>
+            <li class="mt-3">The puzzle will display as a PDF file.  In your PDF viewer save (or download) the file to your local hard drive</li>
+            <li class="mt-3">Once you have downloaded the PDF file click the <b>Open a PDF</b> button below and follow the instructions</li>
+        </ol>
+    </ngb-alert>
+</div>
+
+<div class="mt-3">
+    <div>I want to load a puzzle from a PDF file on my computer</div>
+    <button class="btn btn-primary mt-3" (click)="onPdf()">Open a PDF</button>
+</div>
