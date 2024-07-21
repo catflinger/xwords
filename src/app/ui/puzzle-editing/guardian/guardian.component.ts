@@ -83,7 +83,7 @@ export class GuardianComponent implements OnInit, OnDestroy {
 
     private openPuzzle(provider: PuzzleProvider, date: Date) {
         this.appService.clear();
-        this.appService.setOpenPuzzleParams({ provider, date});
+        this.appService.setOpenPuzzleParams({ provider, date, requestPdf: true });
         this.navService.beginTrack("createPdfTrack", {}, "open-puzzle");
     }
 

@@ -65,7 +65,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.modalService.dismissAll();
                 this.detref.detectChanges();
         }));
-
     }
 
     public ngOnDestroy() {
@@ -90,12 +89,10 @@ export class AppComponent implements OnInit, OnDestroy {
         // if (provider === "quiptic") {
         //     this.navService.gotoRoute(["pdf-download-guide-quiptic"]);
     
-        // } else if (provider === "cryptic" || provider === "prize" || provider === "everyman") {
-        
-        if (provider === "cryptic" || provider === "prize" || provider === "everyman") {
-            this.navService.gotoRoute(["guardian", provider]);
+        // if (provider === "cryptic" || provider === "prize" || provider === "everyman") {
+        //    this.navService.gotoRoute(["guardian", provider]);
 
-        } else if (provider === "independent" || provider === "ios") {
+        if (provider === "independent" || provider === "ios") {
             this.navService.gotoRoute(["indy"]);
 
         } else if (provider === "special" ) {

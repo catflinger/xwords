@@ -102,6 +102,7 @@ import { ClueCaptionValidatorComponent } from './ui/puzzle-editing/clue-caption-
 import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
 import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
+import { createArchiveTrack } from './services/navigation/tracks/create-archive-track';
 
 const quillGlobalConfig = {
     modules: {
@@ -117,6 +118,7 @@ const quillGlobalConfig = {
 const tracks: ReadonlyArray<NavTrack> = [
     createPuzzleTrack,
     createPdfTrack,
+    createArchiveTrack,
     parseTrack,
     gridToolTrack,
     solveTrack,

@@ -250,11 +250,12 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
         if (params.provider === "ft" || 
             params.provider === "azed" || 
-            params.provider === "everyman" ||
-            params.provider === "cryptic" ||
-            params.provider === "prize") {
+            (params.provider === "everyman" && params.requestPdf) ||
+            (params.provider === "cryptic" && params.requestPdf) ||
+            (params.provider === "prize" && params.requestPdf)) {
 
-            result = this.httpPuzzleService.providePuzzle(params).then(pdfExtract => {
+                result = this.httpPuzzleService.providePuzzle(params).then(pdfExtract => {
+
                 let reducers = [];
 
                 reducers.push(new UpdateInfo({ source: pdfExtract.text }));

@@ -23,6 +23,26 @@ export const createPdfTrack: NavTrack = {
             }
         },
         {
+            name: "grid-captions",
+            type: "process",
+            process: "grid-captions",
+            actions: {
+                "ok": "parser",
+                "error": "error",
+            }
+        },
+        {
+            name: "parser",
+            type: "call",
+            call: {
+                track: "parseTrack"
+            },
+            actions: {
+                ok: "solver",
+                error: "special-text",
+            }
+        },
+        {
             name: "pdf-start",
             type: "route",
             route: "/special-pdf",
@@ -37,15 +57,6 @@ export const createPdfTrack: NavTrack = {
             actions: {
                 "ok": "grid-captions",
                 "authenticate": "login",
-                "error": "error",
-            }
-        },
-        {
-            name: "grid-captions",
-            type: "process",
-            process: "grid-captions",
-            actions: {
-                "ok": "parser",
                 "error": "error",
             }
         },
@@ -68,17 +79,6 @@ export const createPdfTrack: NavTrack = {
             }
         },
         {
-            name: "parser",
-            type: "call",
-            call: {
-                track: "parseTrack"
-            },
-            actions: {
-                ok: "solver",
-                error: "special-text",
-            }
-        },
-        {
             name: "special-text",
             type: "route",
             route: "/special-text",
@@ -95,6 +95,14 @@ export const createPdfTrack: NavTrack = {
                 track: "solveTrack"
             },
             actions: {}
+        },
+        {
+            name: "error",
+            type: "route",
+            route: "/nav-error",
+            actions: {
+                "continue": "abandon"
+            }
         },
         {
             name: "abandon",

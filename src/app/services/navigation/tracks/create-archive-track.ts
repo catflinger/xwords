@@ -15,7 +15,7 @@ export const createArchiveTrack: NavTrack = {
             type: "route",
             route: "open-puzzle",
             actions: {
-                "continue": "solve",
+                "continue": "solver",
                 "parse": "grid-captions",
                 "error": "error",
             }
@@ -27,14 +27,6 @@ export const createArchiveTrack: NavTrack = {
             actions: {
                 "ok": "parser",
                 "error": "error",
-            }
-        },
-        {
-            name: "error",
-            type: "route",
-            route: "/nav-error",
-            actions: {
-                "continue": "abandon"
             }
         },
         {
@@ -55,6 +47,14 @@ export const createArchiveTrack: NavTrack = {
                 track: "solveTrack"
             },
             actions: {}
+        },
+        {
+            name: "error",
+            type: "route",
+            route: "/nav-error",
+            actions: {
+                "continue": "abandon"
+            }
         },
         {
             name: "abandon",

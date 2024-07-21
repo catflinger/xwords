@@ -43,10 +43,10 @@ export class ArchiveComponent implements OnInit, OnDestroy {
         this.appService.clearAlerts();
 
         this.subs.push(
-            combineLatest(
+            combineLatest([
                 this.appService.getObservable(),
                 this.archiveService.observe(),
-            ).subscribe(result => {
+            ]).subscribe(result => {
                 this.appStatus = result[0];
                 this.archive = result[1];
             })
@@ -69,16 +69,17 @@ export class ArchiveComponent implements OnInit, OnDestroy {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    public get showDate(): boolean {
-        return this.provider &&
-            (this.provider === 'independent' || this.provider === 'ios');
-    }
+    // public get showDate(): boolean {
+    //     return this.provider &&
+    //         (this.provider === 'independent' || this.provider === 'ios');
+    // }
 
     public openPuzzle(item: ArchiveItem) {
         this.appService.clear();
 
         this.appService.setOpenPuzzleParams({
             provider: item.provider,
+            requestPdf: false,
             sourceUrl: item.url,
             serialNumber: item.serialNumber,
             date: item.date,
@@ -87,7 +88,8 @@ export class ArchiveComponent implements OnInit, OnDestroy {
         this.appService.clearBusy();
         this.appService.clearAlerts();
         
-        this.navService.beginTrack("createPdfTrack", {}, "open-puzzle");
+        // this.navService.beginTrack("createPdfTrack", {}, "open-puzzle");
+        this.navService.beginTrack("createArchiveTrack", {}, "open-puzzle");
     }
 
     public get latest(): ArchiveItem {

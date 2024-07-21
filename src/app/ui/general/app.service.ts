@@ -24,6 +24,7 @@ export interface RecentlyUsed {
 
 export interface OpenPuzzleParamters {
     provider: PuzzleProvider,
+    requestPdf?: boolean,
     username?: string;
     password?: string;
     title?: string,

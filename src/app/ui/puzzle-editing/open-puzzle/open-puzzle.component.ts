@@ -63,9 +63,9 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
 
             if (params.provider === "ft" ||
                 params.provider === "azed" ||
-                params.provider === "everyman" ||
-                params.provider === "cryptic" ||
-                params.provider === "prize") {
+                (params.provider === "everyman" && params.requestPdf) ||
+                (params.provider === "cryptic" && params.requestPdf) ||
+                (params.provider === "prize" && params.requestPdf)) {
 
                 this.navService.navigate("parse");
             } else {

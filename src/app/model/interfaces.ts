@@ -7,7 +7,21 @@ export const latestPuzzleVersion: number = 1;
 
 export type ClueGroup = "across" | "down" | "orphan";
 export type Direction = "across" | "down";
-export type PuzzleProvider = "cryptic" | "prize" | "azed" | "everyman" | "quiptic" | "ft" | "independent" | "ios" | "pdf" | "local" | "text" | "grid" | "grid-text";  
+export type PuzzleProvider =
+    "cryptic" |
+    "prize" |
+    "azed" |
+    "everyman" |
+    "quiptic" |
+    "ft" |
+    "independent" |
+    "ios" |
+    "pdf" |
+    "local" |
+    "text" |
+    "grid" |
+    "grid-text";
+    
 export type ClueValidationWarning = "missing answer" | "missing comment" | "missing definition";
 export type Layouts = "table" | "list";
 export type Spacing = "small" | "medium" | "large";
