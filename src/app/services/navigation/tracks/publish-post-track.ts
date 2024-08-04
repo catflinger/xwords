@@ -68,11 +68,20 @@ export const publishPostTrack: NavTrack = {
             }
         },
         {
+            name: "publish-preview-grid",
+            type: "route",
+            route: "/grid-image",
+            actions: {
+                "back": "publish-preview",
+            }
+        },
+        {
             name: "publish-preview",
             type: "route",
             route: "/publish-preview",
             actions: {
                 "continue": "publish-preamble",
+                "image": "publish-preview-grid",
             }
         },
         {
