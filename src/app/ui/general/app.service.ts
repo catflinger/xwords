@@ -27,6 +27,7 @@ export interface OpenPuzzleParamters {
     requestPdf?: boolean,
     username?: string;
     password?: string;
+    sandbox?: boolean;
     title?: string,
     sourceUrl?: string,
     sourceText?: string,

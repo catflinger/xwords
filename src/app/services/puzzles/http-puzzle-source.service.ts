@@ -4,6 +4,7 @@ import { ApiResponse, ApiResponseStatus, AppResultSymbols, getApiRoot } from '..
 import { AuthService } from '../app/auth.service';
 import { OpenPuzzleParamters } from '../../ui/general/app.service';
 import { Base64Encoded } from '../../model/interfaces';
+import { AppSettingsService } from '../app/app-settings.service';
 
 abstract class ApiPdfExtractResponse implements ApiResponse {
     public abstract success: ApiResponseStatus;
@@ -38,6 +39,7 @@ export class HttpPuzzleSourceService {
 
     constructor(
         private http: HttpClient,
+        private settingsService: AppSettingsService,
         private authService: AuthService
     ) { }
 
@@ -53,6 +55,7 @@ export class HttpPuzzleSourceService {
 
         params.username = credentials.username;
         params.password = credentials.password;
+        params.sandbox = this.settingsService.settings.sandbox;
 
         return this.http.post(getApiRoot() + "provision/", params)
         .toPromise()
@@ -79,6 +82,7 @@ export class HttpPuzzleSourceService {
 
         params.username = credentials.username;
         params.password = credentials.password;
+        params.sandbox = this.settingsService.settings.sandbox;
 
         return this.http.post(getApiRoot() + "puzzle/", params)
         .toPromise()
@@ -107,6 +111,7 @@ export class HttpPuzzleSourceService {
         let params: any = {
             username: credentials.username,
             password: credentials.password,
+            sandbox: this.settingsService.settings.sandbox,
             sourceDataB64: pdf,
             gridPage,
             textPage,
@@ -135,6 +140,7 @@ export class HttpPuzzleSourceService {
         let params: any = {
             username: credentials.username,
             password: credentials.password,
+            sandbox: this.settingsService.settings.sandbox,
         }
 
         return this.http.post(getApiRoot() + "admin/", params)
