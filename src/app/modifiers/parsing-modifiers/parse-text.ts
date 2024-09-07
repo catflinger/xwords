@@ -213,7 +213,7 @@ export class ParseText extends PuzzleModifier {
                 let serialNumber = match.groups["serialNumber"].toString();
                 //let provider = this.providerService.getProviderString(puzzle.info.provider);
 
-                puzzle.info.title = `Finacial Times ${serialNumber} by ${setter}`;
+                puzzle.info.title = `Financial Times ${serialNumber} by ${setter}`;
                 puzzle.info.setter = setter;
                 puzzle.info.provider = "ft";
                 result = true;
