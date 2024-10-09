@@ -11,6 +11,7 @@ import { AppTrackData } from '../../../services/navigation/tracks/app-track-data
 import { ClueDialogComponent } from '../../puzzle-editing/tabbed-dialogs/clue-dialog/clue-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from '../../general/app.service';
+import { PuzzleDialogComponent } from '../../puzzle-editing/tabbed-dialogs/puzzle-dialog/puzzle-dialog.component';
 
 @Component({
     selector: 'app-blogger',
@@ -125,6 +126,18 @@ export class BloggerComponent implements OnInit, OnDestroy {
         this._showEditor = false;
         this.changeDetector.detectChanges();
     }
+
+    public onOptions() {
+        let modalRef = this.modalService.open(PuzzleDialogComponent, { 
+            backdrop: "static",
+            size: "lg",
+        });
+        
+        modalRef.componentInstance.close.subscribe(() => {
+            modalRef.close();
+        });
+    }
+
 
     private openEditor() {
         if (this._showEditor) {

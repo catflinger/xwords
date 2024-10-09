@@ -182,7 +182,7 @@ export class SolverComponent implements OnInit, OnDestroy {
         modalRef.componentInstance.close.subscribe(() => {
             modalRef.close();
         });
-}
+    }
 
     public onClueClick(clue: Clue) {
         this.openEditor(null);
