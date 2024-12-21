@@ -9,10 +9,11 @@ export class Credentials {
         public readonly username: string,
         public readonly password: string,
         public readonly authenticated: boolean,
+        public readonly sandbox: boolean
     ) { }
 }
 
-const defaultCredentials: Credentials = new Credentials("", "", false);
+const defaultCredentials: Credentials = new Credentials("", "", false, false);
 
 @Injectable({
     providedIn: 'root'
@@ -32,8 +33,8 @@ export class AuthService {
         return this.bs.value;
     }
 
-    public authenticate(username: string, password: string): Promise<Symbol> {
-        return this.http.post(getApiRoot() + "authorization/", { username, password, sandbox: this.settingsService.settings.sandbox})
+    public authenticate(username: string, password: string, sandbox: boolean): Promise<Symbol> {
+        return this.http.post(getApiRoot() + "authorization/", { username, password, sandbox })
         .toPromise()
 
         .then((data: ApiResponse) => {
@@ -55,7 +56,7 @@ export class AuthService {
         .then(result => {
             if (result === AppResultSymbols.OK) {
                 this.settingsService.username = username;
-                this.bs.next(new Credentials(username, password, true));
+                this.bs.next(new Credentials(username, password, true, sandbox));
             } else {
                 this.clearCredentials();
             }
@@ -64,7 +65,7 @@ export class AuthService {
     }
 
     public clearCredentials(): void {
-        this.bs.next(new Credentials(this.settingsService.username, "", false));
+        this.bs.next(new Credentials(this.settingsService.username, "", false, false));
     }
 
 }

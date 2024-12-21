@@ -41,7 +41,7 @@ class _AppSettings implements AppSettings {
     public username: string;
     public general: _GeneralSettings;
     public tips: _TipSettings;
-    public sandbox: boolean;
+    // public sandbox: boolean;
     public footer: QuillDelta;
     public diary: _DiarySettings;
     public editorMode: EditorMode;
@@ -63,7 +63,7 @@ class _AppSettings implements AppSettings {
 // before adding more settings read the comment on interfaces GeneralSettings and TipSettings
 const _defaultSettings: _AppSettings = {
     username: null,
-    sandbox: false,
+    // sandbox: false,
     editorMode: "modal",
     traceOutput: false,
     footer: { ops: []},
@@ -130,9 +130,9 @@ export class AppSettingsService {
                     _settings.footer = changes.footer;
                 }
 
-                if (changes.sandbox !== undefined && typeof changes.sandbox === "boolean") {
-                    _settings.sandbox = changes.sandbox;
-                }
+                // if (changes.sandbox !== undefined && typeof changes.sandbox === "boolean") {
+                //     _settings.sandbox = changes.sandbox;
+                // }
 
                 if (changes.editorMode !== undefined && typeof changes.editorMode === "string") {
                     _settings.editorMode = changes.editorMode;

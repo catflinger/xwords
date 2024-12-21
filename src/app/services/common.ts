@@ -77,7 +77,7 @@ export interface AppSettings {
     readonly tips: TipSettings;
     readonly footer: QuillDelta;
     readonly diary: DiarySettings;
-    readonly sandbox: boolean;
+    // readonly sandbox: boolean;
     readonly editorMode: EditorMode;
     readonly traceOutput: boolean;
 }

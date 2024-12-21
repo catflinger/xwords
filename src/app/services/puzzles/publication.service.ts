@@ -3,7 +3,6 @@ import { Puzzle } from '../../model/puzzle-model/puzzle';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse, ApiResponseStatus, ContentGenerator, PublishStatus, AppResultSymbols, getApiRoot } from '../common';
 import { AuthService, Credentials } from '../app/auth.service';
-import { AppSettingsService } from '../app/app-settings.service';
 import { TableLayout } from '../content-generator/table-layout';
 import { ListLayout } from '../content-generator/list-layout';
 
@@ -37,7 +36,7 @@ export class PublicationService {
     constructor(
         private http: HttpClient,
         private authService: AuthService,
-        private settingsService: AppSettingsService,
+        //private settingsService: AppSettingsService,
     ) { }
 
     // TO DO: IMPORTANT!
@@ -60,7 +59,7 @@ export class PublicationService {
                 content: image,
                 username: credentials.username,
                 password: credentials.password,
-                sandbox: this.settingsService.settings.sandbox,
+                sandbox: credentials.sandbox,
             })
             .toPromise()
             .then((data: PublishGridResponse) => {
@@ -88,7 +87,7 @@ export class PublicationService {
             username: credentials.username,
             password: credentials.password,
             status: status,
-            sandbox: this.settingsService.settings.sandbox,
+            sandbox: credentials.sandbox,
     })
         .toPromise()
         .then((data: PublishPostResponse) => {

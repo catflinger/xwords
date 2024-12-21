@@ -16,20 +16,20 @@ import { AppTrackData } from '../../../services/navigation/tracks/app-track-data
 export class PublishLoginComponent implements OnInit {
     private subs: Subscription[] = [];
     public appStatus: AppStatus;
-    public settings: AppSettings;
+    //public settings: AppSettings;
 
     constructor(
         private navService: NavService<AppTrackData>,
         private activePuzzle: IActivePuzzle,
         private appService: AppService,
-        private settingsService: AppSettingsService,
+        //private settingsService: AppSettingsService,
     ) { }
 
     ngOnInit() {
         if (!this.activePuzzle.hasPuzzle) {
             this.navService.goHome();
         } else {
-            this.settings = this.settingsService.settings;
+            //this.settings = this.settingsService.settings;
             this.subs.push(this.appService.getObservable().subscribe(s => this.appStatus = s));
         }
     }

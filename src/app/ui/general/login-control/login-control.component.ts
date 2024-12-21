@@ -39,6 +39,7 @@ export class LoginControlComponent implements OnInit, OnDestroy {
         this.form = this.builder.group({
             'username': ["", Validators.required],
             'password': ["", Validators.required],
+            'sandbox': [false, Validators.required]
         });
 
         this.subs.push(this.appService.getObservable().subscribe(s => this.appStatus = s));
@@ -46,7 +47,7 @@ export class LoginControlComponent implements OnInit, OnDestroy {
 
         this.subs.push(this.settingsService.observe().subscribe(settings => {
             this.appSettings = settings;
-            this.form.patchValue({username: settings.username});
+            this.form.patchValue({username: settings.username});  // TO DO: do we need this??
         }));
 
     }
@@ -57,7 +58,9 @@ export class LoginControlComponent implements OnInit, OnDestroy {
         
         this.authService.authenticate(
             this.form.value.username,
-            this.form.value.password)
+            this.form.value.password,
+            this.form.value.sandbox
+        )
         .then(result => {
             this.appService.clearBusy();
 

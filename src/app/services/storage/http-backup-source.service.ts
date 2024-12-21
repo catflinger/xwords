@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { ApiResponseStatus, AppResultSymbols, getApiRoot } from '../common';
 import { BackupInfo, BackupType, BackupContentType } from './backup-info';
 import { TraceService } from '../app/trace.service';
-import { AppSettingsService } from '../app/app-settings.service';
 
 interface HttpPuzzleBackupInfo
 {
@@ -61,7 +60,7 @@ export class HttpBackupSourceService {
         private authService: AuthService,
         private http: HttpClient,
         private trace: TraceService,
-        private settingsService: AppSettingsService
+        //private settingsService: AppSettingsService
     ) { }
 
     public getBackupList(host: string, owner: string): Promise<BackupInfo[]> {
@@ -123,7 +122,8 @@ export class HttpBackupSourceService {
         const data: HttpPuzzleBackupRequest = {
             username: creds.username,
             password: creds.password,
-            sandbox: this.settingsService.settings.sandbox,
+            sandbox: creds.sandbox,
+            // sandbox: this.settingsService.settings.sandbox,
             backup: {
                 owner: creds.username,
                 caption,
@@ -153,7 +153,8 @@ export class HttpBackupSourceService {
         const body: HttpApiRequest = {
             username: creds.username,
             password: creds.password,
-            sandbox: this.settingsService.settings.sandbox
+            sandbox: creds.sandbox
+            //sandbox: this.settingsService.settings.sandbox
         }
         return this.http.put(
             getApiRoot() + `backup/${id}`, 

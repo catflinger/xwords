@@ -62,6 +62,8 @@
                 </div>
             </nav>
 
+            <div class="w-100 bg-warning" *ngIf="credentials.authenticated && credentials.sandbox">Warning: you are using the sandbox, your post will not appear on the live site</div>
+
             <app-alert></app-alert>
         </div>
     </div>

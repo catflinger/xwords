@@ -14,16 +14,16 @@ import { AppTrackData } from '../../../services/navigation/tracks/app-track-data
 export class LoginComponent implements OnInit, OnDestroy {
     public preview: string = "";
     public appStatus: AppStatus;
-    public settings: AppSettings;
+    // public settings: AppSettings;
 
     private subs: Subscription[] = [];
 
     constructor(
         private navService: NavService<AppTrackData>,
         private appService: AppService,
-        public settingsService: AppSettingsService,
+        //public settingsService: AppSettingsService,
         ) { 
-            this.settings = this.settingsService.settings;
+            //this.settings = this.settingsService.settings;
         }
 
     public ngOnInit() {

@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.settings = this.settingsService.settings;
 
         this.form = this.formBuilder.group({
-            sandbox: [false],
+            // sandbox: [false],
             editorMode: "modal",
             traceOutput: false,
             footer: [""],
@@ -53,7 +53,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
             this.settings = settings;
 
             this.form.patchValue({
-                sandbox: settings.sandbox,
+                //sandbox: settings.sandbox,
                 footer: settings.footer,
                 editorMode: settings.editorMode,
                 traceOutput: settings.traceOutput,
