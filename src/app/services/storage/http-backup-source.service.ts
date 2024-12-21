@@ -123,7 +123,6 @@ export class HttpBackupSourceService {
             username: creds.username,
             password: creds.password,
             sandbox: creds.sandbox,
-            // sandbox: this.settingsService.settings.sandbox,
             backup: {
                 owner: creds.username,
                 caption,
@@ -154,7 +153,6 @@ export class HttpBackupSourceService {
             username: creds.username,
             password: creds.password,
             sandbox: creds.sandbox
-            //sandbox: this.settingsService.settings.sandbox
         }
         return this.http.put(
             getApiRoot() + `backup/${id}`, 
