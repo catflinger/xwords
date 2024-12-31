@@ -1,3 +1,19 @@
 <h3 mb-5>Scratchpad</h3>
 
-<app-clue-caption-validator (ignore)="onIgnoreSuggestions()" *ngIf="!hideSuggestions"></app-clue-caption-validator>
+<canvas #gridCanvas height="100" width="100"></canvas>
+
+<div [formGroup]="form">
+    <select formControlName="mimeType">
+        <option value="image/png">png</option>
+        <option value="image/webp">webp</option>
+        <option value="image/jpeg">jpeg</option>
+        <option value="image/gif">gif</option>
+        <option value="image/foo">foo</option>
+    </select>
+
+    <button (click)="createImage()">Create image</button>
+</div>
+
+<div class="mt-5">
+    {{text}}
+</div>
