@@ -114,6 +114,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
         //this.navService.returnToSender();
     }
 
+    public onScratchpad() {
+        this.navService.gotoRoute(["scratchpad"]);
+    }
+
     private getChanges(groupKey: BooleanSettingsGroupKey): any {
         let result = {};
 
