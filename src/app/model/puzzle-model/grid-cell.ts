@@ -15,6 +15,7 @@ export class GridCell implements IGridCell {
     public readonly shading: string;
     public readonly edit: boolean;
     public readonly hidden: boolean;
+    public readonly hasConflict: boolean;
     
     constructor(data: any) {
         this.id = data.id;
@@ -31,26 +32,8 @@ export class GridCell implements IGridCell {
         this.shading = data.shading;
         this.edit = data.edit;
         this.hidden = !!data.hidden;
+        this.hasConflict = !!data.hasConflict;
 
         this.anchor = (data.label || data.anchor) || null;
-    }
-
-    public get hasConflict(): boolean {
-        var result = false;
-
-        if (this.content) {
-            const letters = this.content.replace(/\s/, "");
-            
-            if (letters) {
-                const first = letters.charAt(0);
-
-                for (const x of this.content.trim()) {
-                    if (x !== first) {
-                        result = true;
-                    }
-                }
-            }
-        }
-        return result;
     }
 }

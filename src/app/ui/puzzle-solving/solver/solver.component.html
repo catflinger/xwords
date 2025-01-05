@@ -24,6 +24,7 @@
     <div class="row" *ngIf="showPuzzle">
         <div class="col" *ngIf="puzzle.grid">
             <app-grid (cellClick)="onCellClick($event)" [options]="{ hideShading: true, showConflicts: true }"></app-grid>
+            <div class="text-danger" *ngIf="puzzle.grid.hasConflict()">* some across and down answers conflict</div>
         </div>
 
         <div class="col">

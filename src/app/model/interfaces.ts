@@ -234,6 +234,9 @@ export interface IGridCell {
     // the letter(s) the cell contains (normally the answer to a clue)
     content: string;
 
+    // hasConflict: indicates the cell contains different letters in different answers
+    hasConflict: boolean;
+
     // decorations: in addition to visual appearance light also indicates the cell is part of a light in the crossword sense (a grid entry cell)
     light: boolean;
     rightBar: boolean;

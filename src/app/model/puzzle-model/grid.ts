@@ -183,6 +183,18 @@ export class Grid implements IGrid {
 
         return clueNumber;
     }
+
+    public hasConflict(): boolean {
+        let result = false;
+
+        this.cells.forEach(cell => {
+            if (cell.hasConflict) {
+                result = true;
+            }
+        });
+
+        return result;
+    }
     
     private getEntry(entryCell: GridCell, direction: Direction): GridCell[] {
         let result: GridCell[] = [];

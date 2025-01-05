@@ -14,7 +14,10 @@ export class SyncGridContent extends PuzzleModifier {
         let gridX: Grid = new Grid(puzzle.grid);
 
         // clear the grid
-        puzzle.grid.cells.forEach(cell => cell.content = "");
+        puzzle.grid.cells.forEach(cell => {
+            cell.content = ""; 
+            cell.hasConflict = false; 
+        });
 
         puzzle.clues.forEach((clue) => {
             let answer = clue.answers[0].toUpperCase().replace(/[^A-Z?]/g, "").replace(/[?]/g, " ");
@@ -27,7 +30,12 @@ export class SyncGridContent extends PuzzleModifier {
                     .forEach(id => {
                         let cell = puzzle.grid.cells.find(c => c.id === id);
                         if (index < answer.length) {
-                            cell.content = answer.charAt(index);
+                            const letter = answer.charAt(index);
+
+                            if (cell.content && cell.content !== letter) {
+                                cell.hasConflict = true;
+                            }
+                            cell.content = letter;
                         }
                         index++;
                     });
