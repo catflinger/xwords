@@ -55,7 +55,7 @@ export class PublicationService {
 
         if (image) {
             return this.http.post(getApiRoot() + "PublishGrid", {
-                title: title,
+                title: this.cleanTitle(title),
                 content: image,
                 username: credentials.username,
                 password: credentials.password,
@@ -99,5 +99,9 @@ export class PublicationService {
                 throw "Publish Post Failure: " + data.message;
             }
         });
+    }
+
+    private cleanTitle(title: string): string {
+        return title.replace(/[^a-zA-Z0-9,]+/g, '-');
     }
 }
