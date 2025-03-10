@@ -188,7 +188,8 @@ export class ParseText extends PuzzleModifier {
             this.trySetInfoQuiptic(puzzle, lines) ||
             this.trySetInfoGuardian(puzzle, lines) ||
             this.trySetInfoAzed(puzzle, lines) ||
-            this.trySetInfoFT(puzzle, lines)) {
+            this.trySetInfoFT(puzzle, lines) ||
+            this.trySetInfoIndy(puzzle, lines)) {
 
         } else {
             puzzle.info.title = `Puzzle`;
@@ -331,4 +332,30 @@ export class ParseText extends PuzzleModifier {
         }
         return result;
     }
+
+    private trySetInfoIndy(puzzle: IPuzzle, lines: readonly string[]): boolean {
+        let result = false;
+
+        //Example: No. 11,987 by Grecian
+
+        let titleExpression = new RegExp(String.raw`^\s*No\.\s*(?<serialNumber>[0-9,]{5,6})\s+by\s+(?<setter>[A-Za-z ]+)$`);
+
+        for (let line of lines) {
+            let match = titleExpression.exec(line);
+
+            if (match) {
+                // found an Indy style title
+                let setter = match.groups["setter"].toString();
+                let serialNumber = match.groups["serialNumber"].toString();
+
+                puzzle.info.title = `Independent ${serialNumber} by ${setter}`;
+                puzzle.info.setter = setter;
+                puzzle.info.provider = "independent";
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
 }
