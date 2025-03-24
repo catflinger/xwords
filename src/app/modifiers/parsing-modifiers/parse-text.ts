@@ -181,17 +181,41 @@ export class ParseText extends PuzzleModifier {
 
     private setPuzzleInfo(puzzle: IPuzzle, lines: readonly string[]): void {
 
-        if (puzzle.info.title) {
-            // already has a title, do nothing
+        if (!puzzle.info.title) {
+            switch (puzzle.info.provider) {
+                case "ft":  
+                    this.trySetInfoFT(puzzle, lines);
+                    break;
+                case "azed":
+                    this.trySetInfoAzed(puzzle, lines);
+                    break;
+                case "everyman":
+                    this.trySetInfoEveryman(puzzle, lines);
+                    break;
+                case "quiptic":
+                    this.trySetInfoQuiptic(puzzle, lines);
+                    break;
+                case "cryptic":
+                    this.trySetInfoGuardian(puzzle, lines);
+                    break;
+                case "independent":
+                    this.trySetInfoIndy(puzzle, lines);
+                    break;
+                default:
+                    // don't know where this text came from, so try all the options
+                    // in order of decreasing specificity
+                    this.trySetInfoEveryman(puzzle, lines) ||
+                    this.trySetInfoQuiptic(puzzle, lines) ||
+                    this.trySetInfoGuardian(puzzle, lines) ||
+                    this.trySetInfoAzed(puzzle, lines) ||
+                    this.trySetInfoFT(puzzle, lines) ||
+                    this.trySetInfoIndy(puzzle, lines);
+                    break;
+            }
+        }
 
-        } else if(this.trySetInfoEveryman(puzzle, lines) ||
-            this.trySetInfoQuiptic(puzzle, lines) ||
-            this.trySetInfoGuardian(puzzle, lines) ||
-            this.trySetInfoAzed(puzzle, lines) ||
-            this.trySetInfoFT(puzzle, lines) ||
-            this.trySetInfoIndy(puzzle, lines)) {
-
-        } else {
+        if (!puzzle.info.title) {
+            // still not found a title, set a default
             puzzle.info.title = `Puzzle`;
             puzzle.info.setter = "anon";
             puzzle.info.provider = "pdf";
@@ -209,10 +233,8 @@ export class ParseText extends PuzzleModifier {
             let match = titleExpression.exec(line);
 
             if (match) {
-                // found an FT style title
                 let setter = match.groups["setter"].toString();
                 let serialNumber = match.groups["serialNumber"].toString();
-                //let provider = this.providerService.getProviderString(puzzle.info.provider);
 
                 puzzle.info.title = `Financial Times ${serialNumber} by ${setter}`;
                 puzzle.info.setter = setter;
@@ -227,27 +249,41 @@ export class ParseText extends PuzzleModifier {
     private trySetInfoAzed(puzzle: IPuzzle, lines: readonly string[]): boolean {
         let result = false;
 
-        // Example: Azed No. 2,717 Plain
+        // Example: Azed No. 2,717 - Plain
 
-        // no FT style title found so look for an Azed style title
         let titleExpression = new RegExp(String.raw`^\s*azed\s+no\.?\s+(?<serialNumber>\d,\d\d\d)(?<subtitle>.*)$`, "gi");
 
         for (let line of lines) {
             let match = titleExpression.exec(line);
 
             if (match) {
-                // Azed can also contains solutions to previous puzzles that look like a title line e.g.
-               // "Azed No 2,123 solutions and notes" or "Azed No. 2,481, The Observer, 90 York Way, London N1 9GU."
-               // Only use if the title line does not contain the word "solution"
-               let subtitle: string = match.groups["subtitle"] ? match.groups["subtitle"].toString().trim().toLowerCase() : null;
-    
-               if (!subtitle || !(subtitle.includes("solution") || subtitle.includes("observer"))) {
-                   puzzle.info.title = match[0].toString();
-                   puzzle.info.setter = "Azed";
-                   puzzle.info.provider = "azed";
-                   result = true;
-                   break;
-               } 
+
+                // Azed often has a subtitle e.g. "Azed No. 2,717 - Plain" or "Azed No. 2,717 - Mixed Foursomes"
+                // Unfortunately extracted title text can also  include solutions to previous puzzles that look 
+                // like part of a title line, for example:
+                //
+                // "Azed No 2,123 solutions and notes"
+                // "Azed No. 2,481, The Observer, 90 York Way, London N1 9GU."
+                //
+                // Look out for a second "azed" in the line it and and ignore everything thereafter.
+
+                let subtitle: string = match.groups["subtitle"] ? match.groups["subtitle"].toString().trim().toLowerCase() : null;
+
+                puzzle.info.title = "Azed No. " + match.groups["serialNumber"].toString();
+
+                if (subtitle) {
+                    var subtitleExpression = new RegExp(String.raw`(?<subtitle>.+?)azed`, "i");
+                    let subMatch = subtitleExpression.exec(subtitle);
+                    if (subMatch) {
+                        puzzle.info.title += " " + subMatch.groups["subtitle"].toString();
+                    } else {
+                        puzzle.info.title +=  " " + subtitle.toString();
+                    }
+                }
+
+                puzzle.info.setter = "Azed";
+                puzzle.info.provider = "azed";
+                result = true;
             }
         }
         return result;
@@ -255,6 +291,7 @@ export class ParseText extends PuzzleModifier {
 
     private trySetInfoEveryman(puzzle: IPuzzle, lines: readonly string[]): boolean {
         let result = false;
+
         // Example: Everyman crossword No. 4056
 
         let titleExpression = new RegExp(String.raw`Everyman crossword\s+(no|no\.)?\s*(?<serialNumber>[0-9,]{4,5})`, "i");
@@ -262,15 +299,12 @@ export class ParseText extends PuzzleModifier {
             let match = titleExpression.exec(line);
 
             if (match) {
-                // found an FT style title
                 let serialNumber = match.groups["serialNumber"].toString();
-                //let provider = this.providerService.getProviderString(puzzle.info.provider);
 
                 puzzle.info.title = `Everyman ${serialNumber}`;
                 puzzle.info.setter = "Everyman";
                 puzzle.info.provider = "everyman";
                 result = true;
-                break;
             }
         }
         return result;
@@ -287,7 +321,6 @@ export class ParseText extends PuzzleModifier {
             let match = titleExpression.exec(line);
 
             if (match) {
-                // found an FT style title
                 let setter = match.groups["setter"].toString();
                 let serialNumber = match.groups["serialNumber"].toString();
 
@@ -295,7 +328,6 @@ export class ParseText extends PuzzleModifier {
                 puzzle.info.setter = setter;
                 puzzle.info.provider = "quiptic";
                 result = true;
-                break;
             }
         }
         return result;
@@ -303,12 +335,9 @@ export class ParseText extends PuzzleModifier {
     private trySetInfoGuardian(puzzle: IPuzzle, lines: readonly string[]): boolean {
         let result = false;
 
-        //Example prize and cryptic: information might be on more than one line
-        //
-        // Guardian cryptic crossword No 29,432 set by Vlad
+        //Example: "Guardian cryptic crossword No 29,432 set by Vlad"
         // or
-        // Cryptic crossword No 29,432 set by Vlad
-        // © 2024 Guardian News & Media Limited or its affiliated companies. All rights reserved.
+        // "Cryptic crossword No 29,432 set by Vlad"
 
         if (lines.join(" ").toLowerCase().includes("guardian")) {
 
@@ -318,7 +347,6 @@ export class ParseText extends PuzzleModifier {
                 let match = titleExpression.exec(line);
 
                 if (match) {
-                    // found an FT style title
                     let setter = match.groups["setter"].toString();
                     let serialNumber = match.groups["serialNumber"].toString();
 
@@ -326,7 +354,6 @@ export class ParseText extends PuzzleModifier {
                     puzzle.info.setter = setter;
                     puzzle.info.provider = "cryptic";
                     result = true;
-                    break;
                 }
             }
         }
@@ -336,7 +363,10 @@ export class ParseText extends PuzzleModifier {
     private trySetInfoIndy(puzzle: IPuzzle, lines: readonly string[]): boolean {
         let result = false;
 
-        //Example: No. 11,987 by Grecian
+        //Example: "No. 11,987 by Grecian"
+
+        // The Indy title is quite vague and can be confused with other publications
+        // so only try this if we have tried everything else
 
         let titleExpression = new RegExp(String.raw`^\s*No\.\s*(?<serialNumber>[0-9,]{5,6})\s+by\s+(?<setter>[A-Za-z ]+)$`);
 
@@ -344,7 +374,6 @@ export class ParseText extends PuzzleModifier {
             let match = titleExpression.exec(line);
 
             if (match) {
-                // found an Indy style title
                 let setter = match.groups["setter"].toString();
                 let serialNumber = match.groups["serialNumber"].toString();
 
@@ -352,7 +381,6 @@ export class ParseText extends PuzzleModifier {
                 puzzle.info.setter = setter;
                 puzzle.info.provider = "independent";
                 result = true;
-                break;
             }
         }
         return result;

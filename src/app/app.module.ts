@@ -103,6 +103,7 @@ import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.compone
 import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
 import { createArchiveTrack } from './services/navigation/tracks/create-archive-track';
+import { PdfComponent } from './ui/puzzle-editing/pdf/pdf.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -234,6 +235,7 @@ const tracks: ReadonlyArray<NavTrack> = [
        GuardianComponent,
        PdfDownloadGuideAzedComponent,
        PdfDownloadGuideQuipticComponent,
+       PdfComponent,
 
   ],
   imports: [
