@@ -425,7 +425,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                         style: "answer",
                     }
                 ],
-                includeGrid: false,
+                includeGrid: true,
                 layout: "table",
                 spacing: "small",
             },

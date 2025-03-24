@@ -28,7 +28,7 @@ export class ListLayout implements ContentGenerator {
             new QuillNode(puzzle.notes.body),
 
             // grid
-            puzzle.publishOptions.includeGrid ? 
+            puzzle.publishOptions.includeGrid && gridUrl ? 
                 new Tag("p", 
                     new Tag("img", 
                         new Attribute("src", gridUrl),
