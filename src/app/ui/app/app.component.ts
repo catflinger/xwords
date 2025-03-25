@@ -79,24 +79,9 @@ export class AppComponent implements OnInit, OnDestroy {
     public onArchive(provider: string) {
         this.activePuzzle.clear();
         this.appService.clear();
-        //this.appService.navContext.clear();
-        
-        // if (provider === "azed") {
-        //     this.navService.gotoRoute(["pdf-download-guide-azed"]);
-        
-        // } else if (provider === "quiptic") {
-        
-        // if (provider === "quiptic") {
-        //     this.navService.gotoRoute(["pdf-download-guide-quiptic"]);
-    
-        // if (provider === "cryptic" || provider === "prize" || provider === "everyman") {
-        //    this.navService.gotoRoute(["guardian", provider]);
 
         if (provider === "independent" || provider === "ios") {
             this.navService.gotoRoute(["indy"]);
-
-        } else if (provider === "special" ) {
-            this.navService.gotoRoute(["special"]);
 
         } else {
             this.navService.gotoRoute(["archive", provider]);

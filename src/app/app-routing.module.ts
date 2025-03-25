@@ -39,7 +39,6 @@ import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.comp
 import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
 import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
-import { PdfComponent } from './ui/puzzle-editing/pdf/pdf.component';
 
 
 const routes: Routes = [
@@ -65,8 +64,7 @@ const routes: Routes = [
     // creating and editing puzzles and grids
     { path: "archive/:provider", component: ArchiveComponent },
     { path: "indy", component: IndyComponent },
-    { path: "guardian/:provider", component: GuardianComponent },
-    { path: "pdf", component: PdfComponent },
+    { path: "guardian", component: GuardianComponent },
     { path: "special", component: SpecialComponent },
     { path: "special-pdf", component: SpecialPdfComponent },
     { path: "special-login", component: SpecialLoginComponent },

@@ -1,35 +1,42 @@
-<div class="row my-5">
+<div class="row mt-3">
     <div class="col">
-        <div class="card w-50  mx-auto text-center">
-            <h5 class="card-header">Latest</h5>
-            <div class="card-body">
-                    <p class="card-text">{{provider | provider }}</p>
-                    <p class="card-text">{{latest | date:"EEEE - d LLLL yyyy"}}</p>
-                <button class="btn btn-primary" (click)="openLatest()">Open</button>
-            </div>
-        </div>
+        <h3>Guardian and Observer puzzles by date</h3>
     </div>
-</div>
-
-<div class="row mt-5">
-    <div class="col">
-        <h5>Open puzzle by date</h5>
-    </div>
+    <p>
+        This page gives an alternative way to load puzzles from the Guardian and Observer newspapers.
+    </p>
+    <p>
+        The puzzles will be loaded by looking for the puzzle's PDF file on the Guardian or Observer website.
+        This can be useful for "holiday specials" and other puzzles that will not load automatically from the 
+        main crossword page.
+    </p>
 </div>
 
 <div class="row mt-3">
     <div class="col">
         <form [formGroup]="form">
 
-            <div class="form-group">
-                <label for="datePicker">Puzzle date</label>
+            <div class="mb-3">
+
+                <select class="form-select" class="form-control" formControlName="provider">
+                    <option disabled value="">Select a puzzle...</option>
+                    <option value="cryptic-pdf">Guardian Cryptic</option>
+                    <option value="prize-pdf">Guardian Prize</option>
+                    <option value="everyman-pdf">Everyman</option>
+                </select>
+            </div>
+
+            <div class="mb-3" *ngIf="form.value.provider">
+                <label class="form-label" for="datePicker">Puzzle date</label>
+
                 <input id="datePicker" type="text" class="form-control" formControlName="date"
-                    [bsConfig]="{ dateInputFormat: 'dddd Do MMMM YYYY' }" 
-                    [maxDate]="today" [daysDisabled]="daysDisabled" bsDatepicker>
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" [maxDate]="today"
+                    [daysDisabled]="daysDisabled" bsDatepicker>
             </div>
 
             <div class="form-group mt-5">
-                <button class="btn btn-primary me-3" type="button" (click)="openPuzzleByDate()">Open</button>
+                <button class="btn btn-primary me-3" type="button" (click)="openPuzzleByDate()"
+                    [disabled]="!form.valid">Open</button>
             </div>
         </form>
     </div>

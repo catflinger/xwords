@@ -91,7 +91,7 @@ export class ParseText extends PuzzleModifier {
             options.allowPreamble = true;
         }
 
-        if (provider === "ft") {
+        if (provider === "ft" || provider === "cryptic-pdf" || provider === "prize-pdf" || provider === "everyman-pdf") {
             options.allowPostamble = true;
             options.allowPreamble = true;
             options.allowTypos = true;
@@ -189,13 +189,13 @@ export class ParseText extends PuzzleModifier {
                 case "azed":
                     this.trySetInfoAzed(puzzle, lines);
                     break;
-                case "everyman":
+                case "everyman-pdf":
                     this.trySetInfoEveryman(puzzle, lines);
                     break;
                 case "quiptic":
                     this.trySetInfoQuiptic(puzzle, lines);
                     break;
-                case "cryptic":
+                case "cryptic-pdf":
                     this.trySetInfoGuardian(puzzle, lines);
                     break;
                 case "independent":

@@ -9,9 +9,12 @@ export type ClueGroup = "across" | "down" | "orphan";
 export type Direction = "across" | "down";
 export type PuzzleProvider =
     "cryptic" |
+    "cryptic-pdf" |
     "prize" |
+    "prize-pdf" |
     "azed" |
     "everyman" |
+    "everyman-pdf" |
     "quiptic" |
     "ft" |
     "independent" |
@@ -19,8 +22,7 @@ export type PuzzleProvider =
     "pdf" |
     "local" |
     "text" |
-    "grid" |
-    "grid-text";
+    "grid";
     
 export type ClueValidationWarning = "missing answer" | "missing comment" | "missing definition";
 export type Layouts = "table" | "list";

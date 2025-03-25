@@ -9,7 +9,8 @@ import { AppTrackData } from '../../../services/navigation/tracks/app-track-data
 
 const Sunday = 0;
 
-// TO DO: think about merging this with the very similar Guardian select by date component
+// This page is similar in functionality to the Guardian select by date component
+// but from a user perspective the Guardian and Independent puzzles are different
 
 @Component({
     selector: 'app-indy',

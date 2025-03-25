@@ -6,10 +6,12 @@ import { PuzzleProvider } from 'src/app/model/interfaces';
 import { NavService } from 'src/app/services/navigation/nav.service';
 import { AppTrackData } from 'src/app/services/navigation/tracks/app-track-data';
 import { AppStatus, AppService } from '../../general/app.service';
-import { ActivatedRoute } from '@angular/router';
 import { DateTime } from "luxon";
 
-// TO DO: think about merging this with the very similar Indy select by date component
+// This page is similar in functionality to the Independent select by date component
+// but from a user perspective the Guardian and Independent puzzles are different
+
+const dateFormat = "DD-MM-yyyy";
 
 @Component({
     selector: 'app-guardian',
@@ -19,9 +21,7 @@ import { DateTime } from "luxon";
 export class GuardianComponent implements OnInit, OnDestroy {
     public appStatus: AppStatus;
     public form: FormGroup;
-    public provider: PuzzleProvider;
     public readonly today: Date;
-    public latest: Date;
     public daysDisabled: number[] = [];
 
     private subs: Subscription[] = [];
@@ -30,61 +30,55 @@ export class GuardianComponent implements OnInit, OnDestroy {
         private navService: NavService<AppTrackData>,
         private appService: AppService,
         private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
-    ) {
-        this.today = new Date();
+        //private route: ActivatedRoute,
+    ) { }
 
+    public ngOnInit() {
 
-        this.subs.push(this.route.params.subscribe(params => {
+        this.form = this.formBuilder.group({
+            provider: ["", Validators.required],
+            date: [moment().format("DD-MM-yyyy"), Validators.required],
+        });
+
+        this.appService.clearAlerts();
+        this.subs.push(this.appService.getObservable().subscribe(appStatus => this.appStatus = appStatus));
+        this.subs.push(this.form.get("provider").valueChanges.subscribe((provider: PuzzleProvider) => {
             const sun = 0, mon = 1, tue = 2, wed = 3, thu = 4, fri = 5, sat = 6;
 
-            this.provider = params["provider"];
-
-            if (this.provider === "cryptic") {
+            if (provider === "cryptic-pdf") {
                 this.daysDisabled = [sat, sun];
-            
-            } else if (this.provider === "prize") {
+
+            } else if (provider === "prize-pdf") {
                 this.daysDisabled = [sun, mon, tue, wed, thu, fri];
 
-            } else if (this.provider === "everyman") {
+            } else if (provider === "everyman-pdf") {
                 this.daysDisabled = [mon, tue, wed, thu, fri, sat];
 
             } else {
                 this.daysDisabled = [];
             }
 
-            this.latest = this.getLatestValidDate(this.provider);
+            if (this.daysDisabled.includes(moment(this.form.value.date, dateFormat).day())) {
+                this.form.patchValue({ date: moment(this.getLatestValidDate(provider)).format(dateFormat) });
+            }
+
         }));
-    }
-
-    public ngOnInit() {
-
-        this.form = this.formBuilder.group({
-            date: ["", Validators.required], 
-        });
-
-        this.appService.clearAlerts();
-        this.subs.push(this.appService.getObservable().subscribe(appStatus => this.appStatus = appStatus));
     }
 
     public ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    public openLatest() {
-        this.openPuzzle(this.provider, this.latest);
-    }
-
     public openPuzzleByDate() {
-        const date = moment(this.form.value.date).toDate();
+        const date = moment(this.form.value.date, dateFormat).toDate();
+        const provider = this.form.value.provider;
 
-        this.openPuzzle(this.provider, date);
-    }
-
-    private openPuzzle(provider: PuzzleProvider, date: Date) {
         this.appService.clear();
-        this.appService.setOpenPuzzleParams({ provider, date, requestPdf: true });
-        this.navService.beginTrack("createPdfTrack", {}, "open-puzzle");
+        this.appService.setOpenPuzzleParams({ 
+            provider,
+            date
+        });
+        this.navService.beginTrack("createArchiveTrack", {}, "open-puzzle");
     }
 
     private getLatestValidDate(provider: string): Date {
@@ -93,21 +87,21 @@ export class GuardianComponent implements OnInit, OnDestroy {
 
         let day = DateTime.now();
 
-        if (provider === "prize") {
-            while(day.weekday !== saturday) {
-                day = day.minus({ days: 1});
-            }
-        
-        } else if (provider === "cryptic") {
-             while([saturday, sunday].includes(day.weekday)) {
-                day = day.minus({ days: 1});
+        if (provider === "prize-pdf") {
+            while (day.weekday !== saturday) {
+                day = day.minus({ days: 1 });
             }
 
-        } else if (provider === "everyman") {
-            while(day.weekday !== sunday) {
-                day = day.minus({ days: 1});
+        } else if (provider === "cryptic-pdf") {
+            while ([saturday, sunday].includes(day.weekday)) {
+                day = day.minus({ days: 1 });
             }
-       }
+
+        } else if (provider === "everyman-pdf") {
+            while (day.weekday !== sunday) {
+                day = day.minus({ days: 1 });
+            }
+        }
 
         return day.toJSDate();
     }

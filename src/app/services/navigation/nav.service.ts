@@ -185,6 +185,10 @@ export class NavService<T> {
 
     private _navigate(route: string[]) {
 
+        // build a string to represent the current call stack and pass it as a query parameter
+        // this will allow us to return to the current state if the user navigates using the 
+        // browser back button etc
+
         from(this.callStack).pipe(
             map(frame => `${frame.track.name}.${frame.currentNode.name}`),
             reduce((queryStr, value) => `${queryStr}~${value}`),
@@ -192,7 +196,7 @@ export class NavService<T> {
         )
         .subscribe(queryString => {
             this.callStack = null;
-            
+
             if (queryString) {
                 this.router.navigate(route, { queryParams: { nav: queryString}});
             } else {
