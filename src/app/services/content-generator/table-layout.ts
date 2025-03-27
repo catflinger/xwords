@@ -26,7 +26,7 @@ export class TableLayout implements ContentGenerator {
             new QuillNode(puzzle.notes.header),
             new More(),
 
-            // annotation
+            // comment
             new QuillNode(puzzle.notes.body),
 
             // grid

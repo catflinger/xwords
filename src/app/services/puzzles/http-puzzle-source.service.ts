@@ -26,7 +26,8 @@ export interface PuzzleResponse {
     readonly completionState: string;
 }
 
-export interface PdfExtractResponse {
+
+export interface PuzzleProvisionResponse {
     readonly grid?: any;
     readonly text: string;
 }
@@ -42,7 +43,7 @@ export class HttpPuzzleSourceService {
         private authService: AuthService
     ) { }
 
-    public providePuzzle(params: OpenPuzzleParamters): Promise<PdfExtractResponse> {
+    public providePuzzle(params: OpenPuzzleParamters): Promise<PuzzleProvisionResponse> {
         const credentials = this.authService.getCredentials();
 
         // send some identification criteria, get back text and grid extracted from the relevant PDF
@@ -60,7 +61,7 @@ export class HttpPuzzleSourceService {
         .toPromise()
         .then((data: ApiPdfExtractResponse) => {
             if (data.success === ApiResponseStatus.OK) {
-                return data as PdfExtractResponse;
+                return data as PuzzleProvisionResponse;
             } else if (data.success === ApiResponseStatus.authorizationFailure) {
                 throw AppResultSymbols.AuthorizationFailure;
             } else {
@@ -96,7 +97,7 @@ export class HttpPuzzleSourceService {
         });
     }
 
-    public getPdfExtract(pdf: Base64Encoded, gridPage: number, textPage: number): Promise<PdfExtractResponse> {
+    public getPdfExtract(pdf: Base64Encoded, gridPage: number, textPage: number): Promise<PuzzleProvisionResponse> {
 
         // send a PDF file, get back the extracted test and grid
         // the clues needs to be parsed here
@@ -120,7 +121,7 @@ export class HttpPuzzleSourceService {
         .toPromise()
         .then((data: ApiPdfExtractResponse) => {
             if (data.success === ApiResponseStatus.OK) {
-                return data as PdfExtractResponse;
+                return data as PuzzleProvisionResponse;
             } else if (data.success === ApiResponseStatus.authorizationFailure) {
                 throw AppResultSymbols.AuthorizationFailure;
             } else {

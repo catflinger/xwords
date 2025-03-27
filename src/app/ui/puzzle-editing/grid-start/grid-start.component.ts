@@ -98,7 +98,7 @@ export class GridStartComponent implements OnInit, OnDestroy {
 
     public onContinue() {
 
-        let grid = this.createGrid({
+        let grid = Grid.createEmptyGrid({
             style: this.form.value.gridStyle,
             size: {
                 across: this.form.value.cellsAcross,
@@ -125,39 +125,5 @@ export class GridStartComponent implements OnInit, OnDestroy {
         }
 
         this.navService.navigate("continue");
-    }
-
-    private createGrid(params: GridProperties): Grid {
-        let cells: IGridCell[] = [];
-        const cellsAcross = params.size.across;
-        const cellsDown = params.size.down;
-
-        for(let x = 0; x < cellsAcross; x++) {
-            for(let y = 0; y < cellsDown; y++) {
-                let cell: IGridCell = {
-                    id: `cell-${x}-${y}`,
-                    x,
-                    y,
-                    anchor: null,
-                    caption: null,
-                    content: "",
-                    hasConflict: false,
-                    light: true,
-                    rightBar: false,
-                    bottomBar: false,
-                    highlight: false,
-                    textColor: null,
-                    hidden: false,
-                    shading: null,
-                    edit: false,
-                };
-                cells.push(cell);
-            }
-        }
-
-        return new Grid({
-            properties: params,
-            cells: cells,
-        });
     }
 }

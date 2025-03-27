@@ -60,7 +60,6 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
             this.appService.clear();
             this.appService.clearOpenPuzzleParams();
 
-
             if (params.provider === "ft" ||
                 params.provider === "azed" ||
                 params.provider === "everyman-pdf" ||
@@ -68,6 +67,13 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
                 params.provider === "prize-pdf") {
 
                 this.navService.navigate("parse");
+
+            // TO DO: temporary, remove this 
+            } else if (params.provider === "cryptic") {
+
+                console.log("GUARDIAN NAVIGATING TO PARSE");
+                this.navService.navigate("parse-guardian");
+
             } else {
                 this.navService.navigate("continue");
             }

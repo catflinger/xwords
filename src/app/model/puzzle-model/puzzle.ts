@@ -112,6 +112,10 @@ export class Puzzle implements IPuzzle {
         }
     }
 
+    public getMutableCopy(): IPuzzle {
+        return JSON.parse(JSON.stringify(this)) as IPuzzle;
+    }
+
 }
 
 

@@ -155,10 +155,9 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
     }
 
     public commit() {
-        let puzzle = this.getMutableCopy(this.bsActive.value);
-        //let puzzle = this.bsActive.value;
 
-        if (puzzle) {
+        if (this.bsActive.value) {
+            let puzzle = this.getMutableCopy(this.bsActive.value);
             new MarkAsCommitted().exec(puzzle);
             puzzle.revision += 1;
             this.savePuzzle(puzzle);
@@ -175,10 +174,9 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
     }
 
     public updateAndCommit(...reducers: PuzzleModifier[]) {
-        let puzzle = this.getMutableCopy(this.bsActive.value);
-        //let puzzle = this.bsActive.value;
 
-        if (puzzle) {
+        if (this.bsActive.value) {
+            let puzzle = this.getMutableCopy(this.bsActive.value);
             reducers.forEach(reducer => {
                 // console.log(`Executing modifier ${reducer.constructor.name}`);
                 reducer.exec(puzzle);
@@ -254,12 +252,12 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
             params.provider === "cryptic-pdf" ||
             params.provider === "prize-pdf") {
 
-                result = this.httpPuzzleService.providePuzzle(params).then(pdfExtract => {
+            result = this.httpPuzzleService.providePuzzle(params).then(pdfExtract => {
 
-                let reducers = [];
+            let reducers = [];
 
-                reducers.push(new UpdateInfo({ source: pdfExtract.text }));
-    
+            reducers.push(new UpdateInfo({ source: pdfExtract.text }));
+
                 if (pdfExtract.grid) {
                     let grid = new Grid(pdfExtract.grid);
 
@@ -271,6 +269,18 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                 }
                 return this.newPuzzle(params.provider, reducers);
             });
+
+        // } else if (params.provider === "cryptic") {
+
+        //     result = this.httpPuzzleService.providePuzzle(params).then(puzzleExtract => {
+        //         let reducers = [];
+        //         reducers.push(new UpdateInfo({ source: puzzleExtract.text }));
+        //         reducers.push(new InitAnnotationWarnings());
+        //         reducers.push(new UpdateInfo({ ready: true }));
+
+        //         return this.newPuzzle(params.provider, reducers);
+        //     });
+
         } else {
 
             result = this.httpPuzzleService.getPuzzle(params).then((response) => {
@@ -370,7 +380,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
     }
 
     private getMutableCopy(puzzle: Puzzle): IPuzzle {
-        return JSON.parse(JSON.stringify(this.bsActive.value)) as IPuzzle;
+        return this.bsActive.value.getMutableCopy();
     }
 
     private savePuzzle(puzzle: IPuzzle): void {

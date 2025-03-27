@@ -17,6 +17,7 @@ import { TraceService } from '../app/trace.service';
 import { UpdateProvision } from 'src/app/modifiers/puzzle-modifiers/update-provision';
 import { FactoryResetClues } from 'src/app/modifiers/clue-modifiers/factory-reset-clues';
 import { UpdatePuzzleOptions } from 'src/app/modifiers/publish-options-modifiers/update-puzzle-options';
+import { ParseGuardian } from 'src/app/modifiers/parsing-modifiers/parse-guardian';
 
 @Injectable({
     providedIn: 'root'
@@ -86,6 +87,10 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
                 action = this.parse();
             break;
 
+            case "parse-guardian":
+                action = this.parseGuardian();
+            break;
+
             case "pdf-extract":
                 try {
                     action = this.puzzleManager.loadPuzzleFromPdf(this.appService.openPuzzleParameters);
@@ -125,7 +130,7 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
             this.activePuzzle.updateAndCommit(
                 new ParseText(this.textParsingService, this.traceService),
                 new SyncGridContent());
-                
+
             const errors = this.activePuzzle.puzzle.provision.parseErrors;
 
             if (errors && errors.length) {
@@ -133,7 +138,31 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
             } else {
                 action = "ok";
             }
+
         } catch(error) {
+            action = "error";
+            this.appService.setAlert("danger", "Parsing Error :" + error);
+        }
+
+        return Promise.resolve(action);
+    }
+
+    private parseGuardian(): Promise<string> {
+        let action = "error";
+
+        try {
+            console.log("GUARDIAN STARTING PARSE PROCESS");
+
+            this.activePuzzle.updateAndCommit(
+                new ParseGuardian(),
+                //new SyncGridContent()
+            );
+            console.log("GUARDIAN STARTING PARSE PROCESS END");
+            action = "ok";
+
+        } catch(error) {
+            console.log("GUARDIAN PARSE PROCESS ERROR");
+
             action = "error";
             this.appService.setAlert("danger", "Parsing Error :" + error);
         }

@@ -63,6 +63,7 @@ function emptyGridData(): IGrid {
 
     let grid: IGrid = {
         properties: {
+            showCaptions: true,
             numbered: true,
             style: "standard",
             symmetrical: false,
@@ -88,6 +89,10 @@ function emptyGridData(): IGrid {
                 light: true,
                 shading: "",
                 edit: false,
+                caption: "",
+                textColor: "",
+                hidden: false,
+                hasConflict: false,
             }
             grid.cells.push(cell);
         }

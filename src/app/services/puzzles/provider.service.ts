@@ -15,9 +15,12 @@ export class ProviderService {
                 result = "Financial Times";
                 break;
             case "cryptic":
+            case "cryptic-pdf":
+            case "cryptic-beta":
                 result = "Guardian";
                 break;
             case "prize":
+            case "prize-pdf":
                 result = "Guardian Prize";
                 break;
             case "quiptic":
@@ -30,6 +33,7 @@ export class ProviderService {
                 result = "Independent on Sunday";
                 break;
             case "everyman":
+            case "everyman-pdf":
                 result = "Everyman";
                 break;
             case "azed":

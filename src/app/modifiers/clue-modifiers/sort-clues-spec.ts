@@ -128,6 +128,7 @@ function getEmptyPuzzle(): IPuzzle {
         publishOptions: {
             showClueCaptions: true,
             showClueGroups: true,
+            useThemeDefaults: true,
             textStyles: [
                 {
                     name: "clue",

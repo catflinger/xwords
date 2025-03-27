@@ -8,8 +8,17 @@ Edit refers to the role of a crossword editor, both a commissioner and a modifie
 
 export const parseTrack: NavTrack = {
     name: "parseTrack",
-    start: "parser",
+    start: "grid-captions",
     nodes: [
+        {
+            name: "grid-captions",
+            type: "process",
+            process: "grid-captions",
+            actions: {
+                "ok": "parser",
+                "error": "error",
+            }
+        },
         {
             name: "parser",
             type: "process",

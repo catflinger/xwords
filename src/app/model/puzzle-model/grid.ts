@@ -1,4 +1,4 @@
-import { IGrid, GridNavigation, Direction, ClueGroup, IGridReference } from '../interfaces';
+import { IGrid, GridNavigation, Direction, ClueGroup, IGridReference, IGridCell } from '../interfaces';
 import { GridCell } from './grid-cell';
 import { GridProperties } from './grid-properties';
 import { GridReference } from './grid-reference';
@@ -26,6 +26,48 @@ export class Grid implements IGrid {
         data.cells.forEach(cell => cells.push(new GridCell(cell)));
         this.cells = cells;
     }
+
+    
+    public getMutableCopy(): IGrid {
+        return JSON.parse(JSON.stringify(this)) as IGrid;
+    }
+
+    // TO DO: find other places where grids are created and refactor to use this method
+
+    public static createEmptyGrid(params: GridProperties): Grid {
+        let cells: IGridCell[] = [];
+        const cellsAcross = params.size.across;
+        const cellsDown = params.size.down;
+
+        for(let x = 0; x < cellsAcross; x++) {
+            for(let y = 0; y < cellsDown; y++) {
+                let cell: GridCell = {
+                    id: `cell-${x}-${y}`,
+                    x,
+                    y,
+                    anchor: null,
+                    caption: null,
+                    content: "",
+                    hasConflict: false,
+                    light: true,
+                    rightBar: false,
+                    bottomBar: false,
+                    highlight: false,
+                    textColor: null,
+                    hidden: false,
+                    shading: null,
+                    edit: false,
+                };
+                cells.push(cell);
+            }
+        }
+
+        return new Grid({
+            properties: params,
+            cells: cells,
+        });
+    }
+
 
     public cellAt(x: number, y: number): GridCell {
         return this.cells.find((cell) => cell.x === x && cell.y === y);

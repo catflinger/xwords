@@ -16,16 +16,8 @@ export const createArchiveTrack: NavTrack = {
             route: "open-puzzle",
             actions: {
                 "continue": "solver",
-                "parse": "grid-captions",
-                "error": "error",
-            }
-        },
-        {
-            name: "grid-captions",
-            type: "process",
-            process: "grid-captions",
-            actions: {
-                "ok": "parser",
+                "parse": "parser",
+                "parse-guardian": "parser-guardian",
                 "error": "error",
             }
         },
@@ -34,6 +26,17 @@ export const createArchiveTrack: NavTrack = {
             type: "call",
             call: {
                 track: "parseTrack"
+            },
+            actions: {
+                ok: "solver",
+                error: "error"
+            }
+        },
+        {
+            name: "parser-guardian",
+            type: "call",
+            call: {
+                track: "parseGuardianTrack"
             },
             actions: {
                 ok: "solver",
