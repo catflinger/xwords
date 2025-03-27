@@ -319,30 +319,33 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     private setLatestAnswer(): void {
-        let result: AnswerTextChunk[] = [];
-        let answerChunks: AnswerTextChunk[] = this.getLatestAnswer(this.grid);
         let format = this.clue.format;
-        let formatIndex = 0;
-        let answerChunkIndex = 0;
+        let result: AnswerTextChunk[] = [];
 
-        while (formatIndex < format.length) {
-            if (format[formatIndex] === ",") {
-                if (answerChunkIndex < answerChunks.length) {
-                    result.push(answerChunks[answerChunkIndex]);
-                    answerChunkIndex++;
+        if (format) {
+            let answerChunks: AnswerTextChunk[] = this.getLatestAnswer(this.grid);
+            let formatIndex = 0;
+            let answerChunkIndex = 0;
+    
+            while (formatIndex < format.length) {
+                if (format[formatIndex] === ",") {
+                    if (answerChunkIndex < answerChunks.length) {
+                        result.push(answerChunks[answerChunkIndex]);
+                        answerChunkIndex++;
+                    } else {
+                        result.push(new AnswerTextChunk("_", "xw-placeholder"));
+                    }
                 } else {
-                    result.push(new AnswerTextChunk("_", "xw-placeholder"));
+                    result.push(new AnswerTextChunk(format[formatIndex], "separator"));
                 }
-            } else {
-                result.push(new AnswerTextChunk(format[formatIndex], "separator"));
+                formatIndex++;
             }
-            formatIndex++;
-        }
-
-        while (answerChunkIndex < answerChunks.length) {
-            result.push(answerChunks[answerChunkIndex]);
-            answerChunkIndex++;
-        }
+    
+            while (answerChunkIndex < answerChunks.length) {
+                result.push(answerChunks[answerChunkIndex]);
+                answerChunkIndex++;
+            }
+            }
 
         this.latestAnswer = result;
     }

@@ -44,12 +44,8 @@ export class ClueNumberValidationService {
 
         const looksSuspicious = /^\d\s+\d/;
 
-        // console.log(`FULL TEXT: [${fullText}]`)
-
         if (clue.group != "orphan" && looksSuspicious.test(fullText)) {
             let clueNumber = parseInt(caption);
-
-            // console.log(`FULL TEXT: ${fullText.substring(0, 20)}`)
 
             let gridEntry = grid.getGridEntryFromReference({
                 id: null,

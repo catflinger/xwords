@@ -62,7 +62,6 @@ export class PublishPreviewComponent implements OnInit, OnDestroy {
 
     public onContentGenerated(content: string) {
         this.content = content;
-        console.log(`CONTENT: ${this.content}`)
     }
 
     public onCopyText() {

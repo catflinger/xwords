@@ -107,7 +107,6 @@ export class JigsawService {
     private placeNextAnswer(): void {
 
         if (this.cancelFlag) {
-            // console.log(`Cancelled`);
             this.bsJigsaw.next({
                 status: "finished",
                 jigsaw: null,
@@ -119,7 +118,6 @@ export class JigsawService {
         this.depth++;
 
         if (this.depth > maxAttempts) {
-            // console.log(`Exceeded max numberof tries`);
             this.bsJigsaw.next({
                 status: "finished",
                 jigsaw: null,
@@ -129,7 +127,6 @@ export class JigsawService {
         }
 
         if (this.stack.length === 0) {
-            // console.log(`Empty stack, cancelling fill`);
             this.bsJigsaw.next({
                 status: "finished",
                 jigsaw: null,
@@ -150,7 +147,6 @@ export class JigsawService {
                 message: "Success, the grid is full."
 
             });
-            // console.log(`SUCCESS: No empty cells left`);
             return;
         }
 
@@ -165,7 +161,6 @@ export class JigsawService {
                 }
             } else {
                 // no more unplaced answers so we are finished!
-                // console.log(`SUCCESS: no unplaced answers left`);
                 this.bsJigsaw.next({
                     status: "finished",
                     jigsaw,

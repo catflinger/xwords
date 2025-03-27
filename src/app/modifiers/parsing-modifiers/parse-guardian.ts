@@ -2,6 +2,7 @@ import { IClue, IGrid, IGridCell, IPuzzle } from "src/app/model/interfaces";
 import { PuzzleModifier } from "../puzzle-modifier";
 import { Grid } from "src/app/model/puzzle-model/grid";
 import { Clue } from "src/app/model/puzzle-model/clue";
+import { GridReference } from "src/app/model/puzzle-model/grid-reference";
 export class ParseGuardian extends PuzzleModifier {
 
     constructor(
@@ -12,12 +13,8 @@ export class ParseGuardian extends PuzzleModifier {
 
     public exec(puzzle: IPuzzle): void {
 
-        console.log("Guardian Parser: STARTING");
-
         try {
             const source = JSON.parse(puzzle.provision.source);
-
-            //console.log("Guardian Parser: " + JSON.stringify(source, null, 2));
 
             const crossword = source.data;
 
@@ -28,16 +25,17 @@ export class ParseGuardian extends PuzzleModifier {
             this.parseClues(puzzle, crossword);
             this.parseGrid(puzzle, crossword);
 
-            console.log("Guardian Parser: FINISHED");
-
-
         } catch (error) {
-            console.log("Guardian Parser: " + error);
+            throw new Error("Failed to parse Guardian data: " + error);
         }
     }
 
     private parseSetter(puzzle: IPuzzle, crossword: any) {
         puzzle.info.setter = puzzle.info.provider === "everyman" ? "Everyman" : crossword.creator.name;
+        puzzle.info.title = crossword.name;
+        if (puzzle.info.provider !== "everyman") {
+            puzzle.info.title += " by " + puzzle.info.setter;
+        }
     }
 
     private parseDate(puzzle: IPuzzle, crossword: any) {
@@ -51,7 +49,8 @@ export class ParseGuardian extends PuzzleModifier {
 
         crossword.entries.forEach((entry: any) => {
 
-            var clueText = (entry.clue as string).replace(/<[a-z/]+>/gi, "");
+            let clueText = (entry.clue as string).replace(/<[a-z/]+>/gi, "");
+            let letterCount = Clue.getLetterCount(clueText);
 
             let clue: IClue = {
                 id: "clue" + clueCounter++,
@@ -60,20 +59,24 @@ export class ParseGuardian extends PuzzleModifier {
                 text: clueText,
                 solution: entry.solution ? entry.solution : "",
                 letterCount: Clue.getLetterCount(clueText),
-                annotation: "",
-                redirect: "",
-                format: "",
+                annotation: null,
+                redirect: null,  // TO DO: get redirect from crossword
+                format: this.getSolutionFormat(letterCount),
                 highlight: false,
                 answers: [""],
                 link: {
                     warning: "",
                     gridRefs: []
                 },
-                comment: null,
+                comment: {
+                    ops: [
+                        { insert: "" }
+                    ]
+                },
                 chunks: [{
                     text: clueText,
                     isDefinition: false
-                }], // TO DO: get chunks from crossword
+                }],
                 warnings: [],
             };
 
@@ -85,11 +88,10 @@ export class ParseGuardian extends PuzzleModifier {
                 let entry = crossword.entries.find(entry => entry.id === groupId);
 
                 if (entry) {
-                    clue.link.gridRefs.push({
-                        id: entry.id,
+                    clue.link.gridRefs.push(new GridReference({
                         anchor: entry.number,
                         direction: entry.direction
-                    });
+                    }));
                 }
             });
 
@@ -110,8 +112,6 @@ export class ParseGuardian extends PuzzleModifier {
             numbered: true,
             showCaptions: true,
         }).getMutableCopy();
-
-        //console.log(`GRID ${JSON.stringify(grid, null, 2)}`);
 
         // default all cells to be black
         grid.cells.forEach((cell) => {
@@ -159,8 +159,6 @@ export class ParseGuardian extends PuzzleModifier {
         let format = "";
 
         if (letterCount) {
-            digits = "";
-
             //for each number write a sequence of commas as placeholder
             //for each comma write a space
             //ingnore spaces
@@ -184,7 +182,7 @@ export class ParseGuardian extends PuzzleModifier {
                         }
                         digits = "";
                     }
-                    
+
                     //now write the punctuation characters
                     if (ch == ',')
                     {
@@ -197,12 +195,15 @@ export class ParseGuardian extends PuzzleModifier {
                     }
                 }
 
-                //write out the placeholder for the remaining word (if there is one)
+            });
+
+            //write out the placeholder for the remaining word (if there is one)
+            if (digits.length > 0) {
                 let wordLength = parseInt(digits);
                 for (let i = 0; i < wordLength; i++) {
                     format += ",";
                 }
-            });
+            }
 
             return format;
         }

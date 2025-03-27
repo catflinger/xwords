@@ -49,7 +49,6 @@ export class ClueBuffer {
     }
 
     private updateAll(): void {
-        // TO DO: ...
         this.setCaption();
         this._letterCount = Clue.getLetterCount(this.rawText);
         if (this._caption) {

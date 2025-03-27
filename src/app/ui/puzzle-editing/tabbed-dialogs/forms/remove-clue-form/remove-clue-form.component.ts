@@ -56,7 +56,6 @@ export class RemoveClueFormComponent extends TabbedDialogFormBase implements OnI
 
     public onLetterClick(index: number) {
         // TO DO: ...
-        // console.log("You clicked " + index)
     }
 
     public onRemoveClue() {

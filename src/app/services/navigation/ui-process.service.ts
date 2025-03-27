@@ -151,18 +151,16 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
         let action = "error";
 
         try {
-            console.log("GUARDIAN STARTING PARSE PROCESS");
 
             this.activePuzzle.updateAndCommit(
                 new ParseGuardian(),
-                //new SyncGridContent()
+                new InitAnnotationWarnings(),
+                new UpdateInfo({ ready: true })
             );
-            console.log("GUARDIAN STARTING PARSE PROCESS END");
+
             action = "ok";
 
         } catch(error) {
-            console.log("GUARDIAN PARSE PROCESS ERROR");
-
             action = "error";
             this.appService.setAlert("danger", "Parsing Error :" + error);
         }

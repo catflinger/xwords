@@ -128,9 +128,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     public onPuzzleDevelopment(id: string) {
         this.appService.clear();
         this.puzzleManagement.openPuzzle(id)
-        .then(() => {
-            this.navService.gotoRoute(["scratchpad"]);
-            this.changeRef.detectChanges();
+        .then((puzzle) => {
+            navigator.clipboard.writeText(JSON.stringify(puzzle, null, 2));
+            //this.navService.gotoRoute(["scratchpad"]);
+            //this.changeRef.detectChanges();
         });
     }
 

@@ -178,7 +178,6 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         if (this.bsActive.value) {
             let puzzle = this.getMutableCopy(this.bsActive.value);
             reducers.forEach(reducer => {
-                // console.log(`Executing modifier ${reducer.constructor.name}`);
                 reducer.exec(puzzle);
             });
             new MarkAsCommitted().exec(puzzle);
@@ -270,16 +269,11 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                 return this.newPuzzle(params.provider, reducers);
             });
 
-        // } else if (params.provider === "cryptic") {
+        } else if (params.provider === "cryptic" || params.provider === "prize" || params.provider === "everyman") {
 
-        //     result = this.httpPuzzleService.providePuzzle(params).then(puzzleExtract => {
-        //         let reducers = [];
-        //         reducers.push(new UpdateInfo({ source: puzzleExtract.text }));
-        //         reducers.push(new InitAnnotationWarnings());
-        //         reducers.push(new UpdateInfo({ ready: true }));
-
-        //         return this.newPuzzle(params.provider, reducers);
-        //     });
+            result = this.httpPuzzleService.providePuzzle(params).then(puzzleExtract => {
+                return this.newPuzzle(params.provider, [new UpdateInfo({ source: puzzleExtract.text })]);
+            });
 
         } else {
 
