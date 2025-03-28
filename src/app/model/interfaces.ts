@@ -154,7 +154,7 @@ export interface IClue {
 
     answers: Array<string>;  // additional columns displayed in the blog (optional)
     link: IGridLink;
-    
+
     comment: IQuillDelta;
     chunks: Array<ITextChunk>;
     warnings: Array<ClueValidationWarning>;

@@ -1,8 +1,56 @@
-import { IClue, IGrid, IGridCell, IPuzzle } from "src/app/model/interfaces";
+import { ClueGroup, IClue, IGrid, IGridCell, IPuzzle } from "src/app/model/interfaces";
 import { PuzzleModifier } from "../puzzle-modifier";
 import { Grid } from "src/app/model/puzzle-model/grid";
 import { Clue } from "src/app/model/puzzle-model/clue";
 import { GridReference } from "src/app/model/puzzle-model/grid-reference";
+
+// This is my interpretation of the structure of the JSON data embedded in The Guardian's crossword page
+interface IGuardianCrossword {
+    id: string;
+    number: number; // the crossword serial number
+    name: string;   // the crossword title
+    creator: IGuardianCreator;
+    date: number;   // what is this? - the date of what?
+    webPublicationDate: number; // the date the crossword was published perhaps?
+    entries: IGuardianEntry[];  // both the clues and grid entries, yuk!
+    dimensions: IGuardianDimensions;    // the size of the grid
+    crosswordType: string;  // eg "cryptic" or "prize"
+    pdf?: string;           // the url of the pdf version of the crossword
+    instructions?: string;  // special instructions for this crossword
+}
+
+// IGuardianEntry appears to be a bit of a confused mish-mash between the clues and the grid entries
+// In some repects IGuardianEntry represents a clue, in others it represents a grid entry
+// for example, it has a clue text and a solution (like a clue), but also a position and a length (like a grid entry)
+// However: there is not a 1 to 1 relationship between clues and grid entries, so having a common interface does not make sense
+
+interface IGuardianEntry {
+    id: string;         // the unique id of the entry when regarded as a clue
+    number: number;     // the grid number (grid anchor) of the entry when regarded as a grid entry
+    humanNumber: string; // the caption for the clue - eg "3, 13 across"
+    direction: string;  // "across" or "down" - applicable to both the clueand the grid entry
+    length: number;     // number of cells in this entry, not the answer to the clue
+    group: string[];    // array of IGuradianEntry ids
+    position: IGuardianPosition; // the position of the first cell of this entry (not not necessarily of the solution to the clue) - zero based
+    solution?: string;   // the letters that go into this grid entry, not necessarily the solution to the clue
+    clue: string;       // the clue text for "number direction" - eg "1 across"
+}
+
+interface IGuardianPosition {
+    x: number;  // zero based column index
+    y: number;  // zero basedc row index
+}
+
+interface IGuardianCreator {
+    name: string;
+    webUrl: string;
+}
+
+interface IGuardianDimensions {
+    cols: number;
+    rows: number;
+}
+
 export class ParseGuardian extends PuzzleModifier {
 
     constructor(
@@ -16,7 +64,7 @@ export class ParseGuardian extends PuzzleModifier {
         try {
             const source = JSON.parse(puzzle.provision.source);
 
-            const crossword = source.data;
+            const crossword: IGuardianCrossword = source.data;
 
             puzzle.info.instructions = crossword.instructions;
 
@@ -30,7 +78,7 @@ export class ParseGuardian extends PuzzleModifier {
         }
     }
 
-    private parseSetter(puzzle: IPuzzle, crossword: any) {
+    private parseSetter(puzzle: IPuzzle, crossword: IGuardianCrossword) {
         puzzle.info.setter = puzzle.info.provider === "everyman" ? "Everyman" : crossword.creator.name;
         puzzle.info.title = crossword.name;
         if (puzzle.info.provider !== "everyman") {
@@ -38,29 +86,33 @@ export class ParseGuardian extends PuzzleModifier {
         }
     }
 
-    private parseDate(puzzle: IPuzzle, crossword: any) {
-        // TO DO: get date from crossword
+    private parseDate(puzzle: IPuzzle, crossword: IGuardianCrossword) {
+        try {
+            let date = puzzle.info.puzzleDate;
+            if (!date || !date.getTime || date.getTime() === 0) {
+                puzzle.info.puzzleDate = new Date(crossword.webPublicationDate);
+            }
+        } catch { }
     }
 
-    private parseClues(puzzle: IPuzzle, crossword: any) {
-        let clueCounter = 0;
+    private parseClues(puzzle: IPuzzle, crossword: IGuardianCrossword) {
 
         puzzle.clues = [];
 
-        crossword.entries.forEach((entry: any) => {
+        crossword.entries.forEach((entry: IGuardianEntry) => {
 
             let clueText = (entry.clue as string).replace(/<[a-z/]+>/gi, "");
             let letterCount = Clue.getLetterCount(clueText);
 
             let clue: IClue = {
-                id: "clue" + clueCounter++,
+                id: entry.id,
                 caption: entry.humanNumber,
-                group: entry.direction,
+                group: entry.direction as ClueGroup,
                 text: clueText,
                 solution: entry.solution ? entry.solution : "",
                 letterCount: Clue.getLetterCount(clueText),
                 annotation: null,
-                redirect: null,  // TO DO: get redirect from crossword
+                redirect: this.getRedirect(crossword, entry.id),
                 format: this.getSolutionFormat(letterCount),
                 highlight: false,
                 answers: [""],
@@ -99,7 +151,7 @@ export class ParseGuardian extends PuzzleModifier {
         });
     }
 
-    private parseGrid(puzzle: IPuzzle, crossword: any) {
+    private parseGrid(puzzle: IPuzzle, crossword: IGuardianCrossword) {
 
         // create an empty mutable grid
         let grid: IGrid = Grid.createEmptyGrid({
@@ -119,13 +171,13 @@ export class ParseGuardian extends PuzzleModifier {
         });
 
         // add the white cells from the json source
-        crossword.entries.forEach((entry: any) => {
+        crossword.entries.forEach((entry: IGuardianEntry) => {
 
             for (let i = 0; i < entry.length; i++) {
                 let cell: IGridCell;
 
-                let x = parseInt(entry.position.x);
-                let y = parseInt(entry.position.y);
+                let x = entry.position.x;
+                let y = entry.position.y;
 
                 if (entry.direction === "across") {
                     cell = grid.cells.find(c => c.id === `cell-${x + i}-${y}`);
@@ -207,5 +259,16 @@ export class ParseGuardian extends PuzzleModifier {
 
             return format;
         }
+    }
+
+    private getRedirect(crossword: IGuardianCrossword, clueId: string): string {
+        let result = null;
+        const clue = crossword.entries.find(entry => entry.id === clueId);
+
+        if (Clue.isRedirect(clue.clue)) {
+            result = clue.group[0];
+        }
+
+        return result;
     }
 }

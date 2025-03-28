@@ -69,11 +69,14 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
                 this.navService.navigate("parse");
 
             // TO DO: temporary, remove this 
-            } else if (params.provider === "cryptic" || params.provider === "prize" || params.provider === "everyman") {
+            } else if (params.provider === "cryptic" || 
+                params.provider === "prize" || 
+                params.provider === "everyman") {
 
                 this.navService.navigate("parse-guardian");
 
             } else {
+                // TO DO: indy and ios still to be locally parsed
                 this.navService.navigate("continue");
             }
         })

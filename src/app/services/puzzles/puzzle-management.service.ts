@@ -255,7 +255,10 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
             let reducers = [];
 
-            reducers.push(new UpdateInfo({ source: pdfExtract.text }));
+            reducers.push(new UpdateInfo({ 
+                source: pdfExtract.text,
+                puzzleDate: params.date
+             }));
 
                 if (pdfExtract.grid) {
                     let grid = new Grid(pdfExtract.grid);
@@ -266,6 +269,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                         new SetGridCaptions(),
                     );
                 }
+            
                 return this.newPuzzle(params.provider, reducers);
             });
 
@@ -392,7 +396,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
             info: {
                 id: uuid(),
                 title: "",
-                puzzleDate: new Date(),
+                puzzleDate: null,
                 provider,
                 setter: "anon", 
                 wordpressId: null,

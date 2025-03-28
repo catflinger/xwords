@@ -17,7 +17,8 @@ export const createArchiveTrack: NavTrack = {
             actions: {
                 "continue": "solver",
                 "parse": "parser",
-                "parse-guardian": "parser-guardian",
+                "parse-guardian": "parse-guardian",
+                "parse-indy": "parse-indy",
                 "error": "error",
             }
         },
@@ -33,11 +34,18 @@ export const createArchiveTrack: NavTrack = {
             }
         },
         {
-            name: "parser-guardian",
-            type: "call",
-            call: {
-                track: "parseGuardianTrack"
-            },
+            name: "parse-guardian",
+            type: "process",
+            process: "parse-guardian",
+            actions: {
+                ok: "solver",
+                error: "error"
+            }
+        },
+        {
+            name: "parse-indy",
+            type: "process",
+            process: "parse-indy",
             actions: {
                 ok: "solver",
                 error: "error"

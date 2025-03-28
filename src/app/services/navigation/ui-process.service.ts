@@ -18,6 +18,7 @@ import { UpdateProvision } from 'src/app/modifiers/puzzle-modifiers/update-provi
 import { FactoryResetClues } from 'src/app/modifiers/clue-modifiers/factory-reset-clues';
 import { UpdatePuzzleOptions } from 'src/app/modifiers/publish-options-modifiers/update-puzzle-options';
 import { ParseGuardian } from 'src/app/modifiers/parsing-modifiers/parse-guardian';
+import { ParseIndy } from 'src/app/modifiers/parsing-modifiers/parse-indy';
 
 @Injectable({
     providedIn: 'root'
@@ -91,6 +92,10 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
                 action = this.parseGuardian();
             break;
 
+            case "parse-indy":
+                action = this.parseIndy();
+            break;
+
             case "pdf-extract":
                 try {
                     action = this.puzzleManager.loadPuzzleFromPdf(this.appService.openPuzzleParameters);
@@ -155,7 +160,28 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
             this.activePuzzle.updateAndCommit(
                 new ParseGuardian(),
                 new InitAnnotationWarnings(),
-                new UpdateInfo({ ready: true })
+                new UpdateInfo({ ready: true }),
+            );
+
+            action = "ok";
+
+        } catch(error) {
+            action = "error";
+            this.appService.setAlert("danger", "Parsing Error :" + error);
+        }
+
+        return Promise.resolve(action);
+    }
+
+    private parseIndy(): Promise<string> {
+        let action = "error";
+
+        try {
+
+            this.activePuzzle.updateAndCommit(
+                new ParseIndy(),
+                new InitAnnotationWarnings(),
+                new UpdateInfo({ ready: true }),
             );
 
             action = "ok";
