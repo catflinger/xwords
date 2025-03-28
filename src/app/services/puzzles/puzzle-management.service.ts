@@ -291,6 +291,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                 if (params.provider === "independent" || params.provider === "ios") {
                     new SetGridReferences().exec(puzzleM);
                     new SetRedirects().exec(puzzleM);
+                    new UpdateInfo({ puzzleDate: params.date }).exec(puzzleM);
                 }
 
                 this.localStorageService.putPuzzle(puzzleM);

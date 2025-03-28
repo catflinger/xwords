@@ -159,6 +159,7 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
 
             this.activePuzzle.updateAndCommit(
                 new ParseGuardian(),
+                // Note: the following must be called after the parsing modifier
                 new InitAnnotationWarnings(),
                 new UpdateInfo({ ready: true }),
             );
