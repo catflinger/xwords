@@ -79,7 +79,6 @@ export class ArchiveComponent implements OnInit, OnDestroy {
 
         this.appService.setOpenPuzzleParams({
             provider: item.provider,
-            requestPdf: false,
             sourceUrl: item.url,
             serialNumber: item.serialNumber,
             date: item.date,
