@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 @Component({
-  selector: 'app-info-panel',
-  templateUrl: './info-panel.component.html',
-  styleUrls: ['./info-panel.component.css']
+    selector: 'app-info-panel',
+    templateUrl: './info-panel.component.html',
+    styleUrls: ['./info-panel.component.css'],
 })
 export class InfoPanelComponent {
-    public isOpen = true;
-    @Input() type = "info";
+    @Input() public type = "info";
+    @Input() public dismissable = true;
 }

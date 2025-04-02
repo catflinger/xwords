@@ -9,7 +9,7 @@
 
     <div class="row mt-3" *ngIf="parseError" >
         <div class="col form-group">
-            <button type="button" class="btn btn-primary me-3" (click)="onAmend()" [disabled]="!form.valid">Amend</button>
+            <button type="button" class="btn btn-primary me-3" (click)="onAmend()" [disabled]="!form.valid">Try again</button>
             <button type="button" class="btn btn-primary" (click)="onCancel()">Cancel</button>
         </div>
     </div>
@@ -23,14 +23,14 @@
     </div>
 
     <div class="row mt-5" *ngIf="!parseError">
-        <div class="col form-group">
+        <div class="col">
             <label for="text" class="form-label">Paste the text for your clues here</label>
             <textarea id="text" class="form-control" rows="40" formControlName="text"></textarea>
         </div>
         <div class="col">
-            <ng-container *ngTemplateOutlet="form.value.clueStyle === 'plain' ? plain : null"></ng-container>
-            <ng-container *ngTemplateOutlet="form.value.clueStyle === 'alphabetical' ? alphabetical : null"></ng-container>
-            <ng-container *ngTemplateOutlet="form.value.clueStyle === 'jigsaw' ? jigsaw : null"></ng-container>
+            <ng-container *ngTemplateOutlet="form.value.provisionOptions.captionStyle === 'numbered' ? plain : null"></ng-container>
+            <ng-container *ngTemplateOutlet="form.value.provisionOptions.captionStyle === 'alphabetical' ? alphabetical : null"></ng-container>
+            <ng-container *ngTemplateOutlet="form.value.provisionOptions.captionStyle === 'any' ? jigsaw : null"></ng-container>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
                     should work here.
                 </p>
 
-                The 4 basic rules for entering clues are:
+                <h6>The 4 basic rules for entering clues are:</h6>
                 <ul>
                     <li>Clues should start with the clue number</li>
                     <li>Clues should end with the letter count</li>
@@ -59,13 +59,14 @@
                     <li>The down clues are labelled "DOWN"</li>
                 </ul>
 
-                It is not essential, but it may help if you also:
+                <h6>It is not essential, but it may help if you also:</h6>
                 <ul>
                     <li>Remove line breaks so there is one clue per line</li>
                     <li>Remove unwanted text before the start of the clues</li>
                     <li>Remove unwanted text after the end of the clues</li>
                 </ul>
 
+                <h6>Basic Example:</h6>
                 <pre class="bg-light">
 ACROSS
 1 Goodnight ladies (5)
@@ -74,7 +75,7 @@ DOWN
 3 This is a clue (2-2)
 </pre>
 
-                Some optional features for more complex clues are:
+                <h6>Some optional features for more complex clues are:</h6>
                 <ul>
                     <li>Optionally, additional clue numbers may be added for linked clues, separated by commas</li>
                     <li>Optionally, numbers for linked clues may be supplemented with "across" or "down" to remove
@@ -85,6 +86,7 @@ DOWN
                     </li>
                 </ul>
 
+                <h6>Example with linked clues:</h6>
                 <pre class="bg-light">
 ACROSS
 1,2 down,3 Life in the fast lane (8,2,2 4)
@@ -106,13 +108,13 @@ DOWN
         <div class="col form-group">
             <app-tip key="specialText">
 
-                The 4 basic rules for entering clues are:
+                <h6>The 4 basic rules for entering clues for an alphabetical jigsaw puzzle are:</h6>
                 <ul>
                     <li>Clues should start with a capital letter</li>
                     <li>Clues should end with the letter count</li>
                 </ul>
 
-                You should also:
+                <h6>You should also:</h6>
                 <ul>
                     <li>Remove any ACROSS or DOWN labels</li>
                     <li>Remove unwanted text before the start of the clues</li>
@@ -135,13 +137,13 @@ C This is a clue (2-2)
         <div class="col form-group">
             <app-tip key="specialText">
 
-                The 4 basic rules for entering clues are:
+                <h6>The 4 basic rules for entering untitled clues are:</h6>
                 <ul>
                     <li>Clues should be unlabelled</li>
                     <li>Clues should end with the letter count</li>
                 </ul>
 
-                You should also:
+                <h6>You should also:</h6>
                 <ul>
                     <li>Remove unwanted text before the start of the clues</li>
                     <li>Remove unwanted text after the end of the clues</li>

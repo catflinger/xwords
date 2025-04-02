@@ -103,6 +103,7 @@ import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.compone
 import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
 import { createArchiveTrack } from './services/navigation/tracks/create-archive-track';
+import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -233,6 +234,7 @@ const tracks: ReadonlyArray<NavTrack> = [
         ValidatePuzzleComponent,
 
         WordpressIdPipe,
+          PdfDownloadGuideComponent,
     ],
     imports: [
         BrowserModule,

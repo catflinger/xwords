@@ -4,16 +4,21 @@
     </div>
 </div>
 
-<app-info-panel>
+<app-info-panel [dismissable]="false" [type]="'info'">
     <p>
-        You can load puzzles from a PDF document here.
-    </p>
-    <p>
-        To open a puzzle in a PDF file you must first download the PDF to a file on your computer. 
-        If the PDF is laid out in fairly typical way, say that used in the Guardian for the FT,
-        then the app should be able to automatically extract both the grid and clues form the text.
+        To open a PDF puzzle from the internet you must first download the PDF file to your computer.
+        For more information on how to do this see the <a class="link" [routerLink]="" (click)="onPdfGuide()">Pdf Download Guide</a>
     </p>
 </app-info-panel>
+
+<p>
+    You can load a PDF puzzle from your computer here.
+</p>
+
+<p>
+    If the PDF is laid out in fairly typical way, say that used in the Guardian for the FT,
+    then the app should be able to automatically extract both the grid and clues form the text.
+</p>
 
 
 <div class="row">

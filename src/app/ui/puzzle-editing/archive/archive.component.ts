@@ -21,6 +21,7 @@ export class ArchiveComponent implements OnInit, OnDestroy {
     public appStatus: AppStatus;
     public archive: Archive;
     public provider: PuzzleProvider;
+    public isGuardian: boolean = false;
     public form: FormGroup;
 
     private subs: Subscription[] = [];
@@ -49,12 +50,19 @@ export class ArchiveComponent implements OnInit, OnDestroy {
             ]).subscribe(result => {
                 this.appStatus = result[0];
                 this.archive = result[1];
+                this.detRef.detectChanges();
             })
         );
 
         this.subs.push(this.activeRoute.params.subscribe(params => {
             this.provider = params.provider;
+
+            this.isGuardian = params.provider === "cryptic" ||
+                params.provider === "prize" || 
+                params.provider === "everyman";
+
             this.appService.setBusy();
+            this.detRef.detectChanges();
 
             this.archiveService.getList(params.provider)
             .catch((error) => this.appService.setAlert("danger", error))
@@ -102,6 +110,10 @@ export class ArchiveComponent implements OnInit, OnDestroy {
         }
 
         return result;
+    }
+
+    public onMessageClick () {
+        this.navService.gotoRoute(["guardian"]);
     }
 
     public get archiveItems(): ReadonlyArray<ArchiveItem> {

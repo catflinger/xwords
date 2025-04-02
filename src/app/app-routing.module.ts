@@ -39,6 +39,7 @@ import { ScratchpadComponent } from './ui/development/scratchpad/scratchpad.comp
 import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.component';
 import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
+import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
 
 
 const routes: Routes = [
@@ -91,6 +92,7 @@ const routes: Routes = [
     { path: "scratchpad", component: ScratchpadComponent },
     { path: "pdf-download-guide-azed", component: PdfDownloadGuideAzedComponent },
     { path: "pdf-download-guide-quiptic", component: PdfDownloadGuideQuipticComponent },
+    { path: "pdf-download-guide", component: PdfDownloadGuideComponent },
 
     // default routes
     { path: "", redirectTo: "/home", pathMatch: "full" },

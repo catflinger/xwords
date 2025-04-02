@@ -88,6 +88,15 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onPdf() {
+        this.activePuzzle.clear();
+        this.appService.clear();
+        this.appService.setOpenPuzzleParams({
+            provider: "pdf",
+        });
+        this.navService.beginTrack("createPdfTrack", {});
+    }
+
     public onGrid() {
         this.activePuzzle.clear();
         this.appService.clear();

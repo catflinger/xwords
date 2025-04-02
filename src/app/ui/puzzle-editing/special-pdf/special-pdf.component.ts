@@ -71,4 +71,8 @@ export class SpecialPdfComponent implements OnInit, AfterViewInit {
          })
         this.navService.navigate("continue");
     }
+
+    public onPdfGuide() {
+        this.navService.gotoRoute(["pdf-download-guide"]);
+    }
 }
