@@ -109,7 +109,7 @@ export class ParseGuardian extends PuzzleModifier {
                 caption: entry.humanNumber,
                 group: entry.direction as ClueGroup,
                 text: clueText,
-                solution: entry.solution ? entry.solution : "",
+                solution: "",
                 letterCount: Clue.getLetterCount(clueText),
                 annotation: null,
                 redirect: this.getRedirect(crossword, entry.id),
@@ -144,7 +144,10 @@ export class ParseGuardian extends PuzzleModifier {
                         anchor: entry.number,
                         direction: entry.direction
                     }));
+                    clue.solution += " " + entry.solution;
                 }
+
+                clue.solution = clue.solution.trim();
             });
 
             puzzle.clues.push(clue);
