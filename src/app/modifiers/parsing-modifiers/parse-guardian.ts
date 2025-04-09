@@ -144,7 +144,10 @@ export class ParseGuardian extends PuzzleModifier {
                         anchor: entry.number,
                         direction: entry.direction
                     }));
-                    clue.solution += " " + entry.solution;
+
+                    if (entry.solution) {
+                        clue.solution += " " + entry.solution;
+                    }
                 }
 
                 clue.solution = clue.solution.trim();
