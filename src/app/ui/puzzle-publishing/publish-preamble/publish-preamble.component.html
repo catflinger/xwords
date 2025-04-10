@@ -4,12 +4,12 @@
     <div class="row" *ngIf="puzzle">
         <div class="col">
             <div class="mt-4">
-                <p>Enter the title to be displayed on the fifteensquared home page</p>
+                <p>Enter the title for this post</p>
                 <input id="title" type="text" class="w-100 ps-2" formControlName="title">
             </div>
 
             <div class="mt-4">
-                <p>Comment to be displayed below the title on the home page</p>
+                <p>Introductory remarks (visible on the homepage - avoid spoilers)</p>
                 <quill-editor formControlName="header" format="object"></quill-editor>
             </div>
         </div>
@@ -18,7 +18,7 @@
     <div class="row" *ngIf="puzzle">
         <div class="col">
             <div class="mt-4">
-                <p>further comment inside your blog</p>
+                <p>Further comment on the puzzle (only visible inside your post)</p>
                 <quill-editor formControlName="body" format="object"></quill-editor>
             </div>
         </div>
