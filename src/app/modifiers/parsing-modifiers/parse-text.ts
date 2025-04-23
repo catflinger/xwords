@@ -272,7 +272,7 @@ export class ParseText extends PuzzleModifier {
                 puzzle.info.title = "Azed No. " + match.groups["serialNumber"].toString();
 
                 if (subtitle) {
-                    var subtitleExpression = new RegExp(String.raw`(?<subtitle>.+?)azed`, "i");
+                    var subtitleExpression = new RegExp(String.raw`(?<subtitle>.+?)(azed|solution)`, "i");
                     let subMatch = subtitleExpression.exec(subtitle);
                     if (subMatch) {
                         puzzle.info.title += " " + subMatch.groups["subtitle"].toString();

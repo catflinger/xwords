@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { UpdateGridProperties } from 'src/app/modifiers/grid-modifiers/updare-grid-properties';
 import { UpdatePublsihOptions } from 'src/app/modifiers/publish-options-modifiers/update-publish-options';
 import { SetGridCaptions } from 'src/app/modifiers/grid-modifiers/set-grid-captions';
+import { SetGridReferences } from 'src/app/modifiers/clue-modifiers/set-grid-references';
 
 @Component({
     selector: 'app-grid-form',
@@ -67,6 +68,7 @@ export class GridFormComponent extends TabbedDialogFormBase implements OnInit, O
                 new UpdateCell(cell.id, { light: !cell.light}),
                 new RenumberGid(),
                 new SetGridCaptions(),
+                new SetGridReferences()
             );
         }
     }
@@ -81,6 +83,7 @@ export class GridFormComponent extends TabbedDialogFormBase implements OnInit, O
                 new UpdateCell(event.cell.id, barData),
                 new RenumberGid(),
                 new SetGridCaptions(),
+                new SetGridReferences()
             );
         }
     }
