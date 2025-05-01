@@ -51,7 +51,7 @@ export class GuardianComponent implements OnInit, OnDestroy {
             } else if (provider === "prize-pdf") {
                 this.daysDisabled = [sun, mon, tue, wed, thu, fri];
 
-            } else if (provider === "everyman-pdf") {
+            } else if (provider === "everyman") {
                 this.daysDisabled = [mon, tue, wed, thu, fri, sat];
 
             } else {

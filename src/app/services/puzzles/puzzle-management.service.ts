@@ -247,7 +247,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
         if (params.provider === "ft" || 
             params.provider === "azed" || 
-            params.provider === "everyman-pdf" ||
+            params.provider === "everyman" ||
             params.provider === "cryptic-pdf" ||
             params.provider === "prize-pdf") {
 
@@ -273,7 +273,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                 return this.newPuzzle(params.provider, reducers);
             });
 
-        } else if (params.provider === "cryptic" || params.provider === "prize" || params.provider === "everyman") {
+        } else if (params.provider === "cryptic" || params.provider === "prize") {
 
             result = this.httpPuzzleService.providePuzzle(params).then(puzzleExtract => {
                 return this.newPuzzle(params.provider, [new UpdateInfo({ source: puzzleExtract.text })]);

@@ -91,7 +91,7 @@ export class ParseText extends PuzzleModifier {
             options.allowPreamble = true;
         }
 
-        if (provider === "ft" || provider === "cryptic-pdf" || provider === "prize-pdf" || provider === "everyman-pdf") {
+        if (provider === "ft" || provider === "cryptic-pdf" || provider === "prize-pdf" || provider === "everyman") {
             options.allowPostamble = true;
             options.allowPreamble = true;
             options.allowTypos = true;
@@ -189,7 +189,7 @@ export class ParseText extends PuzzleModifier {
                 case "azed":
                     this.trySetInfoAzed(puzzle, lines);
                     break;
-                case "everyman-pdf":
+                case "everyman":
                     this.trySetInfoEveryman(puzzle, lines);
                     break;
                 case "quiptic":
@@ -227,10 +227,10 @@ export class ParseText extends PuzzleModifier {
 
         //Example: CROSSWORD No 17,788 by MOO
 
-        let titleExpression = new RegExp(String.raw`^\s*CROSSWORD\s+(No|No\.|no|no\.)?\s*(?<serialNumber>[0-9,]+)\s+(set)?\s*by\s+(?<setter>[A-Z]+)`);
+        let titleExpression = new RegExp(String.raw`^CROSSWORD\s+(No|No\.|no|no\.)?\s*(?<serialNumber>[0-9,]+)\s+(set)?\s*by\s+(?<setter>[A-Z]+)`);
 
         for (let line of lines) {
-            let match = titleExpression.exec(line);
+            let match = titleExpression.exec(line.trim());
 
             if (match) {
                 let setter = match.groups["setter"].toString();
@@ -250,29 +250,29 @@ export class ParseText extends PuzzleModifier {
         let result = false;
 
         // Example: Azed No. 2,717 - Plain
+        // Azed  No. 2,758 Plain Azed No. 2,755 solution & notes
 
-        let titleExpression = new RegExp(String.raw`^\s*azed\s+no\.?\s+(?<serialNumber>\d,\d\d\d)(?<subtitle>.*)$`, "gi");
 
         for (let line of lines) {
-            let match = titleExpression.exec(line);
+
+            let titleExpression = new RegExp(String.raw`^azed\s+no\.?\s+(?<serialNumber>\d,\d\d\d)(?<subtitle>.*)$`, "i");
+            let match = titleExpression.exec(line.trim());
 
             if (match) {
 
                 // Azed often has a subtitle e.g. "Azed No. 2,717 - Plain" or "Azed No. 2,717 - Mixed Foursomes"
-                // Unfortunately extracted title text can also  include solutions to previous puzzles that look 
-                // like part of a title line, for example:
+                // Extracted title text can also contain spurious stuff relating to previous puzzles that look 
+                // like part of a subtitle, this needs to be ignored. For example:
                 //
-                // "Azed No 2,123 solutions and notes"
+                // "Azed No. 2,717 Azed No 2,715 solutions and notes"
                 // "Azed No. 2,481, The Observer, 90 York Way, London N1 9GU."
-                //
-                // Look out for a second "azed" in the line it and and ignore everything thereafter.
-
-                let subtitle: string = match.groups["subtitle"] ? match.groups["subtitle"].toString().trim().toLowerCase() : null;
 
                 puzzle.info.title = "Azed No. " + match.groups["serialNumber"].toString();
 
+                let subtitle: string = match.groups["subtitle"] ? match.groups["subtitle"].toString().trim().toLowerCase() : null;
+
                 if (subtitle) {
-                    var subtitleExpression = new RegExp(String.raw`(?<subtitle>.+?)(azed|solution)`, "i");
+                    var subtitleExpression = new RegExp(String.raw`^(?<subtitle>.+?)(azed|solution)`, "i");
                     let subMatch = subtitleExpression.exec(subtitle);
                     if (subMatch) {
                         puzzle.info.title += " " + subMatch.groups["subtitle"].toString();
@@ -284,8 +284,10 @@ export class ParseText extends PuzzleModifier {
                 puzzle.info.setter = "Azed";
                 puzzle.info.provider = "azed";
                 result = true;
+                break;
             }
         }
+
         return result;
     }
 
@@ -296,7 +298,7 @@ export class ParseText extends PuzzleModifier {
 
         let titleExpression = new RegExp(String.raw`Everyman crossword\s+(no|no\.)?\s*(?<serialNumber>[0-9,]{4,5})`, "i");
         for (let line of lines) {
-            let match = titleExpression.exec(line);
+            let match = titleExpression.exec(line.trim());
 
             if (match) {
                 let serialNumber = match.groups["serialNumber"].toString();
@@ -318,7 +320,7 @@ export class ParseText extends PuzzleModifier {
         let titleExpression = new RegExp(String.raw`quiptic crossword\s+(no|no\.)?\s*(?<serialNumber>[0-9,]{4,5})\s+(set)?\s*by\s+(?<setter>[A-Za-z]+)`, "i");
 
         for (let line of lines) {
-            let match = titleExpression.exec(line);
+            let match = titleExpression.exec(line.trim());
 
             if (match) {
                 let setter = match.groups["setter"].toString();
@@ -344,7 +346,7 @@ export class ParseText extends PuzzleModifier {
             let titleExpression = new RegExp(String.raw`(guardian)?\s*cryptic crossword\s+(no|no\.)?\s*(?<serialNumber>[0-9,]{5,6})\s+(set)?\s*by\s+(?<setter>[A-Za-z]+)`, "i");
 
             for (let line of lines) {
-                let match = titleExpression.exec(line);
+                let match = titleExpression.exec(line.trim());
 
                 if (match) {
                     let setter = match.groups["setter"].toString();
@@ -368,10 +370,10 @@ export class ParseText extends PuzzleModifier {
         // The Indy title is quite vague and can be confused with other publications
         // so only try this if we have tried everything else
 
-        let titleExpression = new RegExp(String.raw`^\s*No\.\s*(?<serialNumber>[0-9,]{5,6})\s+by\s+(?<setter>[A-Za-z ]+)$`);
+        let titleExpression = new RegExp(String.raw`^No\.\s*(?<serialNumber>[0-9,]{5,6})\s+by\s+(?<setter>[A-Za-z ]+)$`);
 
         for (let line of lines) {
-            let match = titleExpression.exec(line);
+            let match = titleExpression.exec(line.trim());
 
             if (match) {
                 let setter = match.groups["setter"].toString();

@@ -14,7 +14,7 @@ export type PuzzleProvider =
     "prize-pdf" |
     "azed" |
     "everyman" |
-    "everyman-pdf" |
+    //"everyman-pdf" |
     "quiptic" |
     "ft" |
     "independent" |

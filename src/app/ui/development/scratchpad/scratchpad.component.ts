@@ -25,7 +25,6 @@ export class ScratchpadComponent implements OnInit, OnDestroy, AfterViewInit {
     ) { }
 
     ngOnInit(): void {
-        
     }
 
     ngAfterViewInit() {

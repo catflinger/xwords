@@ -50,6 +50,6 @@ export class ArchiveService {
                 }
             }
         })
-        .catch(e => { throw e.message; });
+        .catch(e => { throw e.toString(); });
     }
 }

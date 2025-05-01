@@ -104,6 +104,7 @@ import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
 import { createArchiveTrack } from './services/navigation/tracks/create-archive-track';
 import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
+import { SerialNumberPipe } from './ui/general/serial-number.pipe';
 
 const quillGlobalConfig = {
     modules: {
@@ -234,7 +235,8 @@ const tracks: ReadonlyArray<NavTrack> = [
         ValidatePuzzleComponent,
 
         WordpressIdPipe,
-          PdfDownloadGuideComponent,
+        SerialNumberPipe,
+        PdfDownloadGuideComponent,
     ],
     imports: [
         BrowserModule,

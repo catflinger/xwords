@@ -58,8 +58,7 @@ export class ArchiveComponent implements OnInit, OnDestroy {
             this.provider = params.provider;
 
             this.isGuardian = params.provider === "cryptic" ||
-                params.provider === "prize" || 
-                params.provider === "everyman";
+                params.provider === "prize";
 
             this.appService.setBusy();
             this.detRef.detectChanges();
