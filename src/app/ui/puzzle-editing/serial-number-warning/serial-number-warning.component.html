@@ -1,0 +1,17 @@
+<h5>Serial Number Warning</h5>
+
+<p>
+    The downloaded puzzle <em><strong>{{puzzle.info.title}}</strong></em> 
+    has a serial number that suggests it is not a recent puzzle.
+</p>
+
+<p>
+    Sometimes this is caused by the requested puzzle not being available yet on the Independent server.
+    If you are sure that this is the correct puzzle, you can ignore this warning.  Otherwise you will 
+    need to try again in a day or two, or contact Ken MacKenzie for help.
+</p>
+
+<div class="mt-5">
+    <button type="button" class="btn btn-primary me-3" (click)="onContinue()">Continue</button>
+    <button type="button" class="btn btn-primary" (click)="onCancel()">Cancel</button>
+</div>

@@ -1,8 +1,6 @@
 import { Line } from '../line';
 import { IParseToken, ParseTokenType } from 'src/app/model/interfaces';
 
-
-
 abstract class ParseToken implements IParseToken {
     public readonly text: string; 
     public readonly lineNumber: number;

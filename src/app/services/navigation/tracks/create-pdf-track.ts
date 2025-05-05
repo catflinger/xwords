@@ -17,7 +17,7 @@ export const createPdfTrack: NavTrack = {
             type: "route",
             route: "open-puzzle",
             actions: {
-                "continue": "solver",
+                "continue": "serial-number-check",
                 "parse": "grid-captions",
                 "error": "error",
             }
@@ -38,7 +38,7 @@ export const createPdfTrack: NavTrack = {
                 track: "parseTrack"
             },
             actions: {
-                ok: "solver",
+                ok: "serial-number-check",
                 error: "special-text",
             }
         },
@@ -87,7 +87,24 @@ export const createPdfTrack: NavTrack = {
                 "cancel": "abandon",
             }
         },
-
+        {
+            name: "serial-number-check",
+            type: "process",
+            process: "serial-number-check",
+            actions: {
+                "ok": "solver",
+                "error": "serial-number-warning",
+            }
+        },
+        {
+            name: "serial-number-warning",
+            type: "route",
+            route: "/serial-number-warning",
+            actions: {
+                "ok": "solver",
+                "cancel": "abandon",
+            }
+        },
         {
             name: "solver",
             type: "switch",

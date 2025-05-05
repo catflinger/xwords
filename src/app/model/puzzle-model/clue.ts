@@ -1,8 +1,7 @@
 import { v4 as uuid } from "uuid";
-import { ClueGroup, CaptionStyle } from '../interfaces';
+import { ClueGroup } from '../interfaces';
 import { TextChunk } from './clue-text-chunk';
 import { ClueValidationWarning, IClue } from '../interfaces';
-import { ClueBuffer } from '../../services/parsing/text/clue-buffer';
 import { clueLetterCountExpression } from '../../services/parsing/text/types';
 import { GridLink } from './grid-link';
 import { QuillDelta } from './quill-delta';
@@ -21,7 +20,6 @@ export class Clue implements IClue {
     public readonly comment: QuillDelta;
     public readonly highlight: boolean;
     public readonly link: GridLink;
-    //public readonly entries: ReadonlyArray<GridEntry>;
     public readonly chunks: Array<TextChunk>;
     public readonly warnings: Array<ClueValidationWarning>;
 
@@ -67,10 +65,6 @@ export class Clue implements IClue {
                 entries: [],
             });
         }
-
-        // let entries: GridEntry[] = [];
-        // data.entries.forEach(entry => entries.push(new GridEntry(entry)));
-        // this.link.entries = entries;
 
         let chunks: TextChunk[] = [];
         data.chunks.forEach(chunk => chunks.push(new TextChunk(chunk)));

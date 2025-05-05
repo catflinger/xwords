@@ -130,6 +130,10 @@ export interface IGridReference {
     direction: Direction; 
 }
 
+export interface IGridEntry extends IGridReference {
+    length: number; 
+}
+
 export interface IGridLink {
     warning: string;
     gridRefs: Array<IGridReference>;

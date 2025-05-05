@@ -1,6 +1,5 @@
 import { IGridReference, Direction } from '../interfaces';
 import { v4 as uuid } from "uuid";
-import { ObjectUnsubscribedError } from 'rxjs';
 
 export class GridReference implements IGridReference {
     // for example: 2 down or 23 across

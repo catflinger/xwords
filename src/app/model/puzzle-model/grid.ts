@@ -1,4 +1,4 @@
-import { IGrid, GridNavigation, Direction, ClueGroup, IGridReference, IGridCell } from '../interfaces';
+import { IGrid, GridNavigation, Direction, ClueGroup, IGridReference, IGridCell, IGridEntry } from '../interfaces';
 import { GridCell } from './grid-cell';
 import { GridProperties } from './grid-properties';
 import { GridReference } from './grid-reference';
@@ -237,7 +237,29 @@ export class Grid implements IGrid {
 
         return result;
     }
-    
+
+    public getEntries(): ReadonlyArray<IGridEntry> {
+        let entries: IGridEntry[] = [];
+
+        this.cells.filter(c => c.anchor).forEach(cell => {
+
+            ["across", "down"].forEach(direction => {
+                let entry: GridCell[] = this.getEntry(cell, direction as Direction);
+            
+                if (entry.length > 1) {
+                    entries.push({
+                        id: cell.id,
+                        anchor: cell.anchor,
+                        direction: direction as Direction,
+                        length: entry.length,
+                    });
+                }
+            });
+        });
+
+        return entries;
+    }
+
     private getEntry(entryCell: GridCell, direction: Direction): GridCell[] {
         let result: GridCell[] = [];
         let startCell: GridCell = null;

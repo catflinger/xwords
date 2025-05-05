@@ -40,6 +40,7 @@ import { GuardianComponent } from './ui/puzzle-editing/guardian/guardian.compone
 import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-guide-azed/pdf-download-guide-azed.component';
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
 import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
+import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-warning/serial-number-warning.component';
 
 
 const routes: Routes = [
@@ -71,6 +72,7 @@ const routes: Routes = [
     { path: "special-login", component: SpecialLoginComponent },
     { path: "puzzle-hub", component: PuzzleHubComponent },
     { path: "open-puzzle", component: OpenPuzzleComponent },
+    { path: "serial-number-warning", component: SerialNumberWarningComponent },
     { path: "create-puzzle", component: CreatePuzzleComponent },
     { path: "special-text", component: SpecialTextComponent },
     { path: "grid-start", component: GridStartComponent },

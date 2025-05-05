@@ -5,7 +5,6 @@ import { IActivePuzzle, IPuzzleManager } from 'src/app/services/puzzles/puzzle-m
 import { ParseText } from 'src/app//modifiers/parsing-modifiers/parse-text';
 import { RenumberGid } from 'src/app//modifiers/grid-modifiers/renumber-grid';
 import { TextParsingService } from 'src/app/services/parsing/text/text-parsing-service';
-import { ProviderService } from 'src/app/services/puzzles/provider.service';
 import { CreateClues } from 'src/app/modifiers/clue-modifiers/create-clues';
 import { InitAnnotationWarnings } from 'src/app/modifiers/puzzle-modifiers/init-annotation-warnings';
 import { SetGridReferences } from 'src/app/modifiers/clue-modifiers/set-grid-references';
@@ -18,6 +17,7 @@ import { UpdateProvision } from 'src/app/modifiers/puzzle-modifiers/update-provi
 import { FactoryResetClues } from 'src/app/modifiers/clue-modifiers/factory-reset-clues';
 import { UpdatePuzzleOptions } from 'src/app/modifiers/publish-options-modifiers/update-puzzle-options';
 import { ParseGuardian } from 'src/app/modifiers/parsing-modifiers/parse-guardian';
+import * as luxon from 'luxon';
 
 @Injectable({
     providedIn: 'root'
@@ -29,7 +29,6 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
         private activePuzzle: IActivePuzzle,
         private puzzleManager: IPuzzleManager,
         private textParsingService: TextParsingService,
-        private providerService: ProviderService,
         private traceService: TraceService,
     ) {}
 
@@ -37,6 +36,10 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
         let action: Promise<string>;
 
         switch (processName) {
+
+            case "serial-number-check":
+                action = this.serialNumberCheck();
+                    break;
 
             case "editor-select":
                 // TO DO: think if this test needs to be more sophisticated
@@ -175,5 +178,63 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
         
         this.activePuzzle.updateAndCommit(new UpdateInfo({ ready: true }));
         return Promise.resolve("ok");
+    }
+
+    private serialNumberCheck(): Promise<string> {
+        let isOk = true;
+
+        // the Independent website has a "feature" whereby you can ask for a puzzle in the future.
+        // If such a puzzle is not available then you get back a random puzzle from an earlier date.
+        // This function checks to see if the serial number looks reasonable.  
+        // 
+        // The Independent puzzle for Monday 1st May 2025 had serial number 12030.
+        // The Independent on Sunday puzzle for Sunday 4th May 2025 had serial number 1836.
+        // 
+        //  As a rough approximation increment this for each day that has elapsed since then (every week for IoS).
+        //
+        // The expectation is that the user will request a puzzle for today or the next few days.
+        // if the puzzle has a serial number that is too far from this then it is possibly not a valid puzzle.
+        // The purpose of this is to provide a warning, the user must determine if the puzzle the one expected or not.  
+
+        try {
+
+            const title = this.activePuzzle.puzzle.info.title;
+            const provider = this.activePuzzle.puzzle.info.provider;
+
+            if (provider === "independent" || provider === "ios") {
+
+                let match = /\d\d,?\d\d\d/.exec(title);
+
+                if (match) {
+                    const serialNumber = Number.parseInt(match[0].replace(/,/g, ""));
+
+                    let lowerBound: number;
+                    let upperBound: number;
+
+                    const today = luxon.DateTime.now().startOf("day");
+                    const refDate = luxon.DateTime.fromObject({ year: 2025, month: 5, day: 1 }).startOf("day");
+                    const daysSinceRefDate = Math.floor(today.diff(refDate, "days").days);
+                    const weeksSinceRefDate = Math.floor(today.diff(refDate, "weeks").weeks);
+
+                    if (provider === "independent") {
+                        // The idependent puzzle is Monday - Saturday
+                        lowerBound = 12030 + daysSinceRefDate - weeksSinceRefDate - 7;
+                        upperBound = 12030 + daysSinceRefDate - weeksSinceRefDate + 7;
+    
+                    } else {
+                        // The ios puzzle is Sunday only
+                        lowerBound = 1836 + weeksSinceRefDate - 3;
+                        upperBound = 1836 + weeksSinceRefDate + 3;
+                    }
+
+                    if (serialNumber < lowerBound || serialNumber > upperBound) {
+                        isOk = false;
+                    }
+            }
+            }
+
+        } catch (error) { }
+
+        return isOk ? Promise.resolve("ok") : Promise.resolve("error");
     }
 }
