@@ -11,7 +11,7 @@ const clueCaptionExpressionAdditionalPart = String.raw`\s*(,|/)\s*\d{1,2}(\s?(ac
 // optional asterisk, optional space, (the first grid reference) then zero or more additional grid references
 export const clueCaptionExpression = String.raw`^\s*\*?\s*(?<caption>\s*${clueCaptionExpressionFirstPart}(${clueCaptionExpressionAdditionalPart})*)`;
 
-export const clueLetterCountExpression = String.raw`(?<letterCount>\((words|[0-9, -])+?\)\s*$)`;
+export const clueLetterCountExpression = String.raw`(?<letterCount>\(\d(words|[0-9, -])+?\)\s*$)`;
 
 export interface TextParsingOptions {
     captionStyle: CaptionStyle,

@@ -73,7 +73,7 @@ export class Line {
             return false;
         } else {
             let exp = new RegExp(String.raw`^\s*[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
-            return exp.test(this.text);
+            return exp.test(this.text) && !this.text.includes("(");
         }
     }
 

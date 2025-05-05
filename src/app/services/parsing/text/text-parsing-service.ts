@@ -319,7 +319,7 @@ export class TextParsingService {
             case "down":
             case "orphan":
                     if (!context.hasContent) {
-                    context.addClueText(token.text);
+                        context.addClueText(token.text);
                     if (Clue.isRedirect(context.buffer.clue)) {
                         context.save();
                     }
