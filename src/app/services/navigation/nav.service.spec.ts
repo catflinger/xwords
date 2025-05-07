@@ -25,18 +25,23 @@ describe('Navigation Service', () => {
     });
 
     it('should be created', () => {
-        const service: NavService<string> = new NavService<string>(<unknown>mockRouter as Router, [], new TestProcessor());
+        const service: NavService<string> = new NavService<string>(
+            <unknown>mockRouter as Router,
+            null,
+            [],
+            new TestProcessor()
+        );
         expect(service).toBeTruthy();
     });
 
     it('should begin a route', async () => {
-        const service: NavService<string> = new NavService<string>(<unknown>mockRouter as Router, [simpleTrack], new TestProcessor());
+        const service: NavService<string> = new NavService<string>(<unknown>mockRouter as Router, null, [simpleTrack], new TestProcessor());
         await service.beginTrack("simpleTrack", null);
         expect(mockRouter.route.join()).toEqual("route-A");
     });
 
     it('should navigate to next page', async () => {
-        const service: NavService<string> = new NavService<string>(<unknown>mockRouter as Router, [simpleTrack], new TestProcessor());
+        const service: NavService<string> = new NavService<string>(<unknown>mockRouter as Router, null, [simpleTrack], new TestProcessor());
         await service.beginTrack("simpleTrack", null);
         expect(mockRouter.route.join()).toEqual("route-A");
         await service.navigate("ok");
@@ -44,7 +49,7 @@ describe('Navigation Service', () => {
     });
 
     it('should run a process', async () => {
-        const service: NavService<string> = new NavService<string>(<unknown>mockRouter as Router, [trackWithProcess], new TestProcessor());
+        const service: NavService<string> = new NavService<string>(<unknown>mockRouter as Router, null, [trackWithProcess], new TestProcessor());
         await service.beginTrack("trackWithProcess", null);
         expect(mockRouter.route.join()).toEqual("route-A");
         await service.navigate("ok");

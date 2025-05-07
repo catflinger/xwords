@@ -6,8 +6,11 @@ import { ParseData } from './parse-data';
 import { MockTokeniserService } from './tokeniser/mock-tokeniser.service';
 import { IParseContext } from './text-parsing-context';
 import { IParseToken } from 'src/app/model/interfaces';
+import { MockTraceService } from './mocks/mock-trace';
+import { ITraceService, TraceService } from '../../app/trace.service';
 
 let mockTokeniser: MockTokeniserService = new MockTokeniserService(null);
+let mockTrace: ITraceService = new MockTraceService(null);
 
 describe('TextParsingService', () => {
     
@@ -18,7 +21,7 @@ describe('TextParsingService', () => {
         });
 
         it('should be created', () => {
-            const service: TextParsingService = new TextParsingService(mockTokeniser);
+            const service: TextParsingService = new TextParsingService(mockTokeniser, mockTrace);
             expect(service).toBeTruthy();
         });
 
@@ -55,7 +58,7 @@ describe('TextParsingService', () => {
 function runParser(data: IParseToken[]) {
     mockTokeniser.setTestData(data);
 
-    const service: TextParsingService = new TextParsingService(mockTokeniser);
+    const service: TextParsingService = new TextParsingService(mockTokeniser, mockTrace);
 
     let parser = service.parser(new ParseData(), null);
 

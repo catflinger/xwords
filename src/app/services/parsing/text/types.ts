@@ -11,7 +11,7 @@ const clueCaptionExpressionAdditionalPart = String.raw`\s*(,|/)\s*\d{1,2}(\s?(ac
 // optional asterisk, optional space, (the first grid reference) then zero or more additional grid references
 export const clueCaptionExpression = String.raw`^\s*\*?\s*(?<caption>\s*${clueCaptionExpressionFirstPart}(${clueCaptionExpressionAdditionalPart})*)`;
 
-export const clueLetterCountExpression = String.raw`(?<letterCount>\(\d(words|[0-9, -])+?\)\s*$)`;
+export const clueLetterCountExpression = String.raw`(?<letterCount>\(\d[a-z0-9, -]*?\)\s*$)`;
 
 export interface TextParsingOptions {
     captionStyle: CaptionStyle,
@@ -35,10 +35,10 @@ export type LineType =
     "clue" |
 
     // contains the start of a clue but no end eg "12 This is a very long"
-    "partialClueStart" |
+    "clueStart" |
 
     // contains the end of a clue, but not the start eg "end of a clue (8)"
-    "partialClueEnd" |
+    "clueEnd" |
 
     // contains an across marker, typically "ACROSS"
     "acrossMarker" |

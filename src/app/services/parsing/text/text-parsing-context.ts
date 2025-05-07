@@ -3,7 +3,7 @@ import { ClueBuffer } from './clue-buffer';
 import { TextParsingError } from 'src/app/model/puzzle-model/text-parsing-error';
 import { TextParsingWarning } from 'src/app/model/puzzle-model/text-parsing-warning';
 import { TokenGroup } from 'src/app/model/puzzle-model/token-group';
-import { TextParsingOptions } from './types';
+import { clueLetterCountExpression, TextParsingOptions } from './types';
 import { IParseToken } from 'src/app/model/interfaces';
 
 export type TextParsingState = "across" | "down" | "orphan" | "ended" | null;
@@ -89,24 +89,37 @@ export class ParseContext implements IParseContext {
 
     public save() {
 
-        if (this._state === "across") {
-            this._acrossClues.push(Clue.makeClue(
-                this._clueBuffer.caption,
-                this._clueBuffer.clue,
-                this._clueBuffer.letterCount,
-                "across"));
-        } else if (this._state === "down") {
-            this._downClues.push(Clue.makeClue(
-                this._clueBuffer.caption,
-                this._clueBuffer.clue,
-                this._clueBuffer.letterCount,
-                "down"));
-        } else if (this._state === "orphan") {
-            this._orphanClues.push(Clue.makeClue(
-                this._clueBuffer.caption,
-                this._clueBuffer.clue,
-                this._clueBuffer.letterCount,
-                "orphan"));
+        let isValidClue = true;
+
+        if (this.textParsingOptions.hasLetterCount) {
+            // this check is needed because a clue that has been stitched together
+            // from multile lines may end with some parenthesided text that is not a letter count.
+            // This is especially prevalent in Azed puzzles that include sample prize-winning clues
+            // in the notes
+
+            isValidClue = new RegExp(clueLetterCountExpression, "i").test(this._clueBuffer.rawText); 
+        }
+
+        if (isValidClue) {
+            if (this._state === "across") {
+                this._acrossClues.push(Clue.makeClue(
+                    this._clueBuffer.caption,
+                    this._clueBuffer.clue,
+                    this._clueBuffer.letterCount,
+                    "across"));
+            } else if (this._state === "down") {
+                this._downClues.push(Clue.makeClue(
+                    this._clueBuffer.caption,
+                    this._clueBuffer.clue,
+                    this._clueBuffer.letterCount,
+                    "down"));
+            } else if (this._state === "orphan") {
+                this._orphanClues.push(Clue.makeClue(
+                    this._clueBuffer.caption,
+                    this._clueBuffer.clue,
+                    this._clueBuffer.letterCount,
+                    "orphan"));
+            }
         }
 
         this._clueBuffer = null;

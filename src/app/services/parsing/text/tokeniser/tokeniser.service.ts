@@ -67,10 +67,10 @@ export class TokeniserService {
                 case "clue":
                     tokens.push(new ClueToken(line));
                     break;
-                case "partialClueStart":
+                case "clueStart":
                     tokens.push(new ClueStartToken(line));
                     break;
-                case "partialClueEnd":
+                case "clueEnd":
                     tokens.push(new ClueEndToken(line));
                     break;
                 case "unknown":

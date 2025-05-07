@@ -197,6 +197,8 @@ function emptyGridData(): IGrid {
                 shading: "",
                 edit: false,
                 hidden: false,
+                hasConflict: false,
+                textColor: "",
             }
             grid.cells.push(cell);
         }

@@ -22,9 +22,9 @@ export class Line {
         } else if (this.hasStartMarker && this.hasEndMarker) {
             result = "clue";
         } else if (this.hasEndMarker || this.hasPartialEndMarker) {
-            result = "partialClueEnd";
+            result = "clueEnd";
         } else if (this.hasStartMarker) {
-            result = "partialClueStart";
+            result = "clueStart";
         }
 
         return result;
@@ -63,7 +63,8 @@ export class Line {
         } else if ((new RegExp(String.raw`^(\s*The)?\s*Chambers\s+Dictionary\s+\(20\d\d\)\s*$`, "i").test(this.text))) {
             return false;
         } else {
-            let exp: RegExp = new RegExp(String.raw`\(\d[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
+            let exp: RegExp = new RegExp(String.raw`\(\d[a-z,0-9- ]*\)$`, "i");
+            //let exp: RegExp = new RegExp(String.raw`\(\d[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
             return exp.test(this.text);
         }
     }
@@ -72,7 +73,8 @@ export class Line {
         if (!this.options.hasLetterCount) {
             return false;
         } else {
-            let exp = new RegExp(String.raw`^\s*[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
+            //let exp = new RegExp(String.raw`^\s*[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
+            let exp = new RegExp(String.raw`([,0-9- ]|word|words|or|apostrophe)+\)$`, "i");
             return exp.test(this.text) && !this.text.includes("(");
         }
     }

@@ -52,7 +52,7 @@ describe('TextParsing', () => {
 function runParser(data: any) {
     const parseData = getTestData(data);
 
-    const service: TextParsingService = new TextParsingService(tokeniser);
+    const service: TextParsingService = new TextParsingService(tokeniser, null);
 
     let parser = service.parser(parseData, { allowPostamble: true, allowPreamble: true, captionStyle: "numbered" });
     let context = parser.next();

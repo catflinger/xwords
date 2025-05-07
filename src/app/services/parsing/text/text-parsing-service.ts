@@ -317,17 +317,31 @@ export class TextParsingService {
 
             case "across":
             case "down":
-            case "orphan":
-                    if (!context.hasContent) {
+                if (!context.hasContent) {
                         context.addClueText(token.text);
                     if (Clue.isRedirect(context.buffer.clue)) {
                         context.save();
                     }
-                } else {
-                    this.handleUnexpectedClue(token, context, grid);
-                }
-                break;
+                    } else {
+                        this.handleUnexpectedClue(token, context, grid);
+                    }
+                    break;
 
+            case "orphan":
+                if (!context.hasContent) {
+                    context.save();
+                    context.state = "orphan";
+                    context.addClueText(token.text);
+                    if (Clue.isRedirect(context.buffer.clue)) {
+                        context.save();
+                        context.state = "ended";
+                    }
+                }
+                // } else {
+                //     this.handleUnexpectedClue(token, context, grid);
+                // }
+                break;
+    
             case "ended": 
                 if (context.textParsingOptions.hasClueGroupHeadings === true) {
                     context.state = "orphan";
