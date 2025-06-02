@@ -113,11 +113,13 @@ export class TextParsingService {
     private onAcrossMarker(context: ParseContext) {
 
         switch (context.state) {
+
             case null:
             case "down":
             case "orphan":
+                context.save();
                 context.state = "across";
-            break;
+                break;
 
             case "across":
                 throw new TextParsingError({
