@@ -33,7 +33,7 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
         if (!params) {
             this.navService.goHome();
         }
-        
+
         this.subs.push(this.authService.observe().subscribe(credentials => {
             this.credentials = credentials;
             if (credentials.authenticated) {

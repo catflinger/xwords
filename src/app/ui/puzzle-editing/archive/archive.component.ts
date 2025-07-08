@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, combineLatest } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -22,7 +21,6 @@ export class ArchiveComponent implements OnInit, OnDestroy {
     public archive: Archive;
     public provider: PuzzleProvider;
     public isGuardian: boolean = false;
-    public form: FormGroup;
 
     private subs: Subscription[] = [];
 
@@ -31,15 +29,10 @@ export class ArchiveComponent implements OnInit, OnDestroy {
         private appService: AppService,
         private archiveService: ArchiveService,
         private activeRoute: ActivatedRoute,
-        private formBuilder: FormBuilder,
         private detRef: ChangeDetectorRef,
     ) { }
 
     public ngOnInit() {
-
-        this.form = this.formBuilder.group({
-            date: ["", Validators.required], 
-        });
 
         this.appService.clearAlerts();
 

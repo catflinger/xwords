@@ -9,8 +9,8 @@
         <div class="card w-50  mx-auto text-center" *ngIf="provider && latest">
             <h5 class="card-header">Latest {{provider | provider}} puzzle</h5>
             <div class="card-body">
-                <p *ngIf="latest" class="card-text">{{latest.date | date:'EEEE dd MMMM yyyy'}}</p>
-                <p *ngIf="latest" class="card-text">{{latest.serialNumber | serialNumber}}</p>
+                <p *ngIf="latest.date" class="card-text">{{latest.date | date:'EEEE dd MMMM yyyy'}}</p>
+                <p *ngIf="latest.serialNumber" class="card-text">{{latest.serialNumber | serialNumber}}</p>
                 <button class="btn btn-primary" (click)="openPuzzle(latest)">Open</button>
             </div>
         </div>
@@ -28,7 +28,8 @@
                 </tr>
                 <tr *ngFor="let item of archiveItems">
                     <td>{{item.serialNumber | serialNumber}}</td>
-                    <td>{{item.date | date:'EEEE dd MMMM yyyy'}}</td>
+                    <td *ngIf="item.date">{{item.date | date:'EEEE dd MMMM yyyy'}}</td>
+                    <td *ngIf="!item.date"></td>
                     <td><button class="btn btn-primary" (click)="openPuzzle(item)">Open</button></td>
                 </tr>
             </tbody>

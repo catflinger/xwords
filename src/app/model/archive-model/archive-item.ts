@@ -11,7 +11,7 @@ export class ArchiveItem {
     constructor(data: any) {
         this.provider = data.provider;
         this.serialNumber = data.serialNumber;
-        this.date = moment(data.xwordDate).toDate();
+        this.date = data.xwordDate ? moment(data.xwordDate).toDate() : null;
         this.setter = data.setter;
         this.url = data.url;
     }

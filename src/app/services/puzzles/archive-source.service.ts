@@ -10,6 +10,7 @@ interface ArchiveItemResponse {
     providerName: string;
     serialNumber: number;
     xwordDate: string;
+    url: string;
 }
 
 interface ArchiveIndexResponse {

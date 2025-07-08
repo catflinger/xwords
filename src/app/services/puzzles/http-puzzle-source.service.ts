@@ -10,6 +10,7 @@ abstract class ApiPdfExtractResponse implements ApiResponse {
     public abstract message: string;
     public abstract grid: any;
     public abstract text: string;
+    public abstract date: string;
 }
 
 abstract class ApiPuzzleResponse implements ApiResponse {
@@ -30,6 +31,7 @@ export interface PuzzleResponse {
 export interface PuzzleProvisionResponse {
     readonly grid?: any;
     readonly text: string;
+    readonly date: string;
 }
 
 @Injectable({

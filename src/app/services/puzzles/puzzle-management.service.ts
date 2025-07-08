@@ -183,7 +183,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
             new MarkAsCommitted().exec(puzzle);
             puzzle.revision += 1;
             this.savePuzzle(puzzle);
-            
+
             const next = new Puzzle(puzzle)
 
             this.bsActive.next(next);
@@ -195,11 +195,11 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
         if (puzzle) {
             let clone = this.getMutableCopy(this.newPuzzle("grid"));
-            
+
             clone.info.title = "Copy of " + puzzle.info.title;
             clone.grid = puzzle.grid;
             clone.ready = true;
-            
+
             this.savePuzzle(clone);
         }
     }
@@ -257,7 +257,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
             reducers.push(new UpdateInfo({ 
                 source: pdfExtract.text,
-                puzzleDate: params.date
+                puzzleDate: pdfExtract.date ? new Date(pdfExtract.date) : null
              }));
 
                 if (pdfExtract.grid) {
