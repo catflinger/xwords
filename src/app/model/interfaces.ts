@@ -13,6 +13,7 @@ export type PuzzleProvider =
     "prize" |
     "prize-pdf" |
     "azed" |
+    "gemelo" |
     "everyman" |
     //"everyman-pdf" |
     "quiptic" |

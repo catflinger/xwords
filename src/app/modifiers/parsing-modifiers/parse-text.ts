@@ -97,7 +97,7 @@ export class ParseText extends PuzzleModifier {
             options.allowTypos = true;
         }
 
-        if (provider === "azed" || provider === "pdf") {
+        if (provider === "azed" || provider === "gemelo" || provider === "pdf") {
             options.allowPostamble = true;
             options.allowPreamble = true;
             options.azedFeatures = true;
@@ -189,6 +189,9 @@ export class ParseText extends PuzzleModifier {
                 case "azed":
                     this.trySetInfoAzed(puzzle, lines);
                     break;
+                case "gemelo":
+                    this.trySetInfoGemelo(puzzle, lines);
+                    break;
                 case "everyman":
                     this.trySetInfoEveryman(puzzle, lines);
                     break;
@@ -208,6 +211,7 @@ export class ParseText extends PuzzleModifier {
                     this.trySetInfoQuiptic(puzzle, lines) ||
                     this.trySetInfoGuardian(puzzle, lines) ||
                     this.trySetInfoAzed(puzzle, lines) ||
+                    this.trySetInfoGemelo(puzzle, lines) ||
                     this.trySetInfoFT(puzzle, lines) ||
                     this.trySetInfoIndy(puzzle, lines);
                     break;
@@ -283,6 +287,50 @@ export class ParseText extends PuzzleModifier {
 
                 puzzle.info.setter = "Azed";
                 puzzle.info.provider = "azed";
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private trySetInfoGemelo(puzzle: IPuzzle, lines: readonly string[]): boolean {
+        let result = false;
+
+        // Example: Gemelo No. 1 Plain
+
+        for (let line of lines) {
+
+            let titleExpression = new RegExp(String.raw`^gemelo\s+no\.?\s+(?<serialNumber>\d{1,2})(?<subtitle>.*)$`, "i");
+            let match = titleExpression.exec(line.trim());
+
+            if (match) {
+
+                // Gemelo often has a subtitle e.g. "Gemelo No. 1 Plain"
+                // Extracted title text can also contain spurious stuff relating to previous puzzles that look 
+                // like part of a subtitle, this needs to be ignored. Gemelo may also contain solutions to Azed puzzles!
+                // 
+                // For example:
+                // "Azed No. 2,717 Azed No 2,715 solutions and notes"
+                // "Azed No. 2,481, The Observer, 90 York Way, London N1 9GU."
+
+                puzzle.info.title = "Gemelo No. " + match.groups["serialNumber"].toString();
+
+                let subtitle: string = match.groups["subtitle"] ? match.groups["subtitle"].toString().trim().toLowerCase() : null;
+
+                if (subtitle && !subtitle.toLowerCase().includes("azed")) {
+                    var subtitleExpression = new RegExp(String.raw`^(?<subtitle>.+?)(gemelo|solution)`, "i");
+                    let subMatch = subtitleExpression.exec(subtitle);
+                    if (subMatch) {
+                        puzzle.info.title += " " + subMatch.groups["subtitle"].toString();
+                    } else {
+                        puzzle.info.title +=  " " + subtitle.toString();
+                    }
+                }
+
+                puzzle.info.setter = "Gemelo";
+                puzzle.info.provider = "gemelo";
                 result = true;
                 break;
             }

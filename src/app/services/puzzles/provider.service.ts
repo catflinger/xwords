@@ -39,6 +39,9 @@ export class ProviderService {
             case "azed":
                 result = "Azed";
                 break;
+            case "gemelo":
+                result = "Gemelo";
+                break;
             default:
                 result = provider;
                 break;

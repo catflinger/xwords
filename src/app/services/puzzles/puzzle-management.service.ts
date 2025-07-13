@@ -247,6 +247,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
         if (params.provider === "ft" || 
             params.provider === "azed" || 
+            params.provider === "gemelo" || 
             params.provider === "everyman" ||
             params.provider === "cryptic-pdf" ||
             params.provider === "prize-pdf") {
