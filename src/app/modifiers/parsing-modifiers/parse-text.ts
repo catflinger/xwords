@@ -320,8 +320,9 @@ export class ParseText extends PuzzleModifier {
                 let subtitle: string = match.groups["subtitle"] ? match.groups["subtitle"].toString().trim().toLowerCase() : null;
 
                 if (subtitle && !subtitle.toLowerCase().includes("azed")) {
-                    var subtitleExpression = new RegExp(String.raw`^(?<subtitle>.+?)(gemelo|solution)`, "i");
-                    let subMatch = subtitleExpression.exec(subtitle);
+                    const subtitleExpression = new RegExp(String.raw`^(?<subtitle>.+?)(gemelo|solution)`, "i");
+                    const subMatch = subtitleExpression.exec(subtitle);
+
                     if (subMatch) {
                         puzzle.info.title += " " + subMatch.groups["subtitle"].toString();
                     } else {
@@ -374,7 +375,7 @@ export class ParseText extends PuzzleModifier {
                 let setter = match.groups["setter"].toString();
                 let serialNumber = match.groups["serialNumber"].toString();
 
-                puzzle.info.title = `Quiptic ${serialNumber} by ${setter}`;
+                puzzle.info.title = `Guardian Quiptic ${serialNumber} by ${setter}`;
                 puzzle.info.setter = setter;
                 puzzle.info.provider = "quiptic";
                 result = true;

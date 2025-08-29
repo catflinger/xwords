@@ -80,7 +80,7 @@ export class ParseGuardian extends PuzzleModifier {
 
     private parseSetter(puzzle: IPuzzle, crossword: IGuardianCrossword) {
         puzzle.info.setter = puzzle.info.provider === "everyman" ? "Everyman" : crossword.creator.name;
-        puzzle.info.title = crossword.name;
+        puzzle.info.title = "Guardian " + crossword.name;
         if (puzzle.info.provider !== "everyman") {
             puzzle.info.title += " by " + puzzle.info.setter;
         }
