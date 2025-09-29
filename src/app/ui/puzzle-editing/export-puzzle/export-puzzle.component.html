@@ -1,0 +1,29 @@
+<div class="row" *ngIf="puzzle">
+    <div class="col">
+        <h5>{{puzzle.info.title}}</h5>
+    </div>
+    <p>You can export a puzzle here, the puzzle data will be downloaded as a file in your browser's downloads folder.</p>
+    <p>You can open the file in a different browser, transfer it to another computer, keep it as a backup or share it with others.  
+        The puzzle can be loaded again in the new location using the <i>Import</i> item on the <i>Puzzle</i> menu.</p>
+</div>
+
+<div class="row" *ngIf="puzzle">
+
+    <div class="col border border-secondary rounded p-3">
+        <form class="form" [formGroup]="form">
+            <div class="form-group">
+                <label class="form-label" for="filename">Enter a memorable name for this export (numbers, letters hyphens and spaces only)</label>
+                <input id="filename" type="text" class="form-control" formControlName="filename">
+                <div class="text-danger" *ngIf="form.controls.filename.hasError('required')">Please enter a name for the exported puzzle</div>
+                <div class="text-danger" *ngIf="form.controls.filename.hasError('pattern')">Only letters, numbers, hyphens and spaces allowed here</div>
+            </div>
+        </form>
+        <button type="button" class="btn btn-primary my-3" (click)="onDownload()" [disabled]="!form.valid">Export puzzle</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-primary my-3" (click)="onClose()">Back</button>
+    </div>
+</div>

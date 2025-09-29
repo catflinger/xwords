@@ -124,6 +124,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
     }
 
+    public onExport(id: string) {
+        this.appService.clear();
+        this.puzzleManagement.openPuzzle(id)
+        .then((puzzle) => {
+            this.navService.gotoRoute(["export"]);
+        });
+    }
+
     public onPuzzleDevelopment(id: string) {
         this.appService.clear();
         this.puzzleManagement.openPuzzle(id)

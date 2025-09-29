@@ -102,6 +102,7 @@ import { createArchiveTrack } from './services/navigation/tracks/create-archive-
 import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
 import { SerialNumberPipe } from './ui/general/serial-number.pipe';
 import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-warning/serial-number-warning.component';
+import { ExportPuzzleComponent } from './ui/puzzle-editing/export-puzzle/export-puzzle.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -231,6 +232,7 @@ const tracks: ReadonlyArray<NavTrack> = [
         SerialNumberPipe,
         PdfDownloadGuideComponent,
         SerialNumberWarningComponent,
+        ExportPuzzleComponent,
     ],
     imports: [
         BrowserModule,

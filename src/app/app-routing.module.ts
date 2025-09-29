@@ -37,6 +37,7 @@ import { PdfDownloadGuideAzedComponent } from './ui/general/guides/pdf-download-
 import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-download-guide-quiptic/pdf-download-guide-quiptic.component';
 import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
 import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-warning/serial-number-warning.component';
+import { ExportPuzzleComponent } from './ui/puzzle-editing/export-puzzle/export-puzzle.component';
 
 
 const routes: Routes = [
@@ -83,6 +84,7 @@ const routes: Routes = [
 
     // general
     { path: "settings", component: SettingsComponent },
+    { path: "export", component: ExportPuzzleComponent },
     { path: "scratchpad", component: ScratchpadComponent },
     { path: "pdf-download-guide-azed", component: PdfDownloadGuideAzedComponent },
     { path: "pdf-download-guide-quiptic", component: PdfDownloadGuideQuipticComponent },
