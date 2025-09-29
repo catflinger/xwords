@@ -48,10 +48,6 @@
                                 <button type="button" class="nav-link btn btn-link" (click)="onGoTo('settings')">Settings</button>
                             </li>
 
-                            <li class="nav-item">
-                                <button type="button" class="nav-link btn btn-link" (click)="onGoToA('backups')">Backups</button>
-                            </li>
-
                             <li class="nav-item" *ngIf="!credentials.authenticated">
                                 <button type="button" class="nav-link btn btn-link" (click)="onGoTo('login')">Login</button>
                             </li>

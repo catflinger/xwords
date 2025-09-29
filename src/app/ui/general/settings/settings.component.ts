@@ -91,15 +91,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.navService.goHome();
     }
 
-    public onBackup() {
-        if (!this.authService.getCredentials().authenticated) {
-            this.appService.redirect = ["backup-settings"];
-            this.navService.gotoRoute(["login"]);
-        } else {
-            this.navService.gotoRoute(["backup-settings"]);
-        }
-    }
-
     public get tipKeys() {
         return Object.keys(this.settings.tips);
     }

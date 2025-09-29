@@ -81,10 +81,6 @@ import { ValidatePuzzleComponent } from './ui/puzzle-editing/validate-puzzle/val
 import { CluesStartComponent } from './ui/puzzle-editing/clues-start/clues-start.component';
 import { LinkErrorComponent } from './ui/puzzle-editing/link-error/link-error.component';
 import { NavErrorComponent } from './ui/puzzle-editing/nav-error/nav-error.component';
-import { BackupComponent } from './ui/backup/backup/backup.component';
-import { BackupsComponent } from './ui/backup/backups/backups.component';
-import { BackupSettingsComponent } from './ui/backup/backup-settings/backup-settings.component';
-import { BackupOptionsComponent } from './ui/backup/backup-options/backup-options.component';
 import { PuzzleHubComponent } from './ui/puzzle-editing/puzzle-hub/puzzle-hub.component';
 import { ClueEditListComponent } from './ui/clues/clue-edit-list/clue-edit-list.component';
 import { PuzzleInfoComponent } from './ui/puzzle-editing/puzzle-info/puzzle-info.component';
@@ -140,10 +136,6 @@ const tracks: ReadonlyArray<NavTrack> = [
         ArchiveComponent,
 
         BloggerComponent,
-        BackupComponent,
-        BackupsComponent,
-        BackupSettingsComponent,
-        BackupOptionsComponent,
 
         ClueDialogComponent,
         ClueEditorControlComponent,

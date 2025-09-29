@@ -6,7 +6,6 @@ import { AuthService, Credentials } from 'src/app/services/app/auth.service';
 import { NavService } from '../../../services/navigation/nav.service';
 import { AppTrackData } from '../../../services/navigation/tracks/app-track-data';
 import { IPuzzleSummary } from 'src/app/model/interfaces';
-import { BackupService } from 'src/app/services/storage/backup.service';
 import { UpdateInfo } from 'src/app/modifiers/puzzle-modifiers/update-info';
 import { AppSettingsService } from 'src/app/services/app/app-settings.service';
 import { AppSettings } from 'src/app/services/common';

@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BackupOptionsComponent } from './ui/backup/backup-options/backup-options.component';
-import { BackupSettingsComponent } from './ui/backup/backup-settings/backup-settings.component';
-import { BackupComponent } from './ui/backup/backup/backup.component';
-import { BackupsComponent } from './ui/backup/backups/backups.component';
 import { HomeComponent } from './ui/general/home/home.component';
 import { LoginComponent } from './ui/general/login/login.component';
 import { SettingsComponent } from './ui/general/settings/settings.component';
@@ -87,10 +83,6 @@ const routes: Routes = [
 
     // general
     { path: "settings", component: SettingsComponent },
-    { path: "backups", component: BackupsComponent },
-    { path: "backup", component: BackupComponent },
-    { path: "backup-settings", component: BackupSettingsComponent },
-    { path: "backup-options/:id", component: BackupOptionsComponent },
     { path: "scratchpad", component: ScratchpadComponent },
     { path: "pdf-download-guide-azed", component: PdfDownloadGuideAzedComponent },
     { path: "pdf-download-guide-quiptic", component: PdfDownloadGuideQuipticComponent },
