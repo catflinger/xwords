@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { PuzzleProvider } from 'src/app/model/interfaces';
 import { NavService } from 'src/app/services/navigation/nav.service';
@@ -37,7 +36,7 @@ export class GuardianComponent implements OnInit, OnDestroy {
 
         this.form = this.formBuilder.group({
             provider: ["", Validators.required],
-            date: [moment().format("DD-MM-yyyy"), Validators.required],
+            date: [DateTime.now().toFormat("DD-MM-yyyy"), Validators.required],
         });
 
         this.appService.clearAlerts();
@@ -58,8 +57,8 @@ export class GuardianComponent implements OnInit, OnDestroy {
                 this.daysDisabled = [];
             }
 
-            if (this.daysDisabled.includes(moment(this.form.value.date, dateFormat).day())) {
-                this.form.patchValue({ date: moment(this.getLatestValidDate(provider)).format(dateFormat) });
+            if (this.daysDisabled.includes(DateTime.fromFormat(this.form.value.date, dateFormat).day)) {
+                this.form.patchValue({ date: DateTime.fromJSDate(this.getLatestValidDate(provider)).toFormat(dateFormat) });
             }
 
         }));
@@ -70,7 +69,7 @@ export class GuardianComponent implements OnInit, OnDestroy {
     }
 
     public openPuzzleByDate() {
-        const date = moment(this.form.value.date, dateFormat).toDate();
+        const date = DateTime.fromFormat(this.form.value.date, dateFormat).toJSDate();
         const provider = this.form.value.provider;
 
         this.appService.clear();

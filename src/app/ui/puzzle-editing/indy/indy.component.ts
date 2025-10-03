@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import * as moment from "moment";
 import { AppStatus, AppService } from 'src/app/ui/general/app.service';
 import { PuzzleProvider } from 'src/app/model/interfaces';
 import { NavService } from '../../../services/navigation/nav.service';
 import { AppTrackData } from '../../../services/navigation/tracks/app-track-data';
+import { DateTime, WeekdayNumbers } from "luxon";
 
-const Sunday = 0;
+const Sunday = 7;
 
 // This page is similar in functionality to the Guardian select by date component
 // but from a user perspective the Guardian and Independent puzzles are different
@@ -30,7 +30,7 @@ const Sunday = 0;
         private appService: AppService,
         private formBuilder: FormBuilder,
     ) {
-        this.provider = moment().day() === Sunday ? "ios" : "independent";
+        this.provider = DateTime.now().weekday === Sunday ? "ios" : "independent";
         this.today = new Date();
     }
 
@@ -53,10 +53,9 @@ const Sunday = 0;
     }
 
     public openPuzzleByDate() {
-        const date = moment(this.form.value.date).toDate();
-        const provider = date.getDay() === Sunday ? "ios" : "independent";
-
-        this.openPuzzle(provider, date);
+        const date = DateTime.fromJSDate(this.form.value.date);
+        const provider = date.weekday === Sunday ? "ios" : "independent";
+        this.openPuzzle(provider, date.toJSDate());
     }
 
     private openPuzzle(provider: PuzzleProvider, date: Date) {

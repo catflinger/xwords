@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import { DateTime } from "luxon";
 import { PuzzleProvider } from '../interfaces';
 
 export class ArchiveItem {
@@ -11,7 +11,7 @@ export class ArchiveItem {
     constructor(data: any) {
         this.provider = data.provider;
         this.serialNumber = data.serialNumber;
-        this.date = data.xwordDate ? moment(data.xwordDate).toDate() : null;
+        this.date = data.xwordDate ? DateTime.fromISO(data.xwordDate).toJSDate() : null;
         this.setter = data.setter;
         this.url = data.url;
     }
