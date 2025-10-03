@@ -1,4 +1,4 @@
-<div class="row" *ngIf="puzzle">
+<div class="row" *ngIf="puzzle && !done">
     <div class="col">
         <h5>{{puzzle.info.title}}</h5>
     </div>
@@ -7,7 +7,7 @@
         The puzzle can be loaded again in the new location using the <i>Import</i> item on the <i>Puzzle</i> menu.</p>
 </div>
 
-<div class="row" *ngIf="puzzle">
+<div class="row" *ngIf="puzzle && !done">
 
     <div class="col border border-secondary rounded p-3">
         <form class="form" [formGroup]="form">

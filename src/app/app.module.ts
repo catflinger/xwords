@@ -103,6 +103,7 @@ import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guid
 import { SerialNumberPipe } from './ui/general/serial-number.pipe';
 import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-warning/serial-number-warning.component';
 import { ExportPuzzleComponent } from './ui/puzzle-editing/export-puzzle/export-puzzle.component';
+import { ImportPuzzleComponent } from './ui/puzzle-editing/import-puzzle/import-puzzle.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -233,6 +234,7 @@ const tracks: ReadonlyArray<NavTrack> = [
         PdfDownloadGuideComponent,
         SerialNumberWarningComponent,
         ExportPuzzleComponent,
+        ImportPuzzleComponent,
     ],
     imports: [
         BrowserModule,

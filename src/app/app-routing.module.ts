@@ -38,6 +38,7 @@ import { PdfDownloadGuideQuipticComponent } from './ui/general/guides/pdf-downlo
 import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guide/pdf-download-guide.component';
 import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-warning/serial-number-warning.component';
 import { ExportPuzzleComponent } from './ui/puzzle-editing/export-puzzle/export-puzzle.component';
+import { ImportPuzzleComponent } from './ui/puzzle-editing/import-puzzle/import-puzzle.component';
 
 
 const routes: Routes = [
@@ -85,6 +86,7 @@ const routes: Routes = [
     // general
     { path: "settings", component: SettingsComponent },
     { path: "export", component: ExportPuzzleComponent },
+    { path: "import", component: ImportPuzzleComponent },
     { path: "scratchpad", component: ScratchpadComponent },
     { path: "pdf-download-guide-azed", component: PdfDownloadGuideAzedComponent },
     { path: "pdf-download-guide-quiptic", component: PdfDownloadGuideQuipticComponent },

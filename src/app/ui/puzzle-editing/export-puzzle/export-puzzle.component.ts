@@ -6,6 +6,9 @@ import { NavService } from 'src/app/services/navigation/nav.service';
 import { AppTrackData } from 'src/app/services/navigation/tracks/app-track-data';
 import { IActivePuzzle } from 'src/app/services/puzzles/puzzle-management.service';
 import { AppService } from '../../general/app.service';
+import fileDownload from "js-file-download";
+import { v4 as uuid } from "uuid";
+import { DateTime } from "luxon";
 
 @Component({
     selector: 'app-export-puzzle',
@@ -15,9 +18,7 @@ import { AppService } from '../../general/app.service';
 export class ExportPuzzleComponent implements OnInit {
     public puzzle: Puzzle = null;
     public form: FormGroup;
-
-    public dataUrl: string;
-    public filename: string;
+    public done = false;
 
     private subs: Subscription[] = [];
 
@@ -72,30 +73,31 @@ export class ExportPuzzleComponent implements OnInit {
 
     public onDownload() {
         this.appService.clear();
+        const copy = this.puzzle.getMutableCopy();
+        copy.info.id = uuid();
+        copy.info.title = this.form.value.filename;
 
-        this.filename = this.form.value
-        this.dataUrl = "data:text/json," + encodeURI(JSON.stringify(this.puzzle, null, 2));
+        // put the puzzle into an array to allow forward compatibility with possible multiple import/export in future
+        const data = `${JSON.stringify([copy], null, 2)}`;
+        const filename = `${this.form.value.filename}.json`;
 
-        setTimeout(
-            () => {
-                this.downloadFile(this.dataUrl, this.form.value.filename);
-                this.appService.setAlert("info", `The puzzle has been exported.  Look in your to your browser's downloads folder.`);
-            },
-            250
-        );
+        fileDownload(data, filename);
+
+        this.appService.setAlert("info", `The puzzle is being exported.  Look in your to your browser's downloads folder.`);
+        this.done = true;
+
+        // TO DO: why is angular not picking this change up automatically?
+        this.detRef.detectChanges();
     }
 
-    private downloadFile(url: string, fileName: string): void {
-        const downloadLink = document.createElement('a');
-        downloadLink.download = fileName + ".json";
-        downloadLink.href = url;
-        downloadLink.click();
-        this.puzzle = null;
-     }
-
      private makeFilename(title: string): string {
-        return title.replace(/,+/, "")
+        const today = DateTime.now().toFormat("MMM d yyyy");
+
+        return title .concat(` exported on ${today}`)
+            .replace(/,+/, "")
             .replace(/[^ 0-9a-z-]/gi, "-")
             .replace(/-{2,}/g, "-");
      }
 }
+
+
