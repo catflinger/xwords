@@ -132,6 +132,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
     }
 
+    public onRename(id: string) {
+        this.appService.clear();
+        this.puzzleManagement.openPuzzle(id)
+        .then((puzzle) => {
+            this.navService.gotoRoute(["rename-puzzle"]);
+        });
+    }
+
     public onPuzzleDevelopment(id: string) {
         this.appService.clear();
         this.puzzleManagement.openPuzzle(id)

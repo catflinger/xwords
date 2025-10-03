@@ -37,6 +37,7 @@
                             <div ngbDropdown class="d-inline-block">
                                 <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>More...</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button ngbDropdownItem (click)="onRename(item.info.id)">Rename</button>
                                     <button ngbDropdownItem (click)="onEdit(item.info.id)">Edit</button>
                                     <button ngbDropdownItem (click)="onDelete(item.info.id)">Delete</button>
                                     <button ngbDropdownItem (click)="onPreview(item.info.id)">Preview</button>

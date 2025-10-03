@@ -39,6 +39,7 @@ import { PdfDownloadGuideComponent } from './ui/general/guides/pdf-download-guid
 import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-warning/serial-number-warning.component';
 import { ExportPuzzleComponent } from './ui/puzzle-editing/export-puzzle/export-puzzle.component';
 import { ImportPuzzleComponent } from './ui/puzzle-editing/import-puzzle/import-puzzle.component';
+import { PuzzleInfoFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/puzzle-info-form/puzzle-info-form.component';
 
 
 const routes: Routes = [
@@ -72,6 +73,7 @@ const routes: Routes = [
     { path: "open-puzzle", component: OpenPuzzleComponent },
     { path: "serial-number-warning", component: SerialNumberWarningComponent },
     { path: "create-puzzle", component: CreatePuzzleComponent },
+    { path: "rename-puzzle", component: PuzzleInfoComponent },
     { path: "special-text", component: SpecialTextComponent },
     { path: "grid-start", component: GridStartComponent },
     { path: "grid-editor", component: GridEditorComponent },
