@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-
 import { ArchiveItem } from 'src/app/model/archive-model/archive-item';
 import { AppStatus, AppService } from 'src/app/ui/general/app.service';
 import { ArchiveService } from 'src/app/services/puzzles/archive-source.service';
@@ -20,7 +19,7 @@ export class ArchiveComponent implements OnInit, OnDestroy {
     public appStatus: AppStatus;
     public archive: Archive;
     public provider: PuzzleProvider;
-    public isGuardian: boolean = false;
+    public isGuardianOrFT: boolean = false;
 
     private subs: Subscription[] = [];
 
@@ -50,8 +49,8 @@ export class ArchiveComponent implements OnInit, OnDestroy {
         this.subs.push(this.activeRoute.params.subscribe(params => {
             this.provider = params.provider;
 
-            this.isGuardian = params.provider === "cryptic" ||
-                params.provider === "prize";
+            this.isGuardianOrFT = params.provider === "cryptic" ||
+                params.provider === "prize" || params.provider === "ft";
 
             this.appService.setBusy();
             this.detRef.detectChanges();
@@ -69,11 +68,6 @@ export class ArchiveComponent implements OnInit, OnDestroy {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    // public get showDate(): boolean {
-    //     return this.provider &&
-    //         (this.provider === 'independent' || this.provider === 'ios');
-    // }
-
     public openPuzzle(item: ArchiveItem) {
         this.appService.clear();
 
@@ -84,10 +78,7 @@ export class ArchiveComponent implements OnInit, OnDestroy {
             date: item.date,
             setter: item.setter});
 
-        this.appService.clearBusy();
-        this.appService.clearAlerts();
-        
-        // this.navService.beginTrack("createPdfTrack", {}, "open-puzzle");
+        this.appService.clear();
         this.navService.beginTrack("createArchiveTrack", {}, "open-puzzle");
     }
 
@@ -105,7 +96,11 @@ export class ArchiveComponent implements OnInit, OnDestroy {
     }
 
     public onMessageClick () {
-        this.navService.gotoRoute(["guardian"]);
+        this.appService.clear();
+        this.appService.setOpenPuzzleParams({
+            provider: "pdf",
+        });
+        this.navService.beginTrack("createPdfTrack", {});
     }
 
     public get archiveItems(): ReadonlyArray<ArchiveItem> {
