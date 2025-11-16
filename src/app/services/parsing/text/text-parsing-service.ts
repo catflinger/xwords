@@ -56,7 +56,7 @@ export class TextParsingService {
             context.setGroup(item.value);
 
             if (this.trace) {
-                this.trace.addTrace(`TEXTPARSER: ${context.tokenGroup.current.type} [${context.state}] `);
+                this.trace.addTrace(`TEXTPARSER: ${context.tokenGroup.current.type} [${context.state}] [${context.tokenGroup.current.text}] `);
             }
 
 

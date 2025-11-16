@@ -1,4 +1,4 @@
-import { LineType, TextParsingOptions } from './types';
+import { clueLetterCountExpression, LineType, TextParsingOptions } from './types';
 
 export class Line {
 
@@ -60,11 +60,12 @@ export class Line {
     private get hasEndMarker(): boolean {
         if (!this.options.hasLetterCount) {
             return true;
+
         } else if ((new RegExp(String.raw`^(\s*The)?\s*Chambers\s+Dictionary\s+\(20\d\d\)\s*$`, "i").test(this.text))) {
             return false;
+
         } else {
-            let exp: RegExp = new RegExp(String.raw`\(\d[a-z,0-9- ]*\)$`, "i");
-            //let exp: RegExp = new RegExp(String.raw`\(\d[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
+            let exp: RegExp = new RegExp(clueLetterCountExpression, "i");
             return exp.test(this.text);
         }
     }
@@ -73,7 +74,7 @@ export class Line {
         if (!this.options.hasLetterCount) {
             return false;
         } else {
-            //let exp = new RegExp(String.raw`^\s*[,0-9- ]*(words)?(\s*,\s*apostrophe)?\s*\)$`, "i");
+            // TO DO: think if this should use a variation of the clueLetterCountExpression, or would this be too permissive? 
             let exp = new RegExp(String.raw`([,0-9- ]|word|words|or|apostrophe)+\)$`, "i");
             return exp.test(this.text) && !this.text.includes("(");
         }
