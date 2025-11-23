@@ -11,11 +11,14 @@ const clueCaptionExpressionAdditionalPart = String.raw`\s*(,|/)\s*\d{1,2}(\s?(ac
 // optional asterisk, optional space, (the first grid reference) then zero or more additional grid references
 export const clueCaptionExpression = String.raw`^\s*\*?\s*(?<caption>\s*${clueCaptionExpressionFirstPart}(${clueCaptionExpressionAdditionalPart})*)`;
 
-// \u2019 is the UNICODE "right single quotation mark" sometimes used instead of the apostrophe character '
+// \u2019 is the UNICODE "right single quotation mark" sometimes used instead of the apostrophe character
 // \u00B4 acute accent
 // \u0060 grave accent
 // \u2018 left single quote
 export const clueLetterCountExpression = String.raw`(?<letterCount>\(\d[0-9a-z\u0060\u00B4\u2018\u2019', -]*?\)\s*$)`;
+// the partial letter count is less permissive as it is easier to misread a fragment of the clue text as the end of
+// the letter count
+export const clueLetterCountExpressionEnd = String.raw`([\u0060\u00B4\u2018\u2019',0-9- ]|word|words|or|apostrophe)+\)$`;
 
 export interface TextParsingOptions {
     captionStyle: CaptionStyle,

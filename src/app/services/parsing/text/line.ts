@@ -1,4 +1,4 @@
-import { clueLetterCountExpression, LineType, TextParsingOptions } from './types';
+import { clueLetterCountExpression, clueLetterCountExpressionEnd, LineType, TextParsingOptions } from './types';
 
 export class Line {
 
@@ -74,8 +74,7 @@ export class Line {
         if (!this.options.hasLetterCount) {
             return false;
         } else {
-            // TO DO: think if this should use a variation of the clueLetterCountExpression, or would this be too permissive? 
-            let exp = new RegExp(String.raw`([,0-9- ]|word|words|or|apostrophe)+\)$`, "i");
+            let exp = new RegExp(clueLetterCountExpressionEnd, "i");
             return exp.test(this.text) && !this.text.includes("(");
         }
     }
