@@ -70,8 +70,9 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
 
                 this.navService.navigate("parse");
 
-            } else if (params.provider === "cryptic" || 
-                params.provider === "prize") {
+            } else if (params.provider === "cryptic" ||
+                params.provider === "prize" ||
+                params.provider === "mycrossword") {
 
                 this.navService.navigate("parse-guardian");
 

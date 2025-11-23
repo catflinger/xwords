@@ -64,7 +64,7 @@ export class ParseGuardian extends PuzzleModifier {
         try {
             const source = JSON.parse(puzzle.provision.source);
 
-            const crossword: IGuardianCrossword = source.data;
+            const crossword: IGuardianCrossword =  puzzle.info.provider === "mycrossword" ? source : source.data;
 
             puzzle.info.instructions = crossword.instructions;
 
@@ -74,29 +74,32 @@ export class ParseGuardian extends PuzzleModifier {
             this.parseGrid(puzzle, crossword);
 
         } catch (error) {
-            throw new Error("Failed to parse Guardian data: " + error);
+            throw new Error(`Failed to parse ${puzzle.info.provider} data: ` + error);
         }
     }
 
     private parseSetter(puzzle: IPuzzle, crossword: IGuardianCrossword) {
-        puzzle.info.setter = puzzle.info.provider === "everyman" ? "Everyman" : crossword.creator.name;
-        puzzle.info.title = "Guardian " + crossword.name;
-        if (puzzle.info.provider !== "everyman") {
-            puzzle.info.title += " by " + puzzle.info.setter;
-        }
+        const providerString = puzzle.info.provider === "mycrossword" ? "MyCrossword" : "Guardian";
+
+        puzzle.info.setter = crossword.creator.name;
+        puzzle.info.title = `${providerString} ${crossword.name} by ${puzzle.info.setter}`;
     }
 
     private parseDate(puzzle: IPuzzle, crossword: IGuardianCrossword) {
         try {
-            let date = puzzle.info.puzzleDate;
-            if (!date || !date.getTime || date.getTime() === 0) {
-                puzzle.info.puzzleDate = new Date(crossword.webPublicationDate);
+            if (puzzle.info.provider === "mycrossword") {
+                puzzle.info.puzzleDate = new Date(crossword.date);
+
+            } else {
+                let date = puzzle.info.puzzleDate;
+                if (!date || !date.getTime || date.getTime() === 0) {
+                    puzzle.info.puzzleDate = new Date(crossword.webPublicationDate);
+                }
             }
         } catch { }
     }
 
     private parseClues(puzzle: IPuzzle, crossword: IGuardianCrossword) {
-
         puzzle.clues = [];
 
         crossword.entries.forEach((entry: IGuardianEntry) => {

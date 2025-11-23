@@ -20,6 +20,7 @@ export type PuzzleProvider =
     "ft" |
     "independent" |
     "ios" |
+    "mycrossword" |
     "pdf" |
     "local" |
     "text" |

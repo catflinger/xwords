@@ -40,6 +40,7 @@ import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-
 import { ExportPuzzleComponent } from './ui/puzzle-editing/export-puzzle/export-puzzle.component';
 import { ImportPuzzleComponent } from './ui/puzzle-editing/import-puzzle/import-puzzle.component';
 import { PuzzleInfoFormComponent } from './ui/puzzle-editing/tabbed-dialogs/forms/puzzle-info-form/puzzle-info-form.component';
+import { MycrosswordComponent } from './ui/puzzle-editing/mycrossword/mycrossword.component';
 
 
 const routes: Routes = [
@@ -66,6 +67,7 @@ const routes: Routes = [
     { path: "archive/:provider", component: ArchiveComponent },
     { path: "indy", component: IndyComponent },
     { path: "guardian", component: GuardianComponent },
+    { path: "mycrossword", component: MycrosswordComponent },
     { path: "special", component: SpecialComponent },
     { path: "special-pdf", component: SpecialPdfComponent },
     { path: "special-login", component: SpecialLoginComponent },
