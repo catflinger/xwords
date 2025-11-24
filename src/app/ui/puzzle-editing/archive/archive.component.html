@@ -10,7 +10,10 @@
             <h5 class="card-header">Latest {{provider | provider}} puzzle</h5>
             <div class="card-body">
                 <p *ngIf="latest.date" class="card-text">{{latest.date | date:'EEEE dd MMMM yyyy'}}</p>
-                <p *ngIf="latest.serialNumber" class="card-text">{{latest.serialNumber | serialNumber}}</p>
+                <p>
+                    <span *ngIf="latest.serialNumber" class="card-text">{{latest.serialNumber | serialNumber}}</span>
+                    <span *ngIf="latest.setter" class="card-text"> by {{latest.setter}}</span>
+                </p>
                 <button class="btn btn-primary" (click)="openPuzzle(latest)">Open</button>
             </div>
         </div>
@@ -19,20 +22,26 @@
 
 <div class="row mt-3" *ngIf="archiveItems.length">
     <div class="col">
+        <h5>Puzzles from the archive</h5>
         <table class="table">
             <tbody>
-                <tr>
-                    <td colspan="3">
-                        <h5>Puzzles from the archive</h5>
-                    </td>
-                </tr>
                 <tr *ngFor="let item of archiveItems">
                     <td>{{item.serialNumber | serialNumber}}</td>
                     <td *ngIf="item.date">{{item.date | date:'EEEE dd MMMM yyyy'}}</td>
                     <td *ngIf="!item.date"></td>
+                    <td *ngIf="item.setter">{{item.setter}}</td>
+                    <td *ngIf="!item.setter"></td>
                     <td><button class="btn btn-primary" (click)="openPuzzle(item)">Open</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
+</div>
+
+<div class="row mt-3" *ngIf="provider && provider.startsWith('mycrossword')">
+    <h5>Open a specific puzzle</h5>
+    <app-info-panel [dismissable]="false" [type]="'info'">
+        The list above shows only the featured puzzles from the Mycrosswords site.  Is the puzzle you want not listed here?  If you know the puzzle's type and serial number enter them below.
+    </app-info-panel>
+    <app-mycrossword></app-mycrossword>
 </div>

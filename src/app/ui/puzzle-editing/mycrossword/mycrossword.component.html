@@ -1,33 +1,23 @@
-<div class="row mt-3">
-    <div class="col">
-        <h3>Puzzles from the MyCrossword site</h3>
+<form [formGroup]="form">
+
+    <div class="mb-3">
+        <label class="form-label" for="provider">Puzzle type</label>
+        <select id="provider" class="form-select" class="form-control" formControlName="provider">
+            <option value="mycrossword-featured">featured</option>
+            <option value="mycrossword-cryptic">cryptic</option>
+            <option value="mycrossword-quick">quick</option>
+            <option value="mycrossword-jumbo">jumbo</option>
+            <option value="mycrossword-mini">mini</option>
+        </select>
     </div>
-</div>
 
-<div class="row mt-3">
-    <div class="col">
-        <form [formGroup]="form">
-
-            <div class="mb-3">
-                <label class="form-label" for="provider">Choose a puzzle type</label>
-                <select id="provider" class="form-select" class="form-control" formControlName="provider">
-                    <option value="mycrossword-featured">featured</option>
-                    <option value="mycrossword-cryptic">cryptic</option>
-                    <option value="mycrossword-quick">quick</option>
-                    <option value="mycrossword-jumbo">jumbo</option>
-                    <option value="mycrossword-mini">mini</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label" for="puzzleId">Puzzle ID</label>
-                <input id="puzzleId" type="text" class="form-control" formControlName="id">
-            </div>
-
-            <div class="form-group mt-5">
-                <button class="btn btn-primary me-3" type="button" (click)="openPuzzleById()"
-                    [disabled]="!form.valid">Open</button>
-            </div>
-        </form>
+    <div class="mb-3">
+        <label class="form-label" for="puzzleId">Puzzle number</label>
+        <input id="puzzleId" type="text" class="form-control" formControlName="id">
     </div>
-</div>
+
+    <div class="form-group mt-5">
+        <button class="btn btn-primary me-3" type="button" (click)="openPuzzleById()"
+            [disabled]="!form.valid">Open</button>
+    </div>
+</form>

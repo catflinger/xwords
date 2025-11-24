@@ -67,7 +67,6 @@ const routes: Routes = [
     { path: "archive/:provider", component: ArchiveComponent },
     { path: "indy", component: IndyComponent },
     { path: "guardian", component: GuardianComponent },
-    { path: "mycrossword", component: MycrosswordComponent },
     { path: "special", component: SpecialComponent },
     { path: "special-pdf", component: SpecialPdfComponent },
     { path: "special-login", component: SpecialLoginComponent },
