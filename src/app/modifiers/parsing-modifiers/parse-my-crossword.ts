@@ -5,54 +5,56 @@ import { Clue } from "src/app/model/puzzle-model/clue";
 import { GridReference } from "src/app/model/puzzle-model/grid-reference";
 import { ProviderService } from "src/app/services/puzzles/provider.service";
 
-// This is my interpretation of the structure of the JSON data embedded in The Guardian's crossword page
-interface IGuardianCrossword {
+// The MyCrossword JSON format is based on The Mxw JSON format, so currently most of this is file indentical to parse-guardian.ts
+// Going forward there is no intention to keep the two input formats in synch, so duplicate the code so they can be modified independently
+
+interface IMxwCrossword {
     id: string;
     number: number; // the crossword serial number
     name: string;   // the crossword title
-    creator: IGuardianCreator;
+    creator: IMxwCreator;
     date: number;   // what is this? - the date of what?
     webPublicationDate: number; // the date the crossword was published perhaps?
-    entries: IGuardianEntry[];  // both the clues and grid entries, yuk!
-    dimensions: IGuardianDimensions;    // the size of the grid
+    entries: IMxwEntry[];  // both the clues and grid entries, yuk!
+    dimensions: IMxwDimensions;    // the size of the grid
     crosswordType: string;  // eg "cryptic" or "prize"
     pdf?: string;           // the url of the pdf version of the crossword
     instructions?: string;  // special instructions for this crossword
 }
 
-// IGuardianEntry appears to be a bit of a confused mish-mash between the clues and the grid entries
-// In some repects IGuardianEntry represents a clue, in others it represents a grid entry
+// IMxwEntry appears to be a bit of a confused mish-mash between the clues and the grid entries
+// In some repects IMxwEntry represents a clue, in others it represents a grid entry
 // for example, it has a clue text and a solution (like a clue), but also a position and a length (like a grid entry)
 // However: there is not a 1 to 1 relationship between clues and grid entries, so having a common interface does not make sense
 
-interface IGuardianEntry {
+interface IMxwEntry {
     id: string;         // the unique id of the entry when regarded as a clue
     number: number;     // the grid number (grid anchor) of the entry when regarded as a grid entry
     humanNumber: string; // the caption for the clue - eg "3, 13 across"
     direction: string;  // "across" or "down" - applicable to both the clueand the grid entry
     length: number;     // number of cells in this entry, not the answer to the clue
     group: string[];    // array of IGuradianEntry ids
-    position: IGuardianPosition; // the position of the first cell of this entry (not not necessarily of the solution to the clue) - zero based
+    position: IMxwPosition; // the position of the first cell of this entry (not not necessarily of the solution to the clue) - zero based
     solution?: string;   // the letters that go into this grid entry, not necessarily the solution to the clue
     clue: string;       // the clue text for "number direction" - eg "1 across"
 }
 
-interface IGuardianPosition {
+interface IMxwPosition {
     x: number;  // zero based column index
     y: number;  // zero basedc row index
 }
 
-interface IGuardianCreator {
+interface IMxwCreator {
     name: string;
     webUrl: string;
 }
 
-interface IGuardianDimensions {
+interface IMxwDimensions {
     cols: number;
     rows: number;
 }
 
-export class ParseGuardian extends PuzzleModifier {
+export class ParseMyCrossword extends PuzzleModifier {
 
     constructor(
         private providerService: ProviderService,
@@ -63,9 +65,7 @@ export class ParseGuardian extends PuzzleModifier {
     public exec(puzzle: IPuzzle): void {
 
         try {
-            const source = JSON.parse(puzzle.provision.source);
-
-            const crossword: IGuardianCrossword = source.data;
+            const crossword: IMxwCrossword = JSON.parse(puzzle.provision.source);
 
             puzzle.info.instructions = crossword.instructions;
 
@@ -79,26 +79,23 @@ export class ParseGuardian extends PuzzleModifier {
         }
     }
 
-    private parseSetter(puzzle: IPuzzle, crossword: IGuardianCrossword) {
+    private parseSetter(puzzle: IPuzzle, crossword: IMxwCrossword) {
         const providerString = this.providerService.getProviderString(puzzle.info.provider);
 
         puzzle.info.setter = crossword.creator.name;
         puzzle.info.title = `${providerString} ${crossword.name} by ${puzzle.info.setter}`;
     }
 
-    private parseDate(puzzle: IPuzzle, crossword: IGuardianCrossword) {
+    private parseDate(puzzle: IPuzzle, crossword: IMxwCrossword) {
         try {
-            let date = puzzle.info.puzzleDate;
-            if (!date || !date.getTime || date.getTime() === 0) {
-                puzzle.info.puzzleDate = new Date(crossword.webPublicationDate);
-            }
+            puzzle.info.puzzleDate = new Date(crossword.date);
         } catch { }
     }
 
-    private parseClues(puzzle: IPuzzle, crossword: IGuardianCrossword) {
+    private parseClues(puzzle: IPuzzle, crossword: IMxwCrossword) {
         puzzle.clues = [];
 
-        crossword.entries.forEach((entry: IGuardianEntry) => {
+        crossword.entries.forEach((entry: IMxwEntry) => {
 
             let clueText = (entry.clue as string).replace(/<[a-z/]+>/gi, "");
             let letterCount = Clue.getLetterCount(clueText);
@@ -156,7 +153,7 @@ export class ParseGuardian extends PuzzleModifier {
         });
     }
 
-    private parseGrid(puzzle: IPuzzle, crossword: IGuardianCrossword) {
+    private parseGrid(puzzle: IPuzzle, crossword: IMxwCrossword) {
 
         // create an empty mutable grid
         let grid: IGrid = Grid.createEmptyGrid({
@@ -176,7 +173,7 @@ export class ParseGuardian extends PuzzleModifier {
         });
 
         // add the white cells from the json source
-        crossword.entries.forEach((entry: IGuardianEntry) => {
+        crossword.entries.forEach((entry: IMxwEntry) => {
 
             for (let i = 0; i < entry.length; i++) {
                 let cell: IGridCell;
@@ -266,7 +263,7 @@ export class ParseGuardian extends PuzzleModifier {
         }
     }
 
-    private getRedirect(crossword: IGuardianCrossword, clueId: string): string {
+    private getRedirect(crossword: IMxwCrossword, clueId: string): string {
         let result = null;
         const clue = crossword.entries.find(entry => entry.id === clueId);
 

@@ -8,6 +8,8 @@ export const latestPuzzleVersion: number = 1;
 export type ClueGroup = "across" | "down" | "orphan";
 export type Direction = "across" | "down";
 export type PuzzleProvider =
+
+    // TO DO: change "cryptic", "prize" etc to "guardian-prize", "guardian-cryptic"...
     "cryptic" |
     "cryptic-pdf" |
     "prize" |
@@ -20,7 +22,11 @@ export type PuzzleProvider =
     "ft" |
     "independent" |
     "ios" |
-    "mycrossword" |
+    "mycrossword-featured" |
+    "mycrossword-cryptic" |
+    "mycrossword-quick" |
+    "mycrossword-jumbo" |
+    "mycrossword-mini" |
     "pdf" |
     "local" |
     "text" |

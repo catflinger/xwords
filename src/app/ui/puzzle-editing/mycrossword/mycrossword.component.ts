@@ -27,6 +27,7 @@ export class MycrosswordComponent implements OnInit {
 
         this.form = this.formBuilder.group({
             id: ["", Validators.required],
+            provider: ["mycrossword-featured", Validators.required],
         });
 
         this.appService.clearAlerts();
@@ -38,13 +39,13 @@ export class MycrosswordComponent implements OnInit {
     }
 
     public openPuzzleById() {
-        const serialNumber = parseInt(this.form.value.id, 10);
-
         this.appService.clear();
+
         this.appService.setOpenPuzzleParams({ 
-            provider: "mycrossword",
-            serialNumber
+            provider: this.form.value.provider,
+            serialNumber: parseInt(this.form.value.id, 10)
         });
+        
         this.navService.beginTrack("createArchiveTrack", {}, "open-puzzle");
     }
 }

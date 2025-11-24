@@ -274,7 +274,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                 return this.newPuzzle(params.provider, reducers);
             });
 
-        } else if (params.provider === "cryptic" || params.provider === "prize" || params.provider === "mycrossword") {
+        } else if (params.provider === "cryptic" || params.provider === "prize" || params.provider.startsWith("mycrossword")) {
 
             result = this.httpPuzzleService.providePuzzle(params).then(puzzleExtract => {
                 return this.newPuzzle(params.provider, [new UpdateInfo({ source: puzzleExtract.text })]);

@@ -9,6 +9,17 @@
         <form [formGroup]="form">
 
             <div class="mb-3">
+                <label class="form-label" for="provider">Choose a puzzle type</label>
+                <select id="provider" class="form-select" class="form-control" formControlName="provider">
+                    <option value="mycrossword-featured">featured</option>
+                    <option value="mycrossword-cryptic">cryptic</option>
+                    <option value="mycrossword-quick">quick</option>
+                    <option value="mycrossword-jumbo">jumbo</option>
+                    <option value="mycrossword-mini">mini</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label" for="puzzleId">Puzzle ID</label>
                 <input id="puzzleId" type="text" class="form-control" formControlName="id">
             </div>

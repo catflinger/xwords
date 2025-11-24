@@ -18,6 +18,8 @@ import { FactoryResetClues } from 'src/app/modifiers/clue-modifiers/factory-rese
 import { UpdatePuzzleOptions } from 'src/app/modifiers/publish-options-modifiers/update-puzzle-options';
 import { ParseGuardian } from 'src/app/modifiers/parsing-modifiers/parse-guardian';
 import * as luxon from 'luxon';
+import { ProviderService } from '../puzzles/provider.service';
+import { ParseMyCrossword } from 'src/app/modifiers/parsing-modifiers/parse-my-crossword';
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +32,7 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
         private puzzleManager: IPuzzleManager,
         private textParsingService: TextParsingService,
         private traceService: TraceService,
+        private providerService: ProviderService
     ) {}
 
     async exec(processName: string, appData: AppTrackData): Promise<string> {
@@ -94,6 +97,10 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
                 action = this.parseGuardian();
             break;
 
+            case "parse-mycrossword":
+                action = this.parseMyCrossword();
+            break;
+
             case "pdf-extract":
                 try {
                     action = this.puzzleManager.loadPuzzleFromPdf(this.appService.openPuzzleParameters);
@@ -156,7 +163,29 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
         try {
 
             this.activePuzzle.updateAndCommit(
-                new ParseGuardian(),
+                new ParseGuardian(this.providerService),
+                // Note: the following must be called after the parsing modifier
+                new InitAnnotationWarnings(),
+                new UpdateInfo({ ready: true }),
+            );
+
+            action = "ok";
+
+        } catch(error) {
+            action = "error";
+            this.appService.setAlert("danger", "Parsing Error :" + error);
+        }
+
+        return Promise.resolve(action);
+    }
+
+    private parseMyCrossword(): Promise<string> {
+        let action = "error";
+
+        try {
+
+            this.activePuzzle.updateAndCommit(
+                new ParseMyCrossword(this.providerService),
                 // Note: the following must be called after the parsing modifier
                 new InitAnnotationWarnings(),
                 new UpdateInfo({ ready: true }),

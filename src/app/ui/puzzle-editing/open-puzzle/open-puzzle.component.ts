@@ -71,10 +71,13 @@ export class OpenPuzzleComponent implements OnInit, OnDestroy {
                 this.navService.navigate("parse");
 
             } else if (params.provider === "cryptic" ||
-                params.provider === "prize" ||
-                params.provider === "mycrossword") {
+                params.provider === "prize") {
 
                 this.navService.navigate("parse-guardian");
+
+            } else if (params.provider.startsWith("mycrossword")) {
+
+                this.navService.navigate("parse-mycrossword");
 
             } else {
                 // TO DO: indy and ios still to be locally parsed

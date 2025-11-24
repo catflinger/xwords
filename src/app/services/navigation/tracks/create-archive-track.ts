@@ -18,6 +18,7 @@ export const createArchiveTrack: NavTrack = {
                 "continue": "solver",
                 "parse": "parser",
                 "parse-guardian": "parse-guardian",
+                "parse-mycrossword": "parse-mycrossword",
                 "error": "error",
             }
         },
@@ -36,6 +37,15 @@ export const createArchiveTrack: NavTrack = {
             name: "parse-guardian",
             type: "process",
             process: "parse-guardian",
+            actions: {
+                ok: "solver",
+                error: "error"
+            }
+        },
+        {
+            name: "parse-mycrossword",
+            type: "process",
+            process: "parse-mycrossword",
             actions: {
                 ok: "solver",
                 error: "error"

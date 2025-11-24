@@ -23,6 +23,13 @@ export class ProviderService {
             case "prize-pdf":
                 result = "Guardian Prize";
                 break;
+            case "mycrossword-featured":
+            case "mycrossword-cryptic":
+            case "mycrossword-jumbo":
+            case "mycrossword-mini":
+            case "mycrossword-quick":
+                result = "MyCrossword";
+                break;
             case "quiptic":
                 result = "Quiptic";
                 break;
