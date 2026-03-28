@@ -42,7 +42,7 @@ export class ParseText extends PuzzleModifier {
         // decide once and for all
         // 1) when an exception will be thrown
         // 2) when the parsing will be abandoned and the puzzle update aborted
-        // 2) when the errros will be recorded in the puzzle
+        // 2) when the errors will be recorded in the puzzle
 
         try {
             puzzle.clues = resolveClues(context.value, new Grid(puzzle.grid));
