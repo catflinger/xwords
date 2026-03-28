@@ -270,7 +270,7 @@ export class ParseText extends PuzzleModifier {
 
         // Example: Everyman crossword No. 4056
 
-        let titleExpression = new RegExp(String.raw`Everyman crossword\s+(no|no\.)?\s*(?<serialNumber>[0-9,]{4,5})`, "i");
+        let titleExpression = new RegExp(String.raw`Everyman(\s+crossword)?\s+(no|no\.)?\s*(?<serialNumber>[0-9,]{4,5})`, "i");
         for (let line of lines) {
             let match = titleExpression.exec(line.trim());
 
