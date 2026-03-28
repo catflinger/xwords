@@ -98,7 +98,7 @@ export class ParseGuardian extends PuzzleModifier {
     private parseClues(puzzle: IPuzzle, crossword: IGuardianCrossword) {
         puzzle.clues = [];
 
-        crossword.entries.forEach((entry: IGuardianEntry) => {
+        crossword.entries.forEach((entry: IGuardianEntry, index) => {
 
             let clueText = (entry.clue as string).replace(/<[a-z/]+>/gi, "");
             let letterCount = Clue.getLetterCount(clueText);
@@ -129,6 +129,7 @@ export class ParseGuardian extends PuzzleModifier {
                     isDefinition: false
                 }],
                 warnings: [],
+                lineNumber: index + 1,
             };
 
             entry.group.forEach((groupId: string) => {

@@ -94,9 +94,10 @@ export class ParseMyCrossword extends PuzzleModifier {
 
     private parseClues(puzzle: IPuzzle, crossword: IMxwCrossword) {
         puzzle.clues = [];
+        let lineNumber: number = 0;
 
         crossword.entries.forEach((entry: IMxwEntry) => {
-
+            lineNumber += 1;
             let clueText = (entry.clue as string).replace(/<[a-z/]+>/gi, "");
             let letterCount = Clue.getLetterCount(clueText);
 
@@ -126,6 +127,7 @@ export class ParseMyCrossword extends PuzzleModifier {
                     isDefinition: false
                 }],
                 warnings: [],
+                lineNumber,
             };
 
             entry.group.forEach((groupId: string) => {

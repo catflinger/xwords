@@ -19,11 +19,12 @@ export class AddClue extends PuzzleModifier {
             let clue: IClue = null;
 
             if (puzzle.provision.captionStyle === "numbered" || puzzle.provision.captionStyle === "alphabetical") {
-                const cb: ClueBuffer = new ClueBuffer(puzzle.provision.captionStyle, fullText, this.group);
+                const cb: ClueBuffer = new ClueBuffer(puzzle.provision.captionStyle, 0, fullText, this.group);
 
                 clue = Clue.makeClue(
                     cb.caption,
                     cb.clue,
+                    0,
                     cb.letterCount,
                     this.group,
                     this.clueId
@@ -33,6 +34,7 @@ export class AddClue extends PuzzleModifier {
                 clue = Clue.makeClue(
                     this.caption, 
                     this.text,
+                    0,
                     Clue.getLetterCount(this.text),
                     this.group,
                     this.clueId,

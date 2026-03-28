@@ -22,6 +22,7 @@ export class Clue implements IClue {
     public readonly link: GridLink;
     public readonly chunks: Array<TextChunk>;
     public readonly warnings: Array<ClueValidationWarning>;
+    public readonly lineNumber: number;
 
     constructor(data: any) {
         this.id = data.id;
@@ -33,6 +34,7 @@ export class Clue implements IClue {
         this.format = data.format;
         this.comment = data.comment;
         this.highlight = data.highlight;
+        this.lineNumber = data.lineNumber ? data.lineNumber : 0;
 
         if (data.answers) {
             let answers = [];
@@ -80,13 +82,12 @@ export class Clue implements IClue {
     public get totalLetterCount(): number {
         let total = 0;
 
-        let matches = this.letterCount.match(/(?<numbers>\d+)/g);
+        const format = Clue.getAnswerFormat(this.letterCount);
 
-        if (matches) {
-            total = matches.reduce(
-                (total, match) => total + parseInt(match),
-                0
-            );
+        for(let ch of format) {
+            if (ch === ",") {
+                total++;
+            }
         }
 
         return total;
@@ -148,7 +149,6 @@ export class Clue implements IClue {
         return result.trim();
     }
 
-
     public static getAnswerFormat(letterCount: string): string {
         let result = "";
         let groups = letterCount.split(",");
@@ -190,12 +190,13 @@ export class Clue implements IClue {
         return result;
     }
 
-    public static makeClue(caption: string, text: string, letterCount: string, group: ClueGroup, clueId?: string): Clue {
+    public static makeClue(caption: string, text: string, lineNumber: number, letterCount: string, group: ClueGroup, clueId?: string): Clue {
         return new Clue({
             id: clueId || uuid(),
             group,
             caption,
             text,
+            lineNumber,
             letterCount,
             answers: [""],
             solution: "",

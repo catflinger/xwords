@@ -37,15 +37,16 @@ export class ParseContext implements IParseContext {
         public readonly textParsingOptions: TextParsingOptions,
     ) {}
 
-    public addClueText(text: string) {
+    public addClueText(text: string, lineNumber: number) {
         if (this._state === "across" || this._state === "down" || this._state == "orphan") {
             if (!this._clueBuffer) {
                 this._clueBuffer = new ClueBuffer(
                     this.textParsingOptions.captionStyle,
+                    lineNumber,
                     text,
                     this._state);
             } else {
-                this._clueBuffer.add(text);
+                this._clueBuffer.add(text, 0);
             }
         } else {
             throw "Attempt to add clue text when not reading across or down clues.";
@@ -106,18 +107,21 @@ export class ParseContext implements IParseContext {
                     this._acrossClues.push(Clue.makeClue(
                         this._clueBuffer.caption,
                         this._clueBuffer.clue,
+                        this._clueBuffer.lineNumber,
                         this._clueBuffer.letterCount,
                         "across"));
                 } else if (this._state === "down") {
                     this._downClues.push(Clue.makeClue(
                         this._clueBuffer.caption,
                         this._clueBuffer.clue,
+                        this._clueBuffer.lineNumber,
                         this._clueBuffer.letterCount,
                         "down"));
                 } else if (this._state === "orphan") {
                     this._orphanClues.push(Clue.makeClue(
                         this._clueBuffer.caption,
                         this._clueBuffer.clue,
+                        this._clueBuffer.lineNumber,
                         this._clueBuffer.letterCount,
                         "orphan"));
                 }

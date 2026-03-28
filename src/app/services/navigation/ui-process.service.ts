@@ -20,6 +20,7 @@ import { ParseGuardian } from 'src/app/modifiers/parsing-modifiers/parse-guardia
 import * as luxon from 'luxon';
 import { ProviderService } from '../puzzles/provider.service';
 import { ParseMyCrossword } from 'src/app/modifiers/parsing-modifiers/parse-my-crossword';
+import { SortClues } from 'src/app/modifiers/clue-modifiers/sort-clues';
 
 @Injectable({
     providedIn: 'root'
@@ -139,7 +140,9 @@ export class UIProcessService implements NavProcessor<AppTrackData> {
         try {
             this.activePuzzle.updateAndCommit(
                 new ParseText(this.textParsingService, this.traceService),
-                new SyncGridContent());
+                new SyncGridContent(),
+                new SortClues()
+            );
 
             const errors = this.activePuzzle.puzzle.provision.parseErrors;
 

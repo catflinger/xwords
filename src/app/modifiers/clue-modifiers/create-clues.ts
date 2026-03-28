@@ -77,6 +77,7 @@ export class CreateClues extends PuzzleModifier {
                     isDefinition: false,
                 }
             ],
+            lineNumber: 0
         };
     }
 

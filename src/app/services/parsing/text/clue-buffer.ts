@@ -12,25 +12,32 @@ export class ClueBuffer {
     private _clue: string;
     private _letterCount: string;
     private _gridRefs: ReadonlyArray<GridReference>;
+    private _lineNumber: number = 0;
 
     constructor (
         private captionStyle: CaptionStyle,
         //caption: string | null,
+        lineNumber: number,
         text: string, 
         direction: ClueGroup, 
-        private grid?: Grid
+        private grid?: Grid,
     ) {
         this._rawText = text.trim();
         this._direction = direction;
+        this._letterCount;
+        this._lineNumber = lineNumber;
 
         // TO DO: check that the line has a valid caption
         this.updateAll();
     }
 
-    public add(text: string) {
+    public add(text: string, lineNumber: number) {
         this._rawText += " ";
         this._rawText += text.trim();
         this.updateAll();
+    }
+    public get lineNumber(): number{
+        return this._lineNumber;
     }
     public get rawText(): string{
         return this._rawText;

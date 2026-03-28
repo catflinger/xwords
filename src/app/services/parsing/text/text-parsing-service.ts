@@ -227,7 +227,7 @@ export class TextParsingService {
 
                 } else if (context.spareClueEnd) {
                     // looks like we have found the rest of the earlier unfinished clue
-                    context.addClueText(context.spareClueEnd.text);
+                    context.addClueText(context.spareClueEnd.text, 0);
                     context.save();
                
                 } else {
@@ -243,7 +243,7 @@ export class TextParsingService {
                     // this is good news, the input ends following a completed clue
                 } else if (context.spareClueEnd) {
                     // looks like we have found the rest of the earlier unfinished clue
-                    context.addClueText(context.spareClueEnd.text);
+                    context.addClueText(context.spareClueEnd.text, 0);
                     context.save();
                 }
                 break;
@@ -257,12 +257,12 @@ export class TextParsingService {
             case null:
                 if (context.textParsingOptions.hasClueGroupHeadings === false) {
                     context.state = "across";
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, token.lineNumber);
                     context.save();
                 } else {
                     // we have orphan clues before the first across/down heading
                     context.state = "orphan";
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, token.lineNumber);
                     context.save();
             }
                 break;
@@ -270,7 +270,7 @@ export class TextParsingService {
             case "orphan":
                     if (context.textParsingOptions.hasClueGroupHeadings === true) {
                         context.state = "orphan";
-                        context.addClueText(token.text);
+                        context.addClueText(token.text, token.lineNumber);
                         context.save();
                     } else {
                         // we should never get into orphan mode if there are no group headings
@@ -291,7 +291,7 @@ export class TextParsingService {
             case "across":
             case "down":
                 if (!context.hasContent) {
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, token.lineNumber);
                     context.save();
                 } else {
                     this.handleUnexpectedClue(token, context, grid);
@@ -308,7 +308,7 @@ export class TextParsingService {
                 //if (context.textParsingOptions.allowPreamble) {
                 if (context.textParsingOptions.hasClueGroupHeadings === true) {
                     context.state = "orphan";
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, token.lineNumber);
                 } else {
                     throw new TextParsingError({
                         code: "clueStart_null",
@@ -320,7 +320,7 @@ export class TextParsingService {
             case "across":
             case "down":
                 if (!context.hasContent) {
-                        context.addClueText(token.text);
+                        context.addClueText(token.text, token.lineNumber);
                     if (Clue.isRedirect(context.buffer.clue)) {
                         context.save();
                     }
@@ -333,7 +333,7 @@ export class TextParsingService {
                 if (!context.hasContent) {
                     context.save();
                     context.state = "orphan";
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, token.lineNumber);
                     if (Clue.isRedirect(context.buffer.clue)) {
                         context.save();
                         context.state = "ended";
@@ -347,7 +347,7 @@ export class TextParsingService {
             case "ended": 
                 if (context.textParsingOptions.hasClueGroupHeadings === true) {
                     context.state = "orphan";
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, token.lineNumber);
                 } else if (context.textParsingOptions.allowPostamble) {
                     // This situation is ambiguous.  Probably indicates something that caused the down clues to end early
                     // but we can't be sure at this stage
@@ -386,7 +386,7 @@ export class TextParsingService {
             case "down":
             case "orphan":
                 if (context.hasContent) {
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, 0);
                     context.save();
                 } else {
 
@@ -437,7 +437,7 @@ export class TextParsingService {
             case "orphan":
 
                 if (context.hasContent) {
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, 0);
 
                 } else if (context.textParsingOptions.azedFeatures && azedExp.test(token.text)) {
                     // extracts from AZED pdfs somethimes mistakenly include address details in the across clues
@@ -452,7 +452,7 @@ export class TextParsingService {
             case "across":
 
                 if (context.hasContent) {
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, 0);
 
                 } else if (context.textParsingOptions.azedFeatures && azedExp.test(token.text)) {
                     // extracts from AZED pdfs somethimes mistakenly include address details in the across clues
@@ -468,7 +468,7 @@ export class TextParsingService {
 
             case "down":
                 if (context.hasContent) {
-                    context.addClueText(token.text);
+                    context.addClueText(token.text, 0);
 
                 } else if (context.textParsingOptions.azedFeatures && azedExp.test(token.text)) {
                     // extracts from AZED pdfs somethimes mistakenly include address details in the across clues
@@ -510,7 +510,11 @@ export class TextParsingService {
             // best to not attempt it at all than to code a botched attempt that causes more harm than good.
 
             let expectedNextClueNumber: number = grid.getNextClueNumber(context.buffer.gridRefs[0]);
-            let nextClueBuf = new ClueBuffer(context.textParsingOptions.captionStyle, token.text, context.state as ClueGroup);
+            let nextClueBuf = new ClueBuffer(
+                context.textParsingOptions.captionStyle, 
+                token.lineNumber, 
+                token.text, 
+                context.state as ClueGroup);
 
             let actualNextClueNumber: number = nextClueBuf.gridRefs[0].anchor;
 
@@ -527,7 +531,7 @@ export class TextParsingService {
                 letterCount += ")";
                 
                 // finish off the existing clue with an added lettercount
-                context.addClueText(letterCount);
+                context.addClueText(letterCount, token.lineNumber);
                 context.addWarning(token.lineNumber, `A clue was found that looks to be missing a letter count, a new lettercount has been added.`);
                 context.save();
 
@@ -537,10 +541,10 @@ export class TextParsingService {
             }
             
             if (token.type === "ClueToken") {
-                context.addClueText(token.text);
+                context.addClueText(token.text, token.lineNumber);
                 context.save();
             } else {
-                context.addClueText(token.text);
+                context.addClueText(token.text, token.lineNumber);
             }
         } else {
             throw new TextParsingError({

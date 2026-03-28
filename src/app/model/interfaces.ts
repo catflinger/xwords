@@ -170,6 +170,8 @@ export interface IClue {
     comment: IQuillDelta;
     chunks: Array<ITextChunk>;
     warnings: Array<ClueValidationWarning>;
+
+    lineNumber: number;     // for text parsers: the line number in the source text where the clue began
 }
 
 export interface IPuzzleInfo {
