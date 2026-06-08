@@ -50,7 +50,7 @@ export class Grid implements IGrid {
                     x,
                     y,
                     anchor: 0,
-                    caption: "null",
+                    caption: "",
                     content: "",
                     hasConflict: false,
                     light: true,
