@@ -4,27 +4,31 @@ import { GridProperties } from './grid-properties';
 import { GridReference } from './grid-reference';
 
 export class Grid implements IGrid {
-    public readonly properties: GridProperties;
+    public readonly properties: GridProperties | null = null;
     public readonly cells: GridCell[];
 
     constructor(data: any) {
-        if (data.size) {
-            this.properties = new GridProperties({ 
-                size: {
-                    across: data.size.across, 
-                    down: data.size.down,
-                },
-                style: data.style,
-                numbered: true,
-                symmetrical: true,
-            });
-        } else if (data.properties) {
-            this.properties = new GridProperties(data.properties);
-        }
+        if (data) {
+            if (data.size) {
+                this.properties = new GridProperties({ 
+                    size: {
+                        across: data.size.across, 
+                        down: data.size.down,
+                    },
+                    style: data.style,
+                    numbered: true,
+                    symmetrical: true,
+                });
+            } else if (data.properties) {
+                this.properties = new GridProperties(data.properties);
+            }
 
-        let cells: GridCell[] = [];
-        data.cells.forEach(cell => cells.push(new GridCell(cell)));
-        this.cells = cells;
+            let cells: GridCell[] = [];
+            data.cells.forEach((cell: any) => cells.push(new GridCell(cell)));
+            this.cells = cells;
+        } else {
+            throw new Error("No data provided to Grid constructor");
+        }
     }
 
     
@@ -45,17 +49,17 @@ export class Grid implements IGrid {
                     id: `cell-${x}-${y}`,
                     x,
                     y,
-                    anchor: null,
-                    caption: null,
+                    anchor: 0,
+                    caption: "null",
                     content: "",
                     hasConflict: false,
                     light: true,
                     rightBar: false,
                     bottomBar: false,
                     highlight: false,
-                    textColor: null,
+                    textColor: "",
                     hidden: false,
-                    shading: null,
+                    shading: "",
                     edit: false,
                 };
                 cells.push(cell);
@@ -69,7 +73,7 @@ export class Grid implements IGrid {
     }
 
 
-    public cellAt(x: number, y: number): GridCell {
+    public cellAt(x: number, y: number): GridCell | undefined {
         return this.cells.find((cell) => cell.x === x && cell.y === y);
     }
 

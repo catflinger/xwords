@@ -45,7 +45,7 @@ export class ParseText extends PuzzleModifier {
         // 2) when the errors will be recorded in the puzzle
 
         try {
-            puzzle.clues = resolveClues(context.value, new Grid(puzzle.grid));
+            puzzle.clues = resolveClues(context.value, parseData.grid);
 
             let error: ITextParsingError = JSON.parse(JSON.stringify(context.value.error));
             puzzle.provision.parseErrors = error ? [error] : [];

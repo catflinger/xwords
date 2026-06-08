@@ -42,23 +42,26 @@ export class ClueNumberValidationService {
         const text = clue.text.trim();
         const fullText = caption + " " + text;
 
-        const looksSuspicious = /^\d\s+\d/;
+        if (grid) {
 
-        if (clue.group != "orphan" && looksSuspicious.test(fullText)) {
-            let clueNumber = parseInt(caption);
+            const looksSuspicious = /^\d\s+\d/;
 
-            let gridEntry = grid.getGridEntryFromReference({
-                id: null,
-                anchor: clueNumber,
-                direction: clue.group
-            });
+            if (clue.group != "orphan" && looksSuspicious.test(fullText)) {
+                let clueNumber = parseInt(caption);
 
-            if (gridEntry){
-                if (gridEntry.length !== clue.totalLetterCount) {
+                let gridEntry = grid.getGridEntryFromReference({
+                    id: null,
+                    anchor: clueNumber,
+                    direction: clue.group
+                });
+
+                if (gridEntry){
+                    if (gridEntry.length !== clue.totalLetterCount) {
+                        result = true;
+                    }
+                } else {
                     result = true;
                 }
-            } else {
-                result = true;
             }
         }
 

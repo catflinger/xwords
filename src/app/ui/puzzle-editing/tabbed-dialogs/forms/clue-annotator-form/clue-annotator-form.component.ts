@@ -23,7 +23,7 @@ class AnswerTextChunk {
     constructor(
         public readonly letter: string,
         public readonly klass: AnswerTextKlass,
-    ) {}
+    ) { }
 
     public toString(): string {
         return this.letter;
@@ -41,20 +41,20 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     @Output() dirty = new EventEmitter<void>();
     @Output() requestSave = new EventEmitter<void>();
 
-    @ViewChildren("answer", { read: ElementRef }) children: QueryList<ElementRef>;
+    @ViewChildren("answer", { read: ElementRef }) children: QueryList<ElementRef> | null = null;
 
-    public grid: Grid = null;
-    public clue: Clue;
+    public grid: Grid | null = null;
+    public clue: Clue | null = null;
     public form: FormGroup;
-    public appSettings: AppSettings;
-    public tipInstance: TipInstance;
+    public appSettings: AppSettings | null = null;
+    public tipInstance: TipInstance | null = null;
     public tipStatus: TipStatus = new TipStatus(false, false, false);
     public warnings: ClueValidationWarning[] = [];
     public showAnnotation: boolean = false;
     public latestAnswer: AnswerTextChunk[] = [];
-    public puzzle: Puzzle;
-    
-    private shadowPuzzle: Puzzle;
+    public puzzle: Puzzle | null = null;
+
+    private shadowPuzzle: Puzzle | null = null;
     private subs: Subscription[] = [];
 
     constructor(
@@ -65,7 +65,13 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
         private modalService: NgbModal,
         private detRef: ChangeDetectorRef,
     ) {
-        super(editorService)
+        super(editorService);
+
+        this.form = this.formBuilder.group({
+            answers: this.formBuilder.array([]),
+            comment: [""],
+            chunks: [[]],
+        });
     }
 
     public get answersFormArray(): FormArray {
@@ -73,12 +79,6 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     public ngOnInit() {
-
-        this.form = this.formBuilder.group({
-            answers: this.formBuilder.array([]),
-            comment: [""],
-            chunks: [[]],
-        });
 
         this.subs.push(
             this.form.valueChanges.subscribe(() => {
@@ -96,9 +96,11 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                     if (puzzle) {
 
                         this.clue = puzzle.getSelectedClue();
-                        if (this.clue) {
 
-                            this.shadowPuzzle = this.makeShadowPuzzle(puzzle, this.clue.id);
+                        if (this.clue) {
+                            const clue: Clue = this.clue;
+
+                            this.shadowPuzzle = this.makeShadowPuzzle(puzzle, clue.id);
 
                             this.grid = puzzle.grid;
 
@@ -107,12 +109,12 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                             puzzle.publishOptions.textCols.forEach((col, index) => {
                                 let answerText = "";
 
-                                if (index  === 0) {
+                                if (index === 0) {
                                     const key = this.editorService.lastKeyPress.take();
-                                    answerText = key ? key : this.clue.answers[0];
+                                    answerText = key ? key : clue.answers[0];
 
-                                } else if (index < this.clue.answers.length){
-                                    answerText = this.clue.answers[index];
+                                } else if (index < clue.answers.length) {
+                                    answerText = clue.answers[index];
 
                                 } else {
                                     answerText = "";
@@ -158,8 +160,9 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     public ngAfterViewInit() {
-        if (this.children.length) {
-            setTimeout(() => this.children.first.nativeElement.focus(), 0);
+        if (this.children && this.children.length) {
+            const children = this.children;
+            setTimeout(() => children.first.nativeElement.focus(), 0);
         }
     }
 
@@ -171,16 +174,18 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
         super.ngOnDestroy();
     }
 
-    public trackAnswersBy(index) {
+    public trackAnswersBy(index: any) {
         return index;
     }
 
     public onClearDefinition() {
-        this.form.patchValue({
-            chunks: [new ClueTextChunk(0, this.clue.text, false)]
-        });
-        this.form.markAsDirty();
-        this.validate();
+        if (this.clue) {
+            this.form.patchValue({
+                chunks: [new ClueTextChunk(0, this.clue.text, false)]
+            });
+            this.form.markAsDirty();
+            this.validate();
+        }
     }
 
     public hasDefinition(): boolean {
@@ -203,12 +208,14 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     public onCheat() {
-        this.answersFormArray.controls[0].patchValue({ answer: this.clue.solution });
-        this.form.markAsDirty();
+        if (this.clue) {
+            this.answersFormArray.controls[0].patchValue({ answer: this.clue.solution });
+            this.form.markAsDirty();
 
-        this.validate();
-        this.setLatestAnswer();
-        this.dirty.emit();
+            this.validate();
+            this.setLatestAnswer();
+            this.dirty.emit();
+        }
     }
 
     public onAnnotation() {
@@ -223,9 +230,11 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     public get showTextWarning() {
-        return this.appSettings.general.showCommentValidation.enabled &&
-            this.warnings.length &&
-            !this.clue.redirect;
+        if (this.appSettings && this.clue) {
+            return this.appSettings.general.showCommentValidation.enabled &&
+                this.warnings.length &&
+                !this.clue.redirect;
+        }
     }
 
     public onAnswerSubmit(i: number) {
@@ -242,20 +251,23 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
 
         } else {
 
-            if (this.appSettings.tips.definitionWarning.enabled &&
+            if (this.appSettings &&
+                this.tipInstance &&
+                this.appSettings.tips.definitionWarning.enabled &&
                 !this.tipStatus.show &&
                 this.form.value.chunks.length < 2) {
- 
-                    this.tipInstance.activated = true;
+
+                this.tipInstance.activated = true;
             } else {
- 
+
                 let answer = this.clean(this.form.value.answers[0].answer);
                 let lengthAvailable = 0;
 
-                if (this.grid) {
- 
+                if (this.grid && this.clue) {
+                    const grid = this.grid;
+
                     this.clue.link.gridRefs.forEach(gridRef => {
-                        let ge = this.grid.getGridEntryFromReference(gridRef);
+                        let ge = grid.getGridEntryFromReference(gridRef);
                         if (ge) {
                             lengthAvailable += ge.length;
                         }
@@ -263,7 +275,7 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                 }
 
                 if (answer && lengthAvailable && answer.length !== lengthAvailable) {
- 
+
                     result = this.showSaveWarning("Warning: the answer does not fit the space available in the grid")
                         .then((cancel): boolean => {
                             if (!cancel) {
@@ -272,7 +284,7 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                             this.detRef.detectChanges();
                             return cancel;
                         });
-                } else if (this.clue.solution && answer && answer !== this.clean(this.clue.solution)) {
+                } else if (this.clue && this.clue.solution && answer && answer !== this.clean(this.clue.solution)) {
                     result = this.showSaveWarning("Warning: the answer does match the publsihed solution")
                         .then((cancel): boolean => {
                             if (!cancel) {
@@ -294,22 +306,24 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     private showSaveWarning(message: string): Promise<boolean> {
         let lengthDialog = this.modalService.open(ConfirmModalComponent);
         lengthDialog.componentInstance.message = message;
-        
+
         return lengthDialog.result;
     }
 
     private save() {
-        let answers = this.form.value.answers.map(item => item.answer)
+        if (this.clue) {
+            let answers = this.form.value.answers.map((item: any) => item.answer)
 
-        this.activePuzzle.update(
-            new AnnotateClue(
-                this.clue.id,
-                answers,
-                this.form.value.comment,
-                this.form.value.chunks,
-                this.warnings,
-            ),
-        );
+            this.activePuzzle.update(
+                new AnnotateClue(
+                    this.clue.id,
+                    answers,
+                    this.form.value.comment,
+                    this.form.value.chunks,
+                    this.warnings,
+                ),
+            );
+        }
     }
 
     private clean(answer: string): string {
@@ -319,34 +333,36 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
     }
 
     private setLatestAnswer(): void {
-        let format = this.clue.format;
         let result: AnswerTextChunk[] = [];
 
-        if (format) {
-            let answerChunks: AnswerTextChunk[] = this.getLatestAnswer(this.grid);
-            let formatIndex = 0;
-            let answerChunkIndex = 0;
-    
-            while (formatIndex < format.length) {
-                if (format[formatIndex] === ",") {
-                    if (answerChunkIndex < answerChunks.length) {
-                        result.push(answerChunks[answerChunkIndex]);
-                        answerChunkIndex++;
-                    } else {
-                        result.push(new AnswerTextChunk("_", "xw-placeholder"));
-                    }
-                } else {
-                    result.push(new AnswerTextChunk(format[formatIndex], "separator"));
-                }
-                formatIndex++;
-            }
-    
-            while (answerChunkIndex < answerChunks.length) {
-                result.push(answerChunks[answerChunkIndex]);
-                answerChunkIndex++;
-            }
-            }
+        if (this.clue) {
+            let format = this.clue.format;
 
+            if (format && this.grid) {
+                let answerChunks: AnswerTextChunk[] = this.getLatestAnswer(this.grid);
+                let formatIndex = 0;
+                let answerChunkIndex = 0;
+
+                while (formatIndex < format.length) {
+                    if (format[formatIndex] === ",") {
+                        if (answerChunkIndex < answerChunks.length) {
+                            result.push(answerChunks[answerChunkIndex]);
+                            answerChunkIndex++;
+                        } else {
+                            result.push(new AnswerTextChunk("_", "xw-placeholder"));
+                        }
+                    } else {
+                        result.push(new AnswerTextChunk(format[formatIndex], "separator"));
+                    }
+                    formatIndex++;
+                }
+
+                while (answerChunkIndex < answerChunks.length) {
+                    result.push(answerChunks[answerChunkIndex]);
+                    answerChunkIndex++;
+                }
+            }
+        }
         this.latestAnswer = result;
     }
 
@@ -354,7 +370,8 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
         let result: AnswerTextChunk[] = [];
         const answers = this.form.value.answers;
 
-        if (Array.isArray(answers) && answers.length > 0) {
+        if (this.clue && this.shadowPuzzle && Array.isArray(answers) && answers.length > 0) {
+            const shadowPuzzle = this.shadowPuzzle;
 
             let answer = this.clean(answers[0].answer);
             let index = 0;
@@ -363,41 +380,43 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                 let ge = grid.getGridEntryFromReference(gridRef);
 
                 ge.map(c => c.id)
-                .forEach((id) => {
-                    let cell = this.shadowPuzzle.grid.cells.find((cell) => cell.id === id);
+                    .forEach((id) => {
+                        let cell = shadowPuzzle.grid.cells.find((cell) => cell.id === id);
 
-                    // choose in order of preference:
-                    //     - a letter from the answer
-                    //     - a letter from the grid
-                    //     - a placeholder
+                        if (cell) {
 
-                    let letter = "_";
-                    let klass: AnswerTextKlass = "xw-placeholder";
+                            // choose in order of preference:
+                            //     - a letter from the answer
+                            //     - a letter from the grid
+                            //     - a placeholder
 
-                    let gridEntry = cell.content && cell.content.trim().length > 0 ? cell.content : null;
-                    let editorEntry = answer.length > index ? answer.charAt(index) : null;
+                            let letter = "_";
+                            let klass: AnswerTextKlass = "xw-placeholder";
 
-                    if (!gridEntry) {
-                        if (editorEntry) {
-                            letter = editorEntry;
-                            klass = "editorEntry";
+                            let gridEntry = cell.content && cell.content.trim().length > 0 ? cell.content : null;
+                            let editorEntry = answer.length > index ? answer.charAt(index) : null;
+
+                            if (!gridEntry) {
+                                if (editorEntry) {
+                                    letter = editorEntry;
+                                    klass = "editorEntry";
+                                }
+                            } else {
+                                if (editorEntry && gridEntry !== editorEntry) {
+                                    letter = editorEntry;
+                                    klass = "clash";
+                                } else {
+                                    letter = gridEntry;
+                                    klass = "gridEntry";
+                                }
+                            }
+                            result.push(new AnswerTextChunk(letter, klass));
+                            index++;
                         }
-                    } else {
-                        if (editorEntry && gridEntry !== editorEntry) {
-                            letter = editorEntry;
-                            klass = "clash";
-                        } else {
-                            letter = gridEntry;
-                            klass = "gridEntry";
-                        }
-                    }
-
-                    result.push(new AnswerTextChunk(letter, klass));
-                    index++;
-                });
+                    });
             });
         }
-        
+
         return result;
     }
 
@@ -423,14 +442,14 @@ export class ClueAnnotatorFormComponent extends TabbedDialogFormBase implements 
                 if (answer) {
                     clue.link.gridRefs.forEach((gridRef) => {
                         grid.getGridEntryFromReference(gridRef)
-                        .map(c => c.id)
-                        .forEach((id) => {
-                            let cell = puzzle.grid.cells.find(c => c.id === id);
-                            if (index < answer.length) {
-                                cell.content = answer.charAt(index);
-                            }
-                            index++;
-                        });
+                            .map(c => c.id)
+                            .forEach((id) => {
+                                let cell = puzzle.grid.cells.find(c => c.id === id);
+                                if (cell && index < answer.length) {
+                                    cell.content = answer.charAt(index);
+                                }
+                                index++;
+                            });
                     });
                 }
             });
