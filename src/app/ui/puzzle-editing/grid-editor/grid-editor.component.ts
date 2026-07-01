@@ -35,7 +35,7 @@ type ToolType = "grid" | "text" | "color" | "properties" | "captions" | "cells";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridEditorComponent implements OnInit, OnDestroy {
-    public puzzle: Puzzle = null;
+    public puzzle: Puzzle | null = null;
     public form: FormGroup;
     public captionForm: FormGroup;
     public symmetrical: boolean = true;
@@ -44,19 +44,19 @@ export class GridEditorComponent implements OnInit, OnDestroy {
     public options: GridControlOptions = { editor: GridEditors.cellEditor, showHiddenCells: false };
     public gridEditors = GridEditors;
 
-    public dataUrl: string;
-    public filename: string;
+    public dataUrl: string | null = null;
+    public filename: string | null = null;
     public cssColorNameFromValue = cssColorNameFromValue;
 
-    @ViewChild("downloadLink", { static: false }) downloadLink: ElementRef;
-    @ViewChild(GridComponent, { static: false }) gridControl: GridComponent;
-    @ViewChild("captionControl", { static: false }) captionControl : ElementRef;
+    @ViewChild("downloadLink", { static: false }) downloadLink: ElementRef | undefined;
+    @ViewChild(GridComponent, { static: false }) gridControl: GridComponent | undefined;
+    @ViewChild("captionControl", { static: false }) captionControl : ElementRef | undefined;
 
     private subs: Subscription[] = [];
     public tool: ToolType = "grid";
     public colorsUsed: string[] = [];
     
-    private gridEditor: GridEditor;
+    private gridEditor: GridEditor | undefined;
 
     constructor(
         private navService: NavService<AppTrackData>,
@@ -65,18 +65,18 @@ export class GridEditorComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private gridEditorService: GridEditorService,
         private detRef: ChangeDetectorRef,
-    ) { }
-
-    public ngOnInit() {
-
+    ) {
         this.form = this.formBuilder.group({
-            title: ["", Validators.required],
-            shadingColor: "#f0f8ff",
+        title: ["", Validators.required],
+        shadingColor: "#f0f8ff",
         });
 
         this.captionForm = this.formBuilder.group({
             caption: ["", Validators.maxLength(2)],
         });
+     }
+
+    public ngOnInit() {
 
         this.gridEditor = this.gridEditorService.getEditor(this.options.editor);
 
@@ -223,7 +223,7 @@ export class GridEditorComponent implements OnInit, OnDestroy {
         switch(this.tool) {
             case "grid":
                 const symCell = this.getSymCell(cell);
-                if (this.puzzle.grid.properties.style === "standard") {
+                if (this.puzzle?.grid?.properties?.style === "standard") {
                     const newVal = !cell.light;
                     let mods: PuzzleModifier[] = [new UpdateCell(cell.id, { light: newVal })];
 
@@ -255,8 +255,8 @@ export class GridEditorComponent implements OnInit, OnDestroy {
                 break;
                 
             case "color":
-                let color: string = cell.shading && cell.shading === this.form.value.shadingColor ? null : this.form.value.shadingColor;
-                if (cell.light) {
+                let color: string = (cell.shading && cell.shading === this.form.value.shadingColor) ? "" : this.form.value.shadingColor;
+                if (cell.light && color) {
                     this.activePuzzle.updateAndCommit(new UpdateCell(cell.id, { shading: color }));
                 }
                 break;
@@ -275,15 +275,15 @@ export class GridEditorComponent implements OnInit, OnDestroy {
                     new UpdateCell(cell.id, { 
                         hidden: !cell.hidden,
                         light: cell.hidden,
-                        shading: null,
-                        content: null,
+                        shading: "",
+                        content: "",
                         rightBar: false,
                         bottomBar: false,
                     }),
                     new RenumberGid()
                 ];
 
-                if (this.puzzle.grid.properties.numbered) {
+                if (this.puzzle?.grid?.properties?.numbered) {
                     mods.push(new SetGridCaptions());
                 }
                 
@@ -300,9 +300,9 @@ export class GridEditorComponent implements OnInit, OnDestroy {
         this.appService.clear();
         let updates: PuzzleModifier[] = [];
 
-        if (this.tool === "grid" && this.puzzle.grid.properties.style === "barred") {
+        if (this.tool === "grid" && this.puzzle?.grid?.properties?.style === "barred") {
             const cell = event.cell;
-            let symCell = this.getSymCell(cell);
+            let symCell: GridCell | undefined = this.getSymCell(cell);
 
             if (event.bar === "rightBar") {
                 updates.push(new UpdateCell(cell.id, { rightBar: !cell.rightBar }));
@@ -310,7 +310,9 @@ export class GridEditorComponent implements OnInit, OnDestroy {
                 if (symCell && symCell.x > 0) {
                     // sym cell needs to alter the left bar, so use right bar from neighbouring cell
                     symCell = this.puzzle.grid.cellAt(symCell.x - 1, symCell.y);
-                    updates.push(new UpdateCell(symCell.id, { rightBar: !cell.rightBar }));
+                    if (symCell) {
+                        updates.push(new UpdateCell(symCell.id, { rightBar: !cell.rightBar }));
+                    }
                 }
             } else {
                 updates.push(new UpdateCell(cell.id, { bottomBar: !cell.bottomBar }));
@@ -318,7 +320,9 @@ export class GridEditorComponent implements OnInit, OnDestroy {
                 if (symCell && symCell.y > 0) {
                     // sym cell needs to alter the top bar, so use bottom bar from cell above
                     symCell = this.puzzle.grid.cellAt(symCell.x, symCell.y - 1);
-                    updates.push(new UpdateCell(symCell.id, { bottomBar: !cell.bottomBar }));
+                    if (symCell) {
+                        updates.push(new UpdateCell(symCell.id, { bottomBar: !cell.bottomBar }));
+                    }
                 }
             }
             updates.push(new RenumberGid());
@@ -338,7 +342,7 @@ export class GridEditorComponent implements OnInit, OnDestroy {
     public onGridText(event: GridTextEvent) {
         this.appService.clear();
 
-        let updates = this.gridEditor.onGridText(this.puzzle, event.text, event.writingDirection);
+        let updates = this.gridEditor?.onGridText(this.puzzle, event.text, event.writingDirection);
         this.activePuzzle.updateAndCommit(...updates);
     }
 

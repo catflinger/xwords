@@ -21,7 +21,7 @@ import { cssColorNameFromValue} from "../../puzzle-publishing/color-control/colo
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PublishGridComponent implements OnInit {
-    public puzzle: Puzzle = null;
+    public puzzle: Puzzle | null = null;
     private subs: Subscription[] = [];
     public colorsUsed: string[] = [];
     public form: FormGroup;
@@ -36,11 +36,11 @@ export class PublishGridComponent implements OnInit {
         private activePuzzle: IActivePuzzle,
         private fromBuilder: FormBuilder,
         private changeRef: ChangeDetectorRef,
-    ) { }
+    ) {
+        this.form = this.fromBuilder.group({ color: "#ffebcd"});
+    }
 
     public ngOnInit() {
-
-        this.form = this.fromBuilder.group({ color: "#ffebcd"});
 
         if (!this.activePuzzle.hasPuzzle) {
             this.navService.goHome();
@@ -75,7 +75,7 @@ export class PublishGridComponent implements OnInit {
     public onCellClick(cell: GridCell) {
         this.appService.clear();
         // overwrite if a new color, clear if the same color
-        let color: string = cell.shading && cell.shading === this.form.value.color ? null : this.form.value.color;
+        let color: string = (cell.shading && cell.shading === this.form.value.color) ? "" : this.form.value.color;
         if (cell.light) {
             this.activePuzzle.updateAndCommit(new UpdateCell(cell.id, { shading: color }));
         }

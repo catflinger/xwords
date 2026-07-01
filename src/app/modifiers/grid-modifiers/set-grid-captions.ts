@@ -9,7 +9,7 @@ export class SetGridCaptions extends PuzzleModifier {
         if (puzzle.grid) {
 
             if (puzzle.grid.properties.numbered) {
-                puzzle.grid.cells.forEach(cell => cell.caption = cell.anchor ? cell.anchor.toString() : null );
+                puzzle.grid.cells.forEach(cell => cell.caption = cell.anchor ? cell.anchor.toString() : "" );
             }
         }
     }

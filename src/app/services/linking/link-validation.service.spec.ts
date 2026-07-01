@@ -81,7 +81,7 @@ function emptyGridData(): IGrid {
                 id: x.toString() + y.toString(),
                 x,
                 y,
-                anchor: null,
+                anchor: NaN,
                 content: "",
                 rightBar: false,
                 bottomBar: false,

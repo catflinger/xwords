@@ -21,19 +21,18 @@ export class GridCell implements IGridCell {
         this.id = data.id;
         this.x = data.x;
         this.y = data.y;
-        this.anchor = data.anchor ?? 0;
-        this.caption = data.caption ?? null;
+        this.caption = data.caption ?? "";
         this.content = data.content;
-        this.light = data.light;
-        this.rightBar = data.rightBar;
-        this.bottomBar = data.bottomBar;
-        this.highlight = data.highlight;
-        this.textColor = data.textColor ?? null;
-        this.shading = data.shading;
+        this.light = !!data.light;
+        this.rightBar = !!data.rightBar;
+        this.bottomBar = !!data.bottomBar;
+        this.highlight = !!data.highlight;
+        this.textColor = data.textColor ? data.textColor : "";
+        this.shading = data.shading ? data.shading : "";
         this.edit = data.edit;
         this.hidden = !!data.hidden;
         this.hasConflict = !!data.hasConflict;
 
-        this.anchor = (data.label || data.anchor) || null;
+        this.anchor = (data.label || data.anchor) || 0;
     }
 }

@@ -6,7 +6,7 @@ import { Puzzle } from '../../model/puzzle-model/puzzle';
 import { HttpPuzzleSourceService } from './http-puzzle-source.service';
 import { Clear } from '../../modifiers/puzzle-modifiers/clear';
 import { PuzzleModifier } from '../../modifiers/puzzle-modifier';
-import { PuzzleProvider, IPuzzleSummary, latestPuzzleVersion } from '../../model/interfaces';
+import { PuzzleProvider, IPuzzleSummary, latestPuzzleVersion, IGrid } from '../../model/interfaces';
 import { InitAnnotationWarnings } from '../../modifiers/puzzle-modifiers/init-annotation-warnings';
 import { OpenPuzzleParamters } from '../../ui/general/app.service';
 import { AppResultSymbols } from '../common';
@@ -32,7 +32,7 @@ export abstract class IActivePuzzle {
     abstract observe(): Observable<Puzzle>;
     abstract get puzzle(): Puzzle;
     abstract hasPuzzle: boolean;
-    abstract clear(id?: string);
+    abstract clear(id?: string): void;
     abstract update(...reducers: PuzzleModifier[]): void;
     abstract commit(): void;
     abstract discard(): void;
@@ -197,7 +197,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
             let clone = this.getMutableCopy(this.newPuzzle("grid"));
 
             clone.info.title = "Copy of " + puzzle.info.title;
-            clone.grid = puzzle.grid;
+            clone.grid = puzzle.grid as IGrid;
             clone.ready = true;
 
             this.savePuzzle(clone);

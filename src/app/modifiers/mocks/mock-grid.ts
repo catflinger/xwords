@@ -36,7 +36,7 @@ export class MockGrid {
             bottomBar: false,
             rightBar: false,
             highlight: false,
-            shading: "true",
+            shading: "",
             edit: false,
         }
     }

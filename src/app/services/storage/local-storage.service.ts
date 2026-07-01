@@ -12,9 +12,9 @@ export class LocalStorageService {
 
     public getUserSettings(): string {
         try {
-            return localStorage.getItem("xw-user-settings");
+            return localStorage.getItem("xw-user-settings") ?? "";
         } catch(error) {
-            return null;
+            return "";
         }
     }
 
@@ -40,7 +40,7 @@ export class LocalStorageService {
         for(let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
 
-            if (key.startsWith("xw-puzzle-")) {
+            if (key && key.startsWith("xw-puzzle-")) {
                 let data: any = JSON.parse(localStorage[key]);
                 
                 // load as new puzzle to ensure backward-compatibity conversions are run

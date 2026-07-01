@@ -14,7 +14,7 @@ export class GridEditorService {
 
     constructor() { }
 
-    public getEditor(token: Symbol): GridEditor {
+    public getEditor(token: Symbol | undefined): GridEditor {
         let editor: GridEditor;
 
         switch (token) {

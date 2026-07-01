@@ -7,7 +7,7 @@ export class ClearShading extends PuzzleModifier {
     exec(puzzle: IPuzzle) {
         if (puzzle.grid) {
             puzzle.grid.cells.forEach((cell) => {
-                cell.shading = null;
+                cell.shading = "";
             });
         }
 

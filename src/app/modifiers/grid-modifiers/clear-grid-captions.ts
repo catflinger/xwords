@@ -6,7 +6,7 @@ export class ClearGridCaptions extends PuzzleModifier {
 
     exec(puzzle: IPuzzle) {
         if (puzzle.grid) {
-            puzzle.grid.cells.forEach(cell => cell.caption = null );
+            puzzle.grid.cells.forEach(cell => cell.caption = "" );
         }
     }
 }

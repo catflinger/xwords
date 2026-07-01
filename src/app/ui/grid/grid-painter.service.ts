@@ -6,11 +6,11 @@ import { GridProperties } from 'src/app/model/puzzle-model/grid-properties';
 import { IGridCell } from 'src/app/model/interfaces';
 
 export class GridDisplayInfo {
-    public top: number;
-    public left: number;
-    public height: number;
-    public width: number;
-    public unit: "px";
+    public top: number = NaN;
+    public left: number = NaN;
+    public height: number = NaN;
+    public width: number = NaN;
+    public unit: "px" = "px";
 }
 
 @Injectable({
@@ -38,7 +38,7 @@ export class GridPainterService {
     //     }
     // }
 
-    public getCellInfo(context: CanvasRenderingContext2D, grid: Grid, cellId: string, gridParams: GridParameters): GridDisplayInfo {
+    public getCellInfo(context: CanvasRenderingContext2D, grid: Grid, cellId: string, gridParams: GridParameters): GridDisplayInfo | null {
         let cell = grid.cells.find(c => c.id === cellId);
 
         if (!cell) {
@@ -63,7 +63,7 @@ export class GridPainterService {
     public drawGrid(context: CanvasRenderingContext2D, grid: Grid, options: GridControlOptions, gridParams: GridParameters, caption: string): void {
 
         context.setTransform(1, 0, 0, 1, 0, 0);
-        context.fillStyle = "white";
+        context.fillStyle = gridParams.gridBackgroundColor;
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
         context.translate(gridParams.gridPadding, gridParams.gridPadding);
@@ -79,7 +79,9 @@ export class GridPainterService {
         }
     }
 
-    private drawCell(context: CanvasRenderingContext2D, cell: GridCell, options: GridControlOptions, gridParams: GridParameters, gridProperties: GridProperties) {
+    private drawCell(context: CanvasRenderingContext2D, cell: GridCell, options: GridControlOptions, gridParams: GridParameters | null, gridProperties: GridProperties | null) {
+        if (!gridParams || !gridProperties) throw "GridParameters parameter is null";
+
         const top = cell.y * gridParams.cellSize;
         const left = cell.x * gridParams.cellSize;
         const size = gridParams.cellSize;
@@ -99,7 +101,7 @@ export class GridPainterService {
             const hideHighlight = options?.hideHighlight;
 
             // highlight cells that are in focus
-            let bgColor: string = null;
+            let bgColor: string = gridParams.gridBackgroundColor;
 
             if (showConflicts && cell.hasConflict) {
                 bgColor = gridParams.conflictColor;
@@ -121,7 +123,7 @@ export class GridPainterService {
                     gridParams);
             }
 
-            // draw the cell context
+            // draw the cell content
             this.drawContent(
                 context,
                 left,
@@ -232,9 +234,10 @@ export class GridPainterService {
         
         if (cellText) {
             context.save();
-            
-            context.strokeStyle = cell.textColor ?? gridParams.gridColor;
-            context.fillStyle = cell.textColor ?? gridParams.gridColor;
+
+            context.strokeStyle = cell.textColor ? cell.textColor : gridParams.gridColor;
+            context.fillStyle = cell.textColor ? cell.textColor : gridParams.gridColor;
+
             context.font = gridParams.textFont;
             context.textAlign = "center";
             context.textBaseline = "middle";
@@ -249,7 +252,9 @@ export class GridPainterService {
             }
     }
 
-    private drawGridCaption(context: CanvasRenderingContext2D, caption: string, gridParams: GridParameters, gridProps: GridProperties) {
+    private drawGridCaption(context: CanvasRenderingContext2D, caption: string, gridParams: GridParameters | null, gridProps: GridProperties | null) {
+        if (!gridParams || !gridProps) throw "GridParameters parameter is null";
+
         context.font = gridParams.textFont;
         context.textAlign = "start";
         context.textBaseline = "hanging";
@@ -277,7 +282,7 @@ export class GridPainterService {
             } else {
                 let previousCell = grid.cellAt(cell.x - 1, cell.y);
 
-                if (!cell.hidden && previousCell.hidden) {
+                if ( !cell.hidden && previousCell && previousCell.hidden) {
                     drawLeftBorder = true;
                 }
             }
@@ -289,7 +294,7 @@ export class GridPainterService {
             } else {
                 let previousCell = grid.cellAt(cell.x, cell.y - 1);
 
-                if (!cell.hidden && previousCell.hidden) {
+                if (!cell.hidden && previousCell && previousCell.hidden) {
                     drawTopBorder = true;
                 }
             }

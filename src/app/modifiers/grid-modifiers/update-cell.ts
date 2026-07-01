@@ -21,7 +21,7 @@ export class UpdateCell extends PuzzleModifier {
             let cell = puzzle.grid.cells.find((cell) => cell.id === this.cellId);
             if (cell) {
                 if (this.args.shading !== undefined) {
-                    cell.shading = this.args.shading;
+                    cell.shading = this.args.shading ? this.args.shading : "";
                 }
                 if (this.args.caption !== undefined) {
                     cell.caption = this.args.caption;
@@ -32,7 +32,7 @@ export class UpdateCell extends PuzzleModifier {
                 if (this.args.light !== undefined) {
                     cell.light = this.args.light;
                     if (!cell.light) {
-                        cell.shading = null;
+                        cell.shading = "";
                     }
                 }
                 if (this.args.rightBar !== undefined) {

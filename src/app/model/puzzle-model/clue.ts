@@ -33,7 +33,7 @@ export class Clue implements IClue {
         this.annotation = data.annotation;
         this.format = data.format;
         this.comment = data.comment;
-        this.highlight = data.highlight;
+        this.highlight = !!data.highlight;
         this.lineNumber = data.lineNumber ? data.lineNumber : 0;
 
         if (data.answers) {
