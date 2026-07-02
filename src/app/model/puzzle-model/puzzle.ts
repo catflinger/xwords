@@ -62,8 +62,8 @@ export class Puzzle implements IPuzzle {
         if (data.publishOptions) {
             this.publishOptions = new PublishOptions(data.publishOptions);
         }
-        this.ready = typeof data.ready === "boolean" ? data.ready : false;
 
+        this.ready = typeof data.ready === "boolean" ? data.ready : false;
     }
 
     public getSelectedClue(): Clue {

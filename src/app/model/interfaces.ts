@@ -182,6 +182,7 @@ export interface IPuzzleInfo {
     setter: string;
     wordpressId: number;
     instructions: string;
+    href: string;
 } 
 
 export interface IPuzzleOptions {
@@ -311,7 +312,7 @@ export interface IPuzzle {
 // TO DO: find a better home for these
 
 export abstract class ILinkWarning {
-    public readonly message: string;
+    public readonly message: string = "";
 }
 
 export abstract class IPuzzleSummary {

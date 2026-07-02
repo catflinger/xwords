@@ -10,6 +10,7 @@ import { AppSettingsService } from 'src/app/services/app/app-settings.service';
 import { AppSettings } from 'src/app/services/common';
 import { NavService } from '../../../services/navigation/nav.service';
 import { AppTrackData } from '../../../services/navigation/tracks/app-track-data';
+import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
 
 @Component({
     selector: 'app-publish-preamble',
@@ -18,7 +19,7 @@ import { AppTrackData } from '../../../services/navigation/tracks/app-track-data
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PublishPreambleComponent implements OnInit {
-    public puzzle = null;
+    public puzzle: Puzzle | null = null;
     public form: FormGroup;
     public appStatus: AppStatus;
     public sample: Clue[];
@@ -38,7 +39,7 @@ export class PublishPreambleComponent implements OnInit {
 
     ngOnInit() {
         window.scrollTo(0, 0);
-        
+
         this.subs.push(this.appService.getObservable().subscribe(appStatus => {
             this.appStatus = appStatus;
             this.detRef.detectChanges();
@@ -115,6 +116,40 @@ export class PublishPreambleComponent implements OnInit {
             
             this.navService.navigate("preview");
     }
+
+    public onAddHref() {
+        if (this.puzzle?.info?.href ) {
+            const current: {ops: any[]} = this.form.value.header;
+
+            let next = {
+                ops: [
+                    {
+                        insert: "The original puzzle "
+                    },
+                    {
+                        attributes: {
+                            link: this.puzzle.info.href,
+                        },
+                        insert: "may be found here"
+                    },
+                    {
+                        insert: ".\n"
+                    },
+                    {
+                        insert: "\n"
+                    },
+                    ...current.ops
+                ]
+            }
+
+            this.form.patchValue({header: next});
+            this.detRef.detectChanges();
+        }
+    }
+
+    // public onDebug() {
+    //     console.log(`QUILL ${JSON.stringify(this.form.value.header, null, 2)}`);
+    // }
 
     public getUsername(): string {
         return this.appSettings && this.appSettings.username ? 

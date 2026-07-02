@@ -258,7 +258,8 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
             reducers.push(new UpdateInfo({ 
                 source: pdfExtract.text,
-                puzzleDate: pdfExtract.date ? new Date(pdfExtract.date) : null
+                puzzleDate: pdfExtract.date ? new Date(pdfExtract.date) : null,
+                href: pdfExtract.href
              }));
 
                 if (pdfExtract.grid) {
@@ -277,7 +278,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
         } else if (params.provider === "cryptic" || params.provider === "prize" || params.provider.startsWith("mycrossword")) {
 
             result = this.httpPuzzleService.providePuzzle(params).then(puzzleExtract => {
-                return this.newPuzzle(params.provider, [new UpdateInfo({ source: puzzleExtract.text })]);
+                return this.newPuzzle(params.provider, [new UpdateInfo({ source: puzzleExtract.text, href: puzzleExtract.href })]);
             });
 
         } else {

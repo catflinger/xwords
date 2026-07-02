@@ -18,8 +18,8 @@ import { fifteensquaredAnswerStyle, fifteensquaredClueStyle, fifteensquaredDefin
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PublishOptionsComponent implements OnInit, OnDestroy {
-    public puzzle: Puzzle = null;
-    public appStatus: AppStatus;
+    public puzzle: Puzzle | null = null;
+    public appStatus: AppStatus | null = null;
     public form: FormGroup;
     
     private subs: Subscription[] = [];
@@ -30,10 +30,7 @@ export class PublishOptionsComponent implements OnInit, OnDestroy {
         private activePuzzle: IActivePuzzle,
         private fb: FormBuilder,
         private detRef: ChangeDetectorRef,
-    ) { }
-
-    ngOnInit() {
-
+    ) {
         this.form = this.fb.group({
             includeGrid: null, 
             layout: null, 
@@ -45,6 +42,9 @@ export class PublishOptionsComponent implements OnInit, OnDestroy {
             clueStyle: null,
             definitionStyle: null,
         });
+    }
+
+    ngOnInit() {
 
         this.subs.push(this.appService.getObservable().subscribe(appStatus => {
             this.appStatus = appStatus;

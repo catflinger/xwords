@@ -5,12 +5,13 @@ import { AuthService } from '../app/auth.service';
 import { OpenPuzzleParamters } from '../../ui/general/app.service';
 import { Base64Encoded } from '../../model/interfaces';
 
-abstract class ApiPdfExtractResponse implements ApiResponse {
+abstract class ApiProvisionResponse implements ApiResponse {
     public abstract success: ApiResponseStatus;
     public abstract message: string;
     public abstract grid: any;
     public abstract text: string;
     public abstract date: string;
+    public abstract href: string;
 }
 
 abstract class ApiPuzzleResponse implements ApiResponse {
@@ -27,11 +28,11 @@ export interface PuzzleResponse {
     readonly completionState: string;
 }
 
-
 export interface PuzzleProvisionResponse {
     readonly grid?: any;
     readonly text: string;
     readonly date: string;
+    readonly href: string;
 }
 
 @Injectable({
@@ -61,13 +62,18 @@ export class HttpPuzzleSourceService {
 
         return this.http.post(getApiRoot() + "provision/", params)
         .toPromise()
-        .then((data: ApiPdfExtractResponse) => {
-            if (data.success === ApiResponseStatus.OK) {
-                return data as PuzzleProvisionResponse;
-            } else if (data.success === ApiResponseStatus.authorizationFailure) {
-                throw AppResultSymbols.AuthorizationFailure;
+        .then((response) => {
+            if (response) {
+                const data: ApiProvisionResponse = response as ApiProvisionResponse;
+                if (data.success === ApiResponseStatus.OK) {
+                    return data as PuzzleProvisionResponse;
+                } else if (data.success === ApiResponseStatus.authorizationFailure) {
+                    throw AppResultSymbols.AuthorizationFailure;
+                } else {
+                    throw data.message;
+                }
             } else {
-                throw data.message;
+                throw "No data returned from server."
             }
         });
     }
@@ -88,13 +94,19 @@ export class HttpPuzzleSourceService {
 
         return this.http.post(getApiRoot() + "puzzle/", params)
         .toPromise()
-        .then((data: ApiPuzzleResponse) => {
-            if (data.success === ApiResponseStatus.OK) {
-                return data as PuzzleResponse;
-            } else if (data.success === ApiResponseStatus.authorizationFailure) {
-                throw AppResultSymbols.AuthorizationFailure;
+        .then((response) => {
+            if (response) {
+                const data: ApiPuzzleResponse = response as ApiPuzzleResponse;
+                
+                if (data.success === ApiResponseStatus.OK) {
+                    return data as PuzzleResponse;
+                } else if (data.success === ApiResponseStatus.authorizationFailure) {
+                    throw AppResultSymbols.AuthorizationFailure;
+                } else {
+                    throw data.message;
+                }
             } else {
-                throw data.message;
+                throw "No data returned form server."
             }
         });
     }
@@ -121,42 +133,21 @@ export class HttpPuzzleSourceService {
 
         return this.http.post(getApiRoot() + "pdfextract/", params)
         .toPromise()
-        .then((data: ApiPdfExtractResponse) => {
-            if (data.success === ApiResponseStatus.OK) {
-                return data as PuzzleProvisionResponse;
-            } else if (data.success === ApiResponseStatus.authorizationFailure) {
-                throw AppResultSymbols.AuthorizationFailure;
+        .then((response) => {
+            if (response) {
+                const data: ApiProvisionResponse = response as ApiProvisionResponse;
+
+                if (data.success === ApiResponseStatus.OK) {
+                    return data as PuzzleProvisionResponse;
+                } else if (data.success === ApiResponseStatus.authorizationFailure) {
+                    throw AppResultSymbols.AuthorizationFailure;
+                } else {
+                    throw data.message;
+                }
             } else {
-                throw data.message;
+                throw "No data returned from server."
             }
         });
     }
-
-    public housekeep(): Promise<void> {
-        const credentials = this.authService.getCredentials();
-
-        if (!credentials.authenticated) {
-            return Promise.reject(AppResultSymbols.AuthorizationFailure);
-        }
-
-        let params: any = {
-            username: credentials.username,
-            password: credentials.password,
-            sandbox: credentials.sandbox,
-        }
-
-        return this.http.post(getApiRoot() + "admin/", params)
-        .toPromise()
-        .then((data: ApiPdfExtractResponse) => {
-            if (data.success === ApiResponseStatus.OK) {
-                return;
-            } else if (data.success === ApiResponseStatus.authorizationFailure) {
-                throw AppResultSymbols.AuthorizationFailure;
-            } else {
-                throw data.message;
-            }
-        });
-    }
-
 }
 

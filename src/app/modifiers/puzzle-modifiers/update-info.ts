@@ -13,6 +13,7 @@ export class UpdateInfo extends PuzzleModifier {
             provider?: PuzzleProvider,
             instructions?: string,
             ready?: boolean,
+            href?: string
         },
     ) {  super(); }
 
@@ -25,6 +26,9 @@ export class UpdateInfo extends PuzzleModifier {
         }
         if (this.args.title !== undefined) {
             puzzle.info.title = this.args.title;
+        }
+        if (this.args.href !== undefined) {
+            puzzle.info.href = this.args.href;
         }
         if (this.args.setter !== undefined) {
             puzzle.info.setter = this.args.setter;

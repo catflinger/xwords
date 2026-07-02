@@ -1,4 +1,13 @@
 <h3>preamble</h3>
+
+<div *ngIf="puzzle?.info?.href">
+    <div>
+        The original puzzle may be found here: 
+        <a href="{{ puzzle?.info?.href }}" target="_blank">{{ puzzle?.info?.href }}</a>
+    </div>
+    <button type="button" class="btn btn-outline-primary btn-sm" (click)="onAddHref()">Insert this link</button>
+</div>
+
 <form [formGroup]="form" *ngIf="puzzle">
 
     <div class="row" *ngIf="puzzle">

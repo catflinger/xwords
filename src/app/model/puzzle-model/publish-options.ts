@@ -13,8 +13,7 @@ export class PublishOptions implements IPublishOptions {
     public readonly spacing: Spacing;
     public readonly useThemeDefaults: boolean;
 
-
-    constructor(data) {
+    constructor(data: any) {
         this.includeGrid = !!(data.includeGrid);
         this.useThemeDefaults = typeof data.useThemeDefaults === "undefined" ? true : !!data.useThemeDefaults;
         
@@ -26,8 +25,8 @@ export class PublishOptions implements IPublishOptions {
         this.spacing = data.spacing ? data.spacing : "medium";
 
         if (data.textStyles) {
-            let styles = [];
-            data.textStyles.forEach(style => styles.push(new TextStyle(style)));
+            let styles: TextStyle[] = [];
+            data.textStyles.forEach((style: any) => styles.push(new TextStyle(style)));
             this.textStyles = styles;
         } else {
             this.textStyles = [
@@ -38,8 +37,8 @@ export class PublishOptions implements IPublishOptions {
         }
 
         if (data.textCols) {
-            let cols = [];
-            data.textCols.forEach(col => cols.push(new TextColumn(col)));
+            let cols: TextColumn[] = [];
+            data.textCols.forEach((col: any) => cols.push(new TextColumn(col)));
             this.textCols = cols;
         } else {
             this.textCols = [
@@ -51,17 +50,17 @@ export class PublishOptions implements IPublishOptions {
         }
     }
 
-    public getStyle(styleName: string) : TextStyle {
+    public getStyle(styleName: string) : TextStyle | undefined {
         return this.textStyles.find(style => style.name === styleName);
     }
 
-    public get answerStyle(): TextStyle {
+    public get answerStyle(): TextStyle | undefined {
         return this.getStyle("answer");
     }
-    public get clueStyle(): TextStyle {
+    public get clueStyle(): TextStyle | undefined {
         return this.getStyle("clue");
     }
-    public get definitionStyle(): TextStyle {
+    public get definitionStyle(): TextStyle | undefined {
         return this.getStyle("definition");
     }
 }
