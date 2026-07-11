@@ -20,12 +20,14 @@ abstract class ApiPuzzleResponse implements ApiResponse {
     public abstract puzzle: any;
     public abstract warnings: any;
     public abstract completionState: string;
+    public abstract href: string;
 }
 
 export interface PuzzleResponse {
     readonly puzzle: any;
     readonly warnings: any;
     readonly completionState: string;
+    readonly href: string;
 }
 
 export interface PuzzleProvisionResponse {
