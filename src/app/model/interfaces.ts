@@ -178,6 +178,7 @@ export interface IPuzzleInfo {
     id: string;
     title: string;
     puzzleDate: Date;
+    creationDate: Date;
     provider: PuzzleProvider;
     setter: string;
     wordpressId: number;

@@ -56,9 +56,9 @@ export class HomeComponent implements OnInit, OnDestroy {
                     this.settings = result[3];
             
                     this.puzzleList = list.filter(p => p.info.provider !== "grid")
-                        .sort((a, b) => b.info.puzzleDate?.getTime() - a.info.puzzleDate?.getTime() );
+                        .sort((a, b) => b.info.creationDate?.getTime() - a.info.creationDate?.getTime() );
                     this.gridList = list.filter(p => p.info.provider === "grid")
-                        .sort((a, b) => b.info.puzzleDate?.getTime() - a.info.puzzleDate?.getTime() );
+                        .sort((a, b) => b.info.creationDate?.getTime() - a.info.creationDate?.getTime() );
                     this.changeRef.detectChanges();
                 },
                 error => {
