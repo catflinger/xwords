@@ -93,9 +93,9 @@ export class GridEditorComponent implements OnInit, OnDestroy {
                                 const selectedCell = puzzle.grid.cells.find(c => c.highlight);
                                 this.form.patchValue({title: puzzle.info.title});
                                 this.captionForm.patchValue({caption: selectedCell?.caption});
-                                this.symmetrical = !!puzzle.grid.properties.symmetrical;
-                                this.numbered = puzzle.grid.properties.numbered;
-                                this.showCaptions = puzzle.grid.properties.showCaptions;
+                                this.symmetrical = !!puzzle.grid.properties?.symmetrical;
+                                this.numbered = !!puzzle.grid.properties?.numbered;
+                                this.showCaptions = !!puzzle.grid.properties?.showCaptions;
                                 this.puzzle = puzzle;
                                 
                                 from(puzzle.grid.cells)
@@ -125,7 +125,7 @@ export class GridEditorComponent implements OnInit, OnDestroy {
     public get barred(): boolean {
         let result = false;
 
-        if (this.puzzle && this.puzzle.grid.properties.style === "barred") {
+        if (this.puzzle && this.puzzle.grid.properties?.style === "barred") {
             result = true;
         }
         return result;

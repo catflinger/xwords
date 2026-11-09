@@ -1,7 +1,10 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
+
+/* TO DO: Configure strict type checking and go though the hundreds of places this fails*/
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strict": false,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

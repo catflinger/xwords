@@ -13,11 +13,11 @@ import { SpotLetter } from 'src/app/modifiers/grid-modifiers/spot-letter';
 import { SpotClear } from 'src/app/modifiers/grid-modifiers/spot-clear';
 import { SpotRow } from 'src/app/modifiers/grid-modifiers/spot-row';
 import { SpotColumn } from 'src/app/modifiers/grid-modifiers/spot-column';
-import { ClearShading } from 'src/app/modifiers/grid-modifiers/clear-shading';
 import { PuzzleModifier } from 'src/app/modifiers/puzzle-modifier';
 import { SpotDiagonalUp } from 'src/app/modifiers/grid-modifiers/spot-diagonal-up';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpotDiagonalDown } from 'src/app/modifiers/grid-modifiers/spot-diagonal-down';
+import { SelectCellsForEdit } from 'src/app/modifiers/grid-modifiers/select-cells-for-edit';
 
 class PangramLetter {
     private _count: number = 0;
@@ -40,6 +40,16 @@ class PangramLetter {
     public incrementCount() {
         this._count ++;
     }
+}
+
+class WordfinderResult {
+    constructor(public cells: readonly GridCell[])
+    {};
+
+    stringify(): string {
+        return this.cells.map(c => c.content).join("");
+    }
+
 }
 
 @Component({
@@ -73,6 +83,9 @@ export class NinaFinderComponent implements OnInit {
     public activePanel: string = "letterPanel";
 
     public form: FormGroup;
+    public wordfinderForm: FormGroup;
+
+    public wordsFound: WordfinderResult[] = [];
 
     constructor(
         private navService: NavService<AppTrackData>,
@@ -82,14 +95,19 @@ export class NinaFinderComponent implements OnInit {
         private formBuilder: FormBuilder,
     ) {
         this.clearPangramCounter();
-    }
-
-    public ngOnInit() {
 
         this.form = this.formBuilder.group({
             diagonal: "both",
             rowcol: "both"
         });
+
+        this.wordfinderForm = this.formBuilder.group({
+            word: ["", Validators.required],
+        });
+    }
+
+    public ngOnInit() {
+
 
         this.form.valueChanges.subscribe(() => this.scratchpad.update(new SpotClear()));
 
@@ -163,6 +181,23 @@ export class NinaFinderComponent implements OnInit {
         }
     }
 
+    public onFindWord() {
+        const matches = this.puzzle.grid.findWord(this.wordfinderForm.value.word);
+        this.wordsFound = [];
+
+        if (matches.length) {
+            // this.wordsFound = matches.map(m => m.map(cell => cell.content).join(""));
+            matches.forEach(match => {
+                this.wordsFound.push(new WordfinderResult(match));
+            });
+        }
+
+    }
+
+    public onWordClick(word: WordfinderResult) {
+        this.activePuzzle.updateAndCommit(new SelectCellsForEdit(word.cells));
+    }
+    
     public onBack() {
         this.appService.clear();
         this.navService.navigate("back");

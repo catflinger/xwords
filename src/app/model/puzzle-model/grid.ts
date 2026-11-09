@@ -88,7 +88,7 @@ export class Grid implements IGrid {
         if (current) {
             yield current;
         } else {
-            return null as GridCell;
+            return null;
         }
 
         while (current !== null) {
@@ -327,6 +327,100 @@ export class Grid implements IGrid {
         }
 
         return result;
+    }
+
+    private getAllCells()  {
+        return {
+            [Symbol.iterator]: () => this.getNavigator(this.cellAt(0,0).id, "left", true)
+        }
+    }
+
+    public findWord(word: string): (readonly GridCell[])[] {
+
+        let DDDDD: (readonly GridCell[])[] = [];
+
+        for(let startCell of this.getAllCells()) {
+            let zzz: readonly GridCell[] = this.findWordXXX(word.toLocaleUpperCase(), startCell, []);
+
+            if (zzz.length) {
+                DDDDD.push(zzz);
+            }
+        }
+
+        console.log(`SEARCH RESULT = ${DDDDD.length} words found`);
+
+        return DDDDD;
+
+    }
+
+    public findWordXXX(word: string, startCell: GridCell, history: readonly GridCell[] = []): readonly GridCell[] {
+        const progress: GridCell[] = [...history];
+        let result: readonly GridCell[] = [];
+
+        if (word.length === 0) {
+            // nothing more to find, return the track up to this point
+            // TO DO: do we need this, or is it an error condition?
+            console.log("ERROR CONDITION?")
+            result = history;
+
+        } else {
+            const firstLetterOfWord = word.substring(0, 1);
+            const remainingLettersOfWord = word.substring(1);
+
+            if(startCell.content === firstLetterOfWord) {
+
+                // looking good, record this progress
+                progress.push(startCell);
+
+                if (remainingLettersOfWord.length === 0) {
+                    result = progress;
+
+                } else {
+                    let next: readonly GridCell[] = [];
+
+                    // now try continuing via neighbouring cells
+                    for (let cell of this.getSurroundingCells(startCell, history)) {
+                         next = this.findWordXXX(remainingLettersOfWord, cell, progress);
+
+                        if (next.length !== 0) {
+                            result = next;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private getSurroundingCells(cell: GridCell, ignore: readonly GridCell[] = []): readonly GridCell[] {
+        let result: GridCell[] = [];
+
+        const surroundingCells: GridCell[] = [];
+        for (let i = -1; i < 2; i++) {
+                for (let j = -1; j < 2; j++) {
+                    let x = cell.x + i;
+                    let y = cell.y + j;
+
+                    if (x >= 0 && y >= 0 && x < this.properties.size.across && y < this.properties.size.down) {
+                        if (x !== cell.x || y !== cell.y) {
+                            if (this.cellAt(x, y).light) {
+                                surroundingCells.push(this.cellAt(x, y));
+                            }
+                        }
+                    }
+            }
+        }
+
+        if (ignore.length) {
+            result = surroundingCells.filter(c => !ignore.includes(c));
+        }
+        else {
+            result = surroundingCells;
+        }
+
+         return result;
     }
 
 }

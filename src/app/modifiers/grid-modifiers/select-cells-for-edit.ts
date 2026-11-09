@@ -3,7 +3,7 @@ import { IPuzzle } from '../../model/interfaces';
 import { GridCell } from 'src/app/model/puzzle-model/grid-cell';
 
 export class SelectCellsForEdit extends PuzzleModifier {
-    constructor(private cells: GridCell[]) {  super(); }
+    constructor(private cells: readonly GridCell[]) {  super(); }
 
     exec(puzzle: IPuzzle) {
         if (puzzle && puzzle.grid) {

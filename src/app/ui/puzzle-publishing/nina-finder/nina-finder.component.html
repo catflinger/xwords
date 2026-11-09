@@ -74,7 +74,15 @@
             </ul>
 
             <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        </div>
 
+        <div [formGroup]="wordfinderForm" class="mt-5">
+            <h5>Wordfinder</h5>
+            <input type="text" class="form-control" placeholder="Enter a word to find..." formControlName="word">
+            <button type="button" class="btn btn-primary mt-2" (click)="onFindWord()" [disabled]="wordfinderForm.invalid">Find</button>
+        </div>
+        <div class="mt-3">
+            <button type="button" class="btn btn-outline-secondary btn-sm me-1" *ngFor="let word of wordsFound" (click)="onWordClick(word)">{{word.stringify()}}</button>
         </div>
 
 
