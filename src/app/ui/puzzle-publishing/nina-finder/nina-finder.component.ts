@@ -18,6 +18,7 @@ import { SpotDiagonalUp } from 'src/app/modifiers/grid-modifiers/spot-diagonal-u
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpotDiagonalDown } from 'src/app/modifiers/grid-modifiers/spot-diagonal-down';
 import { SelectCellsForEdit } from 'src/app/modifiers/grid-modifiers/select-cells-for-edit';
+import { Clear } from 'src/app/modifiers/puzzle-modifiers/clear';
 
 class PangramLetter {
     private _count: number = 0;
@@ -182,8 +183,10 @@ export class NinaFinderComponent implements OnInit {
     }
 
     public onFindWord() {
-        const matches = this.puzzle.grid.findWord(this.wordfinderForm.value.word);
         this.wordsFound = [];
+        this.activePuzzle.update(new Clear());
+
+        const matches = this.puzzle.grid.findWord(this.wordfinderForm.value.word.toUpperCase());
 
         if (matches.length) {
             // this.wordsFound = matches.map(m => m.map(cell => cell.content).join(""));
@@ -191,11 +194,10 @@ export class NinaFinderComponent implements OnInit {
                 this.wordsFound.push(new WordfinderResult(match));
             });
         }
-
     }
 
     public onWordClick(word: WordfinderResult) {
-        this.activePuzzle.updateAndCommit(new SelectCellsForEdit(word.cells));
+        this.activePuzzle.update(new SelectCellsForEdit(word.cells));
     }
     
     public onBack() {

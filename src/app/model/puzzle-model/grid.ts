@@ -1,3 +1,4 @@
+import { Expansion } from '@angular/compiler';
 import { IGrid, GridNavigation, Direction, ClueGroup, IGridReference, IGridCell, IGridEntry } from '../interfaces';
 import { GridCell } from './grid-cell';
 import { GridProperties } from './grid-properties';
@@ -329,69 +330,18 @@ export class Grid implements IGrid {
         return result;
     }
 
-    private getAllCells()  {
-        return {
-            [Symbol.iterator]: () => this.getNavigator(this.cellAt(0,0).id, "left", true)
-        }
-    }
+    public findWord(word: string): readonly (readonly GridCell[])[] {
 
-    public findWord(word: string): (readonly GridCell[])[] {
-
-        let DDDDD: (readonly GridCell[])[] = [];
+        let results: (readonly GridCell[])[] = [];
 
         for(let startCell of this.getAllCells()) {
-            let zzz: readonly GridCell[] = this.findWordXXX(word.toLocaleUpperCase(), startCell, []);
-
-            if (zzz.length) {
-                DDDDD.push(zzz);
+            for (let result of this.findWordInGrid(word, startCell, [])) {
+                results.push(result);
             }
         }
 
-        console.log(`SEARCH RESULT = ${DDDDD.length} words found`);
+        return results;
 
-        return DDDDD;
-
-    }
-
-    public findWordXXX(word: string, startCell: GridCell, history: readonly GridCell[] = []): readonly GridCell[] {
-        const progress: GridCell[] = [...history];
-        let result: readonly GridCell[] = [];
-
-        if (word.length === 0) {
-            // nothing more to find, return the track up to this point
-            // TO DO: do we need this, or is it an error condition?
-            console.log("ERROR CONDITION?")
-            result = history;
-
-        } else {
-            const firstLetterOfWord = word.substring(0, 1);
-            const remainingLettersOfWord = word.substring(1);
-
-            if(startCell.content === firstLetterOfWord) {
-
-                // looking good, record this progress
-                progress.push(startCell);
-
-                if (remainingLettersOfWord.length === 0) {
-                    result = progress;
-
-                } else {
-                    let next: readonly GridCell[] = [];
-
-                    // now try continuing via neighbouring cells
-                    for (let cell of this.getSurroundingCells(startCell, history)) {
-                         next = this.findWordXXX(remainingLettersOfWord, cell, progress);
-
-                        if (next.length !== 0) {
-                            result = next;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return result;
     }
 
     private getSurroundingCells(cell: GridCell, ignore: readonly GridCell[] = []): readonly GridCell[] {
@@ -423,4 +373,52 @@ export class Grid implements IGrid {
          return result;
     }
 
+    private *getWordfinderGenerator(word: string, startCell: GridCell, history: readonly GridCell[]): Generator<readonly GridCell[], void, void> {
+
+        if (!word) {
+            throw "Word parameter must a non-empty string";
+        }
+
+        const firstLetterOfWord = word.substring(0, 1);
+        const remainingLettersOfWord = word.substring(1);
+
+        if(startCell.content === firstLetterOfWord) {
+
+            // looking good, first letter matches so record this
+            const progress: readonly GridCell[] = [...history, startCell];
+
+            if (remainingLettersOfWord.length === 0) {
+                // word has been found, so yield a result
+                yield progress;
+            
+            } else {
+                // now keep looking for the remaining letters
+                for (const cell of this.getSurroundingCells(startCell, progress)) {
+                    
+                    for (let result of this.findWordInGrid(remainingLettersOfWord, cell, progress)) {
+                        console.log(`Yielding-b ${result.map(c=> c.content).join("")}`)
+                        yield result;
+                    }
+                }
+            }
+        } else {
+            // not possible to continue any further so abandon without yieding anything
+        }
+
+        return;
+    }
+
+    // this function enables the generator to be used in a for() loop
+    private findWordInGrid(word: string, startCell: GridCell, history: readonly GridCell[]) {
+        return { 
+            [Symbol.iterator]: () => this.getWordfinderGenerator(word, startCell, history)
+        }
+    }
+
+    // this function enables the navigator to be used in a for() loop
+    private getAllCells()  {
+        return {
+            [Symbol.iterator]: () => this.getNavigator(this.cellAt(0,0).id, "left", true)
+        }
+    }
 }
