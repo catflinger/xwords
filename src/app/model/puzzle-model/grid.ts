@@ -331,17 +331,49 @@ export class Grid implements IGrid {
     }
 
     public findWord(word: string): readonly (readonly GridCell[])[] {
-
         let results: (readonly GridCell[])[] = [];
 
-        for(let startCell of this.getAllCells()) {
-            for (let result of this.findWordInGrid(word, startCell, [])) {
+        for(let cell of this.getAllCells()) {
+            for (let result of this.findWordInGrid(word, cell, [])) {
                 results.push(result);
             }
         }
 
         return results;
+    }
 
+    private *wordfinderGenerator(word: string, startCell: GridCell, history: readonly GridCell[]): Generator<readonly GridCell[], void, void> {
+
+        if (!word) {
+            throw "Word parameter must a non-empty string";
+        }
+
+        const firstLetterOfWord = word.substring(0, 1);
+        const remainingLettersOfWord = word.substring(1);
+
+        if(startCell.content === firstLetterOfWord) {
+
+            // looking good, first letter matches so record this
+            const progress: readonly GridCell[] = [...history, startCell];
+
+            if (remainingLettersOfWord.length === 0) {
+                // the complete word has been found, so yield a result
+                yield progress;
+            
+            } else {
+                // now keep looking for the remaining letters starting in the adjacent cells
+                // ingnore any cells already n the result
+                for (const neighbouringCell of this.getSurroundingCells(startCell, progress)) {
+                    
+                    // recurse into another generator and yield each result sequentially (yield* is syntactic sugar for this)
+                    yield* this.findWordInGrid(remainingLettersOfWord, neighbouringCell, progress);
+                }
+            }
+        } else {
+            // not possible to continue any further so abandon without yieding anything
+        }
+
+        return;
     }
 
     private getSurroundingCells(cell: GridCell, ignore: readonly GridCell[] = []): readonly GridCell[] {
@@ -373,49 +405,14 @@ export class Grid implements IGrid {
          return result;
     }
 
-    private *getWordfinderGenerator(word: string, startCell: GridCell, history: readonly GridCell[]): Generator<readonly GridCell[], void, void> {
-
-        if (!word) {
-            throw "Word parameter must a non-empty string";
-        }
-
-        const firstLetterOfWord = word.substring(0, 1);
-        const remainingLettersOfWord = word.substring(1);
-
-        if(startCell.content === firstLetterOfWord) {
-
-            // looking good, first letter matches so record this
-            const progress: readonly GridCell[] = [...history, startCell];
-
-            if (remainingLettersOfWord.length === 0) {
-                // word has been found, so yield a result
-                yield progress;
-            
-            } else {
-                // now keep looking for the remaining letters
-                for (const cell of this.getSurroundingCells(startCell, progress)) {
-                    
-                    for (let result of this.findWordInGrid(remainingLettersOfWord, cell, progress)) {
-                        console.log(`Yielding-b ${result.map(c=> c.content).join("")}`)
-                        yield result;
-                    }
-                }
-            }
-        } else {
-            // not possible to continue any further so abandon without yieding anything
-        }
-
-        return;
-    }
-
-    // this function enables the generator to be used in a for() loop
+    // this function exposes the generator as an iterable, to be used in a for() loop
     private findWordInGrid(word: string, startCell: GridCell, history: readonly GridCell[]) {
         return { 
-            [Symbol.iterator]: () => this.getWordfinderGenerator(word, startCell, history)
+            [Symbol.iterator]: () => this.wordfinderGenerator(word, startCell, history)
         }
     }
 
-    // this function enables the navigator to be used in a for() loop
+    // this function exposes the iterator as an iterable, to be used in a for() loop
     private getAllCells()  {
         return {
             [Symbol.iterator]: () => this.getNavigator(this.cellAt(0,0).id, "left", true)

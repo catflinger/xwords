@@ -19,6 +19,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpotDiagonalDown } from 'src/app/modifiers/grid-modifiers/spot-diagonal-down';
 import { SelectCellsForEdit } from 'src/app/modifiers/grid-modifiers/select-cells-for-edit';
 import { Clear } from 'src/app/modifiers/puzzle-modifiers/clear';
+import { SpotCells } from 'src/app/modifiers/grid-modifiers/spot-cells';
 
 class PangramLetter {
     private _count: number = 0;
@@ -47,10 +48,70 @@ class WordfinderResult {
     constructor(public cells: readonly GridCell[])
     {};
 
-    stringify(): string {
+    public stringify(): string {
         return this.cells.map(c => c.content).join("");
     }
 
+    public get score(): number {
+        let result = 0;
+
+        result += this.hasCondition(this.cells, this.isAcrossLtoR) ? 8 : 0;
+        result += this.hasCondition(this.cells, this.isDownTtoB) ? 7 : 0;
+        result += this.hasCondition(this.cells, this.isAcrossRtoL) ? 6 : 0;
+        result += this.hasCondition(this.cells, this.isDownBtoT) ? 5 : 0;
+        result += this.hasCondition(this.cells, this.isRisingDigonalLtoR) ? 4 : 0;
+        result += this.hasCondition(this.cells, this.isFallingDigonalLtoR) ? 3 : 0;
+        result += this.hasCondition(this.cells, this.isRisingDigonalRtoL) ? 2 : 0;
+        result += this.hasCondition(this.cells, this.isFallingDigonalRtoL) ? 1 : 0;
+
+        return result;
+     }
+
+     private isAcrossLtoR(cell: GridCell, x: number, y: number, i: number): boolean {
+        return y === cell.y && cell.x === x + i;
+     }
+
+     private isAcrossRtoL(cell: GridCell, x: number, y: number, i: number): boolean {
+        return y === cell.y && cell.x === x - i;
+     }
+
+     private isDownTtoB(cell: GridCell, x: number, y: number, i: number): boolean {
+        return x === cell.x && cell.y === y + i;
+     }
+
+     private isDownBtoT(cell: GridCell, x: number, y: number, i: number): boolean {
+        return x === cell.x && cell.y === y - i;
+     }
+
+     private isFallingDigonalLtoR(cell: GridCell, x: number, y: number, i: number): boolean {
+        return cell.x === x + i && cell.y === y + i;
+     }
+
+     private isFallingDigonalRtoL(cell: GridCell, x: number, y: number, i: number): boolean {
+        return cell.x === x - i && cell.y === y + i;
+     }
+
+     private isRisingDigonalLtoR(cell: GridCell, x: number, y: number, i: number): boolean {
+        return cell.x === x + i && cell.y === y - i;
+     }
+
+     private isRisingDigonalRtoL(cell: GridCell, x: number, y: number, i: number): boolean {
+        return cell.x === x - i && cell.y === y - i;
+     }
+
+
+     private hasCondition(cells: readonly GridCell[], condition: (cell: GridCell, x: number, y: number, index: number) => boolean): boolean {
+        let count = 0;
+        const x: number = cells[0].x;
+        const y: number = cells[0].y;
+
+        cells.forEach((cell, i) => {
+            if (condition(cell, x, y, i)) {
+                count++;
+            }
+        })        
+        return count === cells.length;
+     }
 }
 
 @Component({
@@ -184,20 +245,26 @@ export class NinaFinderComponent implements OnInit {
 
     public onFindWord() {
         this.wordsFound = [];
-        this.activePuzzle.update(new Clear());
+        let wordsFound = [];
+        this.scratchpad.update(new SpotClear());
 
         const matches = this.puzzle.grid.findWord(this.wordfinderForm.value.word.toUpperCase());
 
         if (matches.length) {
-            // this.wordsFound = matches.map(m => m.map(cell => cell.content).join(""));
             matches.forEach(match => {
-                this.wordsFound.push(new WordfinderResult(match));
+               wordsFound.push(new WordfinderResult(match));
             });
+        }
+
+        this.wordsFound = wordsFound.sort((a, b) => b.score - a.score);
+
+        if (this.wordsFound.length) {
+                this.onWordClick(this.wordsFound[0]);
         }
     }
 
     public onWordClick(word: WordfinderResult) {
-        this.activePuzzle.update(new SelectCellsForEdit(word.cells));
+        this.scratchpad.update(new SpotClear(), new SpotCells(word.cells));
     }
     
     public onBack() {
