@@ -30,7 +30,7 @@ export class Tag extends ContentNode {
         ).subscribe(group => {
             group.pipe(
                 reduce((result, attr: Attribute) => result += ` ${attr.value}`, "")
-            ).subscribe(z => buffer += ` ${group.key}="${z}"`)
+            ).subscribe(z => buffer += ` ${group.key}="${z.trim()}"`)
         });
 
         buffer += `>${newline}`;

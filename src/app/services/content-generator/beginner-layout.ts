@@ -19,8 +19,8 @@ import { environment } from 'src/environments/environment';
 })
 export class BeginnerLayout implements ContentGenerator {
 
-    private readonly toggleScript = "document.querySelectorAll('details.fts-beginner-toggle').forEach(d => d.hasAttribute('open') ? d.removeAttribute('open') :  d.setAttribute('open', true))";
-    private readonly buttonStryle = "background-color: #666666;color: white;border-radius: 0px;border: solid 1px #666666;"
+    // ONLY USE SINGLE QUOTES IN ATTRIBUTE VALUES!
+    private readonly buttonStyle = "background-color: #666666; color: white; border-radius: 0px; border: solid 1px #666666;";
 
     public getContent(puzzle: Puzzle, gridUrl: string): string {
 
@@ -52,12 +52,11 @@ export class BeginnerLayout implements ContentGenerator {
 
             // toggle button to show/hide the answers etc
             new Tag("button",
+                new Attribute("id", "expand-all"),
                 new Attribute("type", "button"),
-                new Attribute("style", "margin-bottom: 0.5em;"),
                 environment.production ? 
-                    new Attribute("class", "search-submit") :
-                    new Attribute("style", this.buttonStryle),
-                new Attribute("onclick", this.toggleScript),
+                    new Attribute("class", "search-submit") : 
+                    new Attribute("style", this.buttonStyle),
                 new Text("Show/hide all")
             ),
 
@@ -131,7 +130,9 @@ export class BeginnerLayout implements ContentGenerator {
             result.push(
                 new Tag("details",
                     new Attribute("class", "fts-beginner-toggle"),
-                    new Tag("summary", new Text(publishOptions.textCols[i].caption)),
+                    new Tag("summary", 
+                        new Text(publishOptions.textCols[i].caption)
+                    ),
                     new Tag("div",
                         new Attribute("class", "fts-subgroup"),
                         new Attribute("style", answerStyle.toCssStyleString()),
