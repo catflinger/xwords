@@ -19,6 +19,7 @@ fts-answer      Added to each element containing answer text
 fts-clue        Added to each element containing clue text
 fts-definition  Added to each element containing clue text to be marked as definition
 */
+/* this should match the class of  */
 
 .fts-answer {
     font-weight: bold;

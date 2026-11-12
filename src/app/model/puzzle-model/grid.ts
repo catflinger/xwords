@@ -1,12 +1,13 @@
-import { Expansion } from '@angular/compiler';
 import { IGrid, GridNavigation, Direction, ClueGroup, IGridReference, IGridCell, IGridEntry } from '../interfaces';
 import { GridCell } from './grid-cell';
+import { GridDecoratorLine } from './grid-decorator-line';
 import { GridProperties } from './grid-properties';
 import { GridReference } from './grid-reference';
 
 export class Grid implements IGrid {
     public readonly properties: GridProperties | null = null;
     public readonly cells: GridCell[];
+    public readonly decoration: { lines: GridDecoratorLine[] } = { lines: [] };
 
     constructor(data: any) {
         if (data) {
@@ -22,6 +23,12 @@ export class Grid implements IGrid {
                 });
             } else if (data.properties) {
                 this.properties = new GridProperties(data.properties);
+            }
+
+            if (data.decoration?.lines && Array.isArray(data.decoration.lines)) {
+                data.decoration.lines.forEach((item: any) => {
+                    this.decoration.lines.push(new GridDecoratorLine(item));
+                })
             }
 
             let cells: GridCell[] = [];
@@ -320,19 +327,10 @@ export class Grid implements IGrid {
         return result;
     }
 
-    private getEntryDirection(entry: GridCell[]): ClueGroup {
-        let result: ClueGroup = "across";
-
-        if (entry && entry.length > 1 && entry[0].x === entry[1].x) {
-            result = "down";
-        }
-
-        return result;
-    }
-
     public findWord(word: string): readonly (readonly GridCell[])[] {
         let results: (readonly GridCell[])[] = [];
 
+        // look for matches starting from each cell in the grid in turn
         for(let cell of this.getAllCells()) {
             for (let result of this.findWordInGrid(word, cell, [])) {
                 results.push(result);
@@ -359,13 +357,13 @@ export class Grid implements IGrid {
             if (remainingLettersOfWord.length === 0) {
                 // the complete word has been found, so yield a result
                 yield progress;
-            
+
             } else {
-                // now keep looking for the remaining letters starting in the adjacent cells
-                // ingnore any cells already n the result
+                // keep looking for the remaining letters starting in the adjacent cells
+                // ingnore any cells already in the result sofar
                 for (const neighbouringCell of this.getSurroundingCells(startCell, progress)) {
-                    
-                    // recurse into another generator and yield each result sequentially (yield* is syntactic sugar for this)
+
+                    // recurse into the wordfinder and yield each result sequentially (yield* is syntactic sugar for this)
                     yield* this.findWordInGrid(remainingLettersOfWord, neighbouringCell, progress);
                 }
             }
@@ -415,7 +413,17 @@ export class Grid implements IGrid {
     // this function exposes the iterator as an iterable, to be used in a for() loop
     private getAllCells()  {
         return {
-            [Symbol.iterator]: () => this.getNavigator(this.cellAt(0,0).id, "left", true)
+            [Symbol.iterator]: () => this.getNavigator(this.cellAt(0,0).id, "right", true)
         }
     }
+    private getEntryDirection(entry: GridCell[]): ClueGroup {
+        let result: ClueGroup = "across";
+
+        if (entry && entry.length > 1 && entry[0].x === entry[1].x) {
+            result = "down";
+        }
+
+        return result;
+    }
+
 }

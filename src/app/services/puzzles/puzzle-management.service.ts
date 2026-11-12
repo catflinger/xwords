@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { Injectable } from '@angular/core';
+import { Injectable, SecurityContext } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LocalStorageService } from '../storage/local-storage.service';
 import { Puzzle } from '../../model/puzzle-model/puzzle';
@@ -23,6 +23,8 @@ import { RenumberGid } from "src/app/modifiers/grid-modifiers/renumber-grid";
 import { SetGridCaptions } from "src/app/modifiers/grid-modifiers/set-grid-captions";
 import { UpdateProvision } from "src/app/modifiers/puzzle-modifiers/update-provision";
 import { fifteensquaredAnswerStyle, fifteensquaredClueStyle, fifteensquaredDefinitionStyle } from "src/app/model/puzzle-model/text-style";
+import { AddTextColumn } from "src/app/modifiers/publish-options-modifiers/add-text-column";
+import { DomSanitizer } from "@angular/platform-browser";
 
 // Note: using abstract classes rather than interfaces to enable them to be used
 // as injection tokens in the Angular DI. Interfaces cannot be used directly as injection tokens.
@@ -64,7 +66,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
     constructor(
         private localStorageService: LocalStorageService,
         private httpPuzzleService: HttpPuzzleSourceService,
-        //private changeDetector: ChangeDetectorRef,
+        private domSanitizer: DomSanitizer
     ) {
         this.bsList = new BehaviorSubject<IPuzzleSummary[]>([]);
         this.bsActive = new BehaviorSubject<Puzzle>(null);
@@ -290,7 +292,22 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                 new InitAnnotationWarnings().exec(puzzleM);
                 new RenumberGid().exec(puzzleM);
 
-                if (params.provider === "independent" || params.provider === "ios") {
+                // TO DO: find out why local parsing not working for Guardian Quick Cryptic
+                // this should use providePuzzle and be with cryptc and prize above
+                
+                if (params.provider === "quick-cryptic") {
+                    new AddTextColumn("Hint").exec(puzzleM);
+                    new UpdateInfo({ href: response.href }).exec(puzzleM);
+                    
+                    if (puzzle?.info?.instructions) {
+                        // The guardian quick criptic contains some help for novice solvers in the special instructions.
+                        // This displays OK on the guardian website but needs a little modification but for some reason
+                        // to make it display properly here
+                        //const clean = this.domSanitizer.sanitize(SecurityContext.HTML, puzzle.info.instructions.replace(/\n/g, `<br>`));
+                        new UpdateInfo({instructions: puzzle.info.instructions.replace(/\n/g, `<br>`)}).exec(puzzleM);
+                    }
+
+                } else if (params.provider === "independent" || params.provider === "ios") {
                     new SetGridReferences().exec(puzzleM);
                     new SetRedirects().exec(puzzleM);
                     new UpdateInfo({ puzzleDate: params.date, href: response.href }).exec(puzzleM);

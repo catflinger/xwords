@@ -5,6 +5,7 @@ import { ApiResponse, ApiResponseStatus, ContentGenerator, PublishStatus, AppRes
 import { AuthService, Credentials } from '../app/auth.service';
 import { TableLayout } from '../content-generator/table-layout';
 import { ListLayout } from '../content-generator/list-layout';
+import { AppService } from 'src/app/ui/general/app.service';
 
 abstract class PublishPostResponse implements ApiResponse {
     public abstract success: ApiResponseStatus;
@@ -34,6 +35,7 @@ export interface PublishGridResult {
 export class PublicationService {
 
     constructor(
+        private appService: AppService,
         private http: HttpClient,
         private authService: AuthService,
         //private settingsService: AppSettingsService,
@@ -43,9 +45,7 @@ export class PublicationService {
     // review this component for XSS vunerabilities
 
     public getContent(puzzle: Puzzle, gridUrl: string) {
-        let generator: ContentGenerator= puzzle.publishOptions.layout === "list" ?
-            new ListLayout():
-            new TableLayout();
+        const generator = this.appService.getContentGenerator(puzzle.publishOptions.layout);
 
             return generator.getContent(puzzle, gridUrl);
     }

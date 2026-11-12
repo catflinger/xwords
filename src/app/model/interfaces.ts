@@ -10,6 +10,9 @@ export type Direction = "across" | "down";
 export type PuzzleProvider =
 
     // TO DO: change "cryptic", "prize" etc to "guardian-prize", "guardian-cryptic"...
+
+    "quiptic" |
+    "quick-cryptic" |
     "cryptic" |
     "cryptic-pdf" |
     "prize" |
@@ -33,7 +36,7 @@ export type PuzzleProvider =
     "grid";
     
 export type ClueValidationWarning = "missing answer" | "missing comment" | "missing definition";
-export type Layouts = "table" | "list";
+export type Layouts = "table" | "list" | "beginner";
 export type Spacing = "small" | "medium" | "large";
 export type TextStyleName = "answer" | "clue" | "definition";
 export type GridStyle = "standard" | "barred";
@@ -290,6 +293,16 @@ export interface IGridProperties {
 export interface IGrid {
     properties: IGridProperties;
     cells: Array<IGridCell>;
+    decoration: IGridDecoration;
+}
+
+export interface IGridDecoration {
+    lines: IGridLine[];
+}
+
+export interface IGridLine {
+    cellIds: number[];
+    bendiness: number;
 }
 
 export interface IPuzzle {

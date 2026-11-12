@@ -42,7 +42,7 @@ export class PublishPreviewComponent implements OnInit, OnDestroy {
                     this.puzzle = puzzle;
 
                     if (puzzle) {
-                        const generator = puzzle.publishOptions.layout === "table" ? this.tableLayout : this.listLayout;
+                        const generator = this.appService.getContentGenerator(puzzle.publishOptions.layout);
                         this.content = generator.getContent(puzzle, null);
                     }
 

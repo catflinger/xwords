@@ -195,11 +195,8 @@ export class PublishComponent implements OnInit, OnDestroy {
     }
 
     private getContentForDebug(puzzle: Puzzle, gridUrl: string) {
-        let generator: ContentGenerator= puzzle.publishOptions.layout === "list" ?
-            new ListLayout():
-            new TableLayout();
-
-            return generator.getContent(puzzle, gridUrl);
+        const generator = this.appService.getContentGenerator(puzzle.publishOptions.layout);
+        return generator.getContent(puzzle, gridUrl);
     }
 
 }

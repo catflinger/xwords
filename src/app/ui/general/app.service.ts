@@ -2,8 +2,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 import { Alert, AlertType } from '../common';
-import { PuzzleProvider, Base64Encoded, ProvisionOptions } from 'src/app/model/interfaces';
-import { AppResultSymbols } from 'src/app/services/common';
+import { PuzzleProvider, Base64Encoded, ProvisionOptions, Layouts } from 'src/app/model/interfaces';
+import { AppResultSymbols, ContentGenerator } from 'src/app/services/common';
+import { TableLayout } from 'src/app/services/content-generator/table-layout';
+import { ListLayout } from 'src/app/services/content-generator/list-layout';
+import { BeginnerLayout } from 'src/app/services/content-generator/beginner-layout';
 //import { ProvisionOptions } from '../puzzle-editing/provision-options-control/provision-options-control.component';
 
 export type OpenPuzzleAction = "openByDate" | "openLatest";
@@ -96,7 +99,11 @@ export class AppService implements OnDestroy {
 
     private bs: BehaviorSubject<AppStatus>;
 
-    constructor() {
+    constructor(
+        private tableLayout: TableLayout,
+        private listLayout: ListLayout,
+        private beginnerLayout: BeginnerLayout,
+    ) {
         this.bs = new BehaviorSubject<AppStatus>(
             new AppStatus(
                 false,
@@ -202,5 +209,19 @@ export class AppService implements OnDestroy {
         this.bs.next(new AppStatus(this._activityMonitor.busy, this._activityMonitor.late, alerts));
     }
 
+    public getContentGenerator(layout: Layouts): ContentGenerator | undefined {
+        let result: ContentGenerator | undefined ;
+        switch (layout) {
+            case "table": result = this.tableLayout;
+            break;
+            case "list": result = this.listLayout;
+            break;
+            case "beginner": result = this.beginnerLayout;
+            break;
+            default: result = undefined;
+        }
+
+        return result;
+    } 
 }
 
