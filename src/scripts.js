@@ -1,8 +1,21 @@
+// This listener is for backwards compaitbility with old Guardian Quick Cryptic posts. (Do we need this?)
+// CAUTION! - clicking these buttons will expand <detail> elements everywhere in the fifeensquared site, 
+// not just in the blog content
+//
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.addEventListener('click', function(event) {
+        if (event.target && event.target.id === 'expand-all') {
+            document.querySelectorAll('details').forEach(function(el) {
+                // el.open = !el.open;
+                el.open = true;
+            });
+        }
+    });
+});
 
-
+// Updated version
 //
 // Individual <details> elements in a post are made controllable by adding the "fifteensquared-detail" class
-//     - this prevents a button inside a blog post affecting <details> elements throughout the whole site
 //
 // A button automatically becomes an open/close/toggle button if it is given the "fifteensqared-details-open/close/toggle" class
 //
@@ -48,20 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event?.target && event.target.matches('button.fifteensqared-close-all')) {
             document.querySelectorAll('details.fifteensquared-detail').forEach(function(el) {
                 el.open = false;
-            });
-        }
-    });
-});
-
-// This listener is for backwards compaitbility with old Guardian Quick Cryptic posts. (Do we need this?)
-// CAUTION! - clicking these buttons will expand <detail> elements everywhere in the fifeensquared site, not just in the blog contents
-//
-document.addEventListener('DOMContentLoaded', function() {
-    document.body.addEventListener('click', function(event) {
-        if (event.target && event.target.id === 'expand-all') {
-            document.querySelectorAll('details').forEach(function(el) {
-                // el.open = true;
-                el.open = !el.open;
             });
         }
     });

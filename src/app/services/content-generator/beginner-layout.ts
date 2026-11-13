@@ -57,7 +57,7 @@ export class BeginnerLayout implements ContentGenerator {
                 environment.production ? 
                     new Attribute("class", "search-submit") : 
                     new Attribute("style", this.buttonStyle),
-                new Text("Show/hide all")
+                new Text("Show all")
             ),
 
             new Tag("div",
