@@ -24,7 +24,7 @@
                     </label>
                 </div>
 
-                <div class="form-check-inline">
+                <div class="form-check-inline" *ngIf="puzzle.info?.provider === 'quick-cryptic'">
                     <label class="form-check-label" for="layout3">
                         <input id="layout3" type="radio" class="form-check-input" value="beginner" formControlName="layout"> quick cryptic
                     </label>

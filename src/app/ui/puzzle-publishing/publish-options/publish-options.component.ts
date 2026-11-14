@@ -79,7 +79,7 @@ export class PublishOptionsComponent implements OnInit, OnDestroy {
                             this.form.patchValue(
                             {
                                 includeGrid: puzzle.publishOptions.includeGrid, 
-                                layout: puzzle.publishOptions.layout, 
+                                layout: puzzle.publishOptions.layout,
                                 spacing: puzzle.publishOptions.spacing,
                                 showClueGroups: puzzle.publishOptions.showClueGroups,
                                 showClueCaptions: puzzle.publishOptions.showClueCaptions,

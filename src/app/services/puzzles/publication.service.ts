@@ -3,8 +3,6 @@ import { Puzzle } from '../../model/puzzle-model/puzzle';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse, ApiResponseStatus, ContentGenerator, PublishStatus, AppResultSymbols, getApiRoot } from '../common';
 import { AuthService, Credentials } from '../app/auth.service';
-import { TableLayout } from '../content-generator/table-layout';
-import { ListLayout } from '../content-generator/list-layout';
 import { AppService } from 'src/app/ui/general/app.service';
 
 abstract class PublishPostResponse implements ApiResponse {
