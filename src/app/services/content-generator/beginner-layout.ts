@@ -65,10 +65,12 @@ export class BeginnerLayout implements ContentGenerator {
 
                 // clues
                 puzzle.publishOptions.showClueGroups ? new Tag("div", new Attribute("class", "fts-group"), new Text("ACROSS")) : null,
-                new Tag("div", ...puzzle.clues.filter(c => c.group === "across").map(clue => this.makeClue(clue, puzzle.publishOptions, puzzle.provision))),
+                new Tag("div", 
+                    ...puzzle.clues.filter(c => c.group === "across").map(clue => this.makeClue(clue, puzzle.publishOptions, puzzle.provision))),
 
                 puzzle.publishOptions.showClueGroups ? new Tag("div", new Attribute("class", "fts-group"), new Text("DOWN")) : null,
-                new Tag("div", ...puzzle.clues.filter(c => c.group === "down").map(clue => this.makeClue(clue, puzzle.publishOptions, puzzle.provision))),
+                new Tag("div",
+                     ...puzzle.clues.filter(c => c.group === "down").map(clue => this.makeClue(clue, puzzle.publishOptions, puzzle.provision))),
 
                 //footer
                 new Tag("div", new QuillNode(puzzle.notes.footer)),
@@ -83,6 +85,7 @@ export class BeginnerLayout implements ContentGenerator {
         const definitionStyle = publishOptions.getStyle("definition");
 
         return new Tag("div",
+            new Attribute("style", "margin-top: 0.75em"),
             new Attribute("class", "fts-group"),
 
             // write the clue
