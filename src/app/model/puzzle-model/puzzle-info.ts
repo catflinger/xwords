@@ -1,6 +1,4 @@
-import { DateTime } from 'luxon';
 import { IPuzzleInfo, PuzzleProvider } from '../interfaces';
-import { PuzzleProvision } from './puzzle-provision';
 
 export class PuzzleInfo implements IPuzzleInfo {
     public readonly id: string;
@@ -12,6 +10,7 @@ export class PuzzleInfo implements IPuzzleInfo {
     public readonly wordpressId: number;
     public readonly instructions: string;
     public readonly href: string;
+    public readonly hints: string[] = [];
 
     // public readonly parsing: PuzzleProvision;
 
@@ -29,5 +28,13 @@ export class PuzzleInfo implements IPuzzleInfo {
         this.wordpressId = data.wordpressId;
         this.instructions = data.instructions;
         this.href = data.href ? data.href : "";
+
+        if (data && Array.isArray(data.hints)) {
+            data.hints.forEach(hint => {
+                if (typeof hint === "string") {
+                    this.hints.push(hint);
+                }
+            });
+        }
     }
 }

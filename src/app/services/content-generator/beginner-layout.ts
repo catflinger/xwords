@@ -12,7 +12,6 @@ import { QuillNode } from './quill-node';
 import { PublishOptions } from 'src/app/model/puzzle-model/publish-options';
 import { PuzzleProvision } from 'src/app/model/puzzle-model/puzzle-provision';
 import { HtmlNode } from './html';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -50,14 +49,12 @@ export class BeginnerLayout implements ContentGenerator {
                 :
                 null,
 
-            // toggle button to show/hide the answers etc
+            // button to show/hide the answers etc
             new Tag("button",
                 new Attribute("id", "expand-all"),
                 new Attribute("type", "button"),
-                environment.production ? 
-                    new Attribute("class", "search-submit") : 
-                    new Attribute("style", this.buttonStyle),
-                new Text("Show all")
+                new Attribute("class", "search-submit"), 
+                new Text("Expand all")
             ),
 
             new Tag("div",
@@ -85,7 +82,7 @@ export class BeginnerLayout implements ContentGenerator {
         const definitionStyle = publishOptions.getStyle("definition");
 
         return new Tag("div",
-            new Attribute("style", "margin-top: 0.75em"),
+            new Attribute("style", "margin-top: 1.5em"),
             new Attribute("class", "fts-group"),
 
             // write the clue
@@ -115,9 +112,10 @@ export class BeginnerLayout implements ContentGenerator {
 
             // write the comments
             new Tag("details",
-                new Attribute("class", "fts-beginner-toggle"),
+                new Attribute("style", "margin-top: 0.1em"),
                 new Tag("summary", new Text("Explanation")),
                 new Tag("div",
+                    new Attribute("style", "margin-left:1em;margin-top:0.5em;margin-bottom:2em;"),
                     new Attribute("class", "fts-subgroup"),
                     new QuillNode(clue.comment)
                 )
@@ -132,7 +130,7 @@ export class BeginnerLayout implements ContentGenerator {
         clue.answers.forEach((answer, i) => 
             result.push(
                 new Tag("details",
-                    new Attribute("class", "fts-beginner-toggle"),
+                    new Attribute("style", "margin-top: 0.1em"),
                     new Tag("summary", 
                         new Text(publishOptions.textCols[i].caption)
                     ),

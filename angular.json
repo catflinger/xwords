@@ -34,8 +34,7 @@
                             "node_modules/quill/dist/quill.snow.css"
                         ],
                         "scripts": [
-                            "node_modules/bootstrap/dist/js/bootstrap.min.js",
-                            "src/scripts.js"
+                            "node_modules/bootstrap/dist/js/bootstrap.min.js"
                         ]
 
                     },

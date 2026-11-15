@@ -56,6 +56,7 @@ export class CreateClues extends PuzzleModifier {
             text: clueText,
             letterCount: `(${entryLength})`,
             answers: [""],
+            hint: "",
             solution: "",
             annotation: null,
             redirect: null,

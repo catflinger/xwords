@@ -181,7 +181,7 @@ function getEmptyPuzzle(): IPuzzle {
                 }
             ],
             includeGrid: false,
-            layout: "table",
+            layout: "",
             spacing: "small",
         },
     };

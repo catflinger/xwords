@@ -109,6 +109,7 @@ export class ParseGuardian extends PuzzleModifier {
                 group: entry.direction as ClueGroup,
                 text: clueText,
                 solution: "",
+                hint: "",
                 letterCount: Clue.getLetterCount(clueText),
                 annotation: null,
                 redirect: this.getRedirect(crossword, entry.id),

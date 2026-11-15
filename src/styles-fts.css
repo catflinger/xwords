@@ -81,3 +81,9 @@ fts-definition  Added to each element containing clue text to be marked as defin
 }
 
 
+.search-submit {
+    background-color: #666666;
+    color: white;
+    border-radius: 0px;
+    border: solid 1px #666666;
+}

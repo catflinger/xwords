@@ -36,7 +36,7 @@ export type PuzzleProvider =
     "grid";
     
 export type ClueValidationWarning = "missing answer" | "missing comment" | "missing definition";
-export type Layouts = "table" | "list" | "beginner";
+export type Layouts = "table" | "list" | "beginner" | "";
 export type Spacing = "small" | "medium" | "large";
 export type TextStyleName = "answer" | "clue" | "definition";
 export type GridStyle = "standard" | "barred";
@@ -166,6 +166,7 @@ export interface IClue {
     redirect: string;
     format: string;
     highlight: boolean;
+    hint: string;
 
     answers: Array<string>;  // additional columns displayed in the blog (optional)
     link: IGridLink;
@@ -187,6 +188,7 @@ export interface IPuzzleInfo {
     wordpressId: number;
     instructions: string;
     href: string;
+    hints: string[];
 } 
 
 export interface IPuzzleOptions {

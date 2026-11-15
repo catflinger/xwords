@@ -14,6 +14,7 @@ export class Clue implements IClue {
     public readonly letterCount: string;    // "(5, 4)"
     public readonly answers: Array<string>;
     public readonly solution: string;
+    public readonly hint: string;
     public readonly annotation: string;
     public readonly redirect: string;
     public readonly format: string;
@@ -50,6 +51,12 @@ export class Clue implements IClue {
             this.group = data.group;
         } else {
             throw "unrecognised clue group when reading clue data";
+        }
+
+        if (typeof data.hint === "string") {
+            this.hint = data.hint;
+        } else {
+            this.hint = "";
         }
 
         if (typeof data.redirect === "string") {

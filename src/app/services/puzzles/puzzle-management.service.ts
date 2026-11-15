@@ -25,6 +25,7 @@ import { UpdateProvision } from "src/app/modifiers/puzzle-modifiers/update-provi
 import { fifteensquaredAnswerStyle, fifteensquaredClueStyle, fifteensquaredDefinitionStyle } from "src/app/model/puzzle-model/text-style";
 import { AddTextColumn } from "src/app/modifiers/publish-options-modifiers/add-text-column";
 import { DomSanitizer } from "@angular/platform-browser";
+import { UpdatePublsihOptions } from "src/app/modifiers/publish-options-modifiers/update-publish-options";
 
 // Note: using abstract classes rather than interfaces to enable them to be used
 // as injection tokens in the Angular DI. Interfaces cannot be used directly as injection tokens.
@@ -294,17 +295,24 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
                 // TO DO: find out why local parsing not working for Guardian Quick Cryptic
                 // this should use providePuzzle and be with cryptc and prize above
-                
+
                 if (params.provider === "quick-cryptic") {
-                    new AddTextColumn("Hint").exec(puzzleM);
+                    new AddTextColumn("Trick").exec(puzzleM);
                     new UpdateInfo({ href: response.href }).exec(puzzleM);
-                    
+
                     if (puzzle?.info?.instructions) {
+                        const hints: string[] = this.parseHintsFromInstructions(puzzle.info.instructions);
+
                         // The guardian quick criptic contains some help for novice solvers in the special instructions.
                         // This displays OK on the guardian website but needs a little modification but for some reason
                         // to make it display properly here
                         //const clean = this.domSanitizer.sanitize(SecurityContext.HTML, puzzle.info.instructions.replace(/\n/g, `<br>`));
-                        new UpdateInfo({instructions: puzzle.info.instructions.replace(/\n/g, `<br>`)}).exec(puzzleM);
+                        new UpdateInfo({
+                            instructions: puzzle.info.instructions.replace(/\n/g, `<br>`),
+                            hints: hints
+                        }).exec(puzzleM);
+
+                        new UpdatePublsihOptions({layout: "beginner"}).exec(puzzleM);
                     }
 
                 } else if (params.provider === "independent" || params.provider === "ios") {
@@ -379,6 +387,24 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
 
     //#region Private methods
 
+    private parseHintsFromInstructions(instructions: string): string[] {
+        const result: string[] = [];
+        const lines = instructions.split("\n");
+
+        lines.forEach(part => {
+            const matches = /^<(b|strong)>(?<hint>[^<]+?)<\/(b|strong)>/.exec(part);
+
+            if (matches?.groups?.hint) {
+                const hint = matches?.groups?.hint.toString();
+                if (hint.indexOf("TRICKS") === -1) {
+                    result.push(hint);
+                }
+            }
+        });
+
+        return result;
+    }
+
     private refreshPuzzleList() {
         let list = this.localStorageService.listPuzzles();
         this.bsList.next(list);
@@ -407,6 +433,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
     }
 
     private makeEmptyPuzzle(provider: PuzzleProvider): Puzzle {
+
         return new Puzzle({
             clues: null,
             grid: null,

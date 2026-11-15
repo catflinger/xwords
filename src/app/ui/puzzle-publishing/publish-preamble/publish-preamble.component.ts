@@ -147,10 +147,6 @@ export class PublishPreambleComponent implements OnInit {
         }
     }
 
-    // public onDebug() {
-    //     console.log(`QUILL ${JSON.stringify(this.form.value.header, null, 2)}`);
-    // }
-
     public getUsername(): string {
         return this.appSettings && this.appSettings.username ? 
             this.appSettings.username : 

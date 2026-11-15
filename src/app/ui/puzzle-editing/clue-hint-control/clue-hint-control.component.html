@@ -1,0 +1,6 @@
+<div [formGroup]="form">
+    <select class="form-select" formControlName="hint">
+        <option [value]="''">none</option>
+        <option *ngFor="let hint of hints" [value]="hint">{{hint}}</option>
+    </select>
+</div>

@@ -105,6 +105,7 @@ import { SerialNumberWarningComponent } from './ui/puzzle-editing/serial-number-
 import { ExportPuzzleComponent } from './ui/puzzle-editing/export-puzzle/export-puzzle.component';
 import { ImportPuzzleComponent } from './ui/puzzle-editing/import-puzzle/import-puzzle.component';
 import { MycrosswordComponent } from './ui/puzzle-editing/mycrossword/mycrossword.component';
+import { ClueHintControlComponent } from './ui/puzzle-editing/clue-hint-control/clue-hint-control.component';
 
 const quillGlobalConfig = {
     modules: {
@@ -237,6 +238,7 @@ const tracks: ReadonlyArray<NavTrack> = [
         ExportPuzzleComponent,
         ImportPuzzleComponent,
         MycrosswordComponent,
+        ClueHintControlComponent,
     ],
     imports: [
         BrowserModule,
