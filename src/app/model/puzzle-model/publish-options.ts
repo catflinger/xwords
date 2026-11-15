@@ -21,7 +21,7 @@ export class PublishOptions implements IPublishOptions {
         this.showClueGroups = typeof data.showClueGroups === "undefined" ? true : !!data.showClueGroups;
         //this.showGridCaptions = typeof data.showGridCaptions === "undefined" ? true : !!data.showGridCaptions;
         
-        this.layout = data.layout ? data.layout : "";
+        this.layout = data.layout ? data.layout : "table";
         this.spacing = data.spacing ? data.spacing : "medium";
 
         if (data.textStyles) {
