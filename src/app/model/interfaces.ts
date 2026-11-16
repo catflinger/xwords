@@ -36,7 +36,7 @@ export type PuzzleProvider =
     "grid";
     
 export type ClueValidationWarning = "missing answer" | "missing comment" | "missing definition";
-export type Layouts = "table" | "list" | "beginner" | "";
+export type Layouts = "table" | "list" | "beginner-list" | "beginner-table";
 export type Spacing = "small" | "medium" | "large";
 export type TextStyleName = "answer" | "clue" | "definition";
 export type GridStyle = "standard" | "barred";

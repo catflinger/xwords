@@ -12,27 +12,37 @@
                     Layout
                 </div>
 
-                <div class="form-check-inline">
-                    <label class="form-check-label" for="layout1">
-                        <input id="layout1" type="radio" class="form-check-input" value="table" formControlName="layout"> table
-                    </label>
-                </div>
+                <ng-container *ngIf="!isBeginner">
+                    <div class="form-check-inline">
+                        <label class="form-check-label" for="layout1">
+                            <input id="layout1" type="radio" class="form-check-input" value="table" formControlName="layout"> table
+                        </label>
+                    </div>
 
-                <div class="form-check-inline">
-                    <label class="form-check-label" for="layout2">
-                        <input id="layout2" type="radio" class="form-check-input" value="list" formControlName="layout"> list
-                    </label>
-                </div>
+                    <div class="form-check-inline">
+                        <label class="form-check-label" for="layout2">
+                            <input id="layout2" type="radio" class="form-check-input" value="list" formControlName="layout"> list
+                        </label>
+                    </div>
+                </ng-container>
 
-                <div class="form-check-inline" *ngIf="puzzle.info?.provider === 'quick-cryptic'">
-                    <label class="form-check-label" for="layout3">
-                        <input id="layout3" type="radio" class="form-check-input" value="beginner" formControlName="layout"> quick cryptic
-                    </label>
-                </div>
+                <ng-container *ngIf="isBeginner">
+                    <div class="form-check-inline" *ngIf="puzzle.info?.provider === 'quick-cryptic'">
+                        <label class="form-check-label" for="layout3">
+                            <input id="layout3" type="radio" class="form-check-input" value="beginner-table" formControlName="layout"> table
+                        </label>
+                    </div>
+
+                    <div class="form-check-inline" *ngIf="puzzle.info?.provider === 'quick-cryptic'">
+                        <label class="form-check-label" for="layout3">
+                            <input id="layout3" type="radio" class="form-check-input" value="beginner-list" formControlName="layout"> list
+                        </label>
+                    </div>
+                </ng-container>
             </div>
         </div>
     
-        <div class="row mt-3">
+        <div class="row mt-3" *ngIf="!isBeginner">
             <div class="col">
                 <div>
                     Line Spacing
@@ -102,7 +112,7 @@
             </div>
         </div>
 
-        <div class="row mt-3">
+        <div class="row mt-3" *ngIf="!isBeginner">
             <div class="col">
                 <label>
                     <input type="checkbox" formControlName="showClueGroups">
@@ -111,7 +121,7 @@
             </div>
         </div>
 
-        <div class="row mt-3">
+        <div class="row mt-3" *ngIf="!isBeginner">
             <div class="col">
                 <label>
                     <input type="checkbox"  formControlName="showClueCaptions">

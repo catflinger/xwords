@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Puzzle } from '../../model/puzzle-model/puzzle';
 import { HttpClient } from '@angular/common/http';
-import { ApiResponse, ApiResponseStatus, ContentGenerator, PublishStatus, AppResultSymbols, getApiRoot } from '../common';
+import { ApiResponse, ApiResponseStatus, PublishStatus, AppResultSymbols, getApiRoot } from '../common';
 import { AuthService, Credentials } from '../app/auth.service';
 import { AppService } from 'src/app/ui/general/app.service';
 

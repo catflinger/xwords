@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
-import { ContentGenerator } from '../common';
 import { Attribute } from './attribute';
 import { More } from './more';
 import { Root } from './root';
@@ -11,11 +10,12 @@ import { ContentNode } from './content-node';
 import { QuillNode } from './quill-node';
 import { PublishOptions } from 'src/app/model/puzzle-model/publish-options';
 import { PuzzleProvision } from 'src/app/model/puzzle-model/puzzle-provision';
+import { ContentGenerator } from './content-generator';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ListLayout implements ContentGenerator {
+export class ListLayout extends ContentGenerator {
 
     public getContent(puzzle: Puzzle, gridUrl: string): string {
 

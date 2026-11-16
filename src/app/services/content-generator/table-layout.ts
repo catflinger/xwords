@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
-import { ContentGenerator } from '../common';
 import { Attribute } from './attribute';
 import { Root } from './root';
 import { More } from './more';
@@ -12,11 +11,12 @@ import { QuillNode } from './quill-node';
 import { PublishOptions } from 'src/app/model/puzzle-model/publish-options';
 import { TextStyleName } from 'src/app/model/interfaces';
 import { TextChunk } from 'src/app/model/puzzle-model/clue-text-chunk';
+import { ContentGenerator } from './content-generator';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TableLayout implements ContentGenerator {
+export class TableLayout extends ContentGenerator {
     
     public getContent(puzzle: Puzzle, gridUrl: string): string {
         const answerColumnCount = puzzle.publishOptions.textCols.length;
@@ -136,18 +136,5 @@ export class TableLayout implements ContentGenerator {
                 new Tag("td", new QuillNode(clue.comment)),
             ),
         ];
-    }
-
-    public makeTextStyleAttribute(styleName: TextStyleName, publishOptions: PublishOptions): ContentNode {
-        const style = publishOptions.getStyle(styleName);
-
-        return new Attribute("style", style.toCssStyleString());
-    }
-
-    public makeChunkStyleAttribute(chunk: TextChunk, publishOptions: PublishOptions): ContentNode {
-        const clueStyle = publishOptions.getStyle("clue");
-        const definitionStyle = publishOptions.getStyle("definition");
-
-        return new Attribute("style", chunk.isDefinition ? definitionStyle.toCssStyleString() : clueStyle.toCssStyleString());
     }
 }

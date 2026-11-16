@@ -312,7 +312,7 @@ export class PuzzleManagementService implements IPuzzleManager, IActivePuzzle {
                             hints: hints
                         }).exec(puzzleM);
 
-                        new UpdatePublsihOptions({layout: "beginner"}).exec(puzzleM);
+                        new UpdatePublsihOptions({layout: "beginner-table"}).exec(puzzleM);
                     }
 
                 } else if (params.provider === "independent" || params.provider === "ios") {

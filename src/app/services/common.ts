@@ -35,10 +35,6 @@ export const AppResultSymbols = {
 
 export type PublishStatus = "publish" | "draft";
 
-export interface ContentGenerator {
-    getContent(puzzle: Puzzle, gridUrl: string): string;
-}
-
 export type EditorMode = "modal" | "inline" | "fullscreen";
 export const editorModes: ReadonlyArray<EditorMode> = ["modal", "inline", "fullscreen"];
 

@@ -3,7 +3,7 @@ import { combineLatest, Subscription } from 'rxjs';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
 import { AppSettingsService } from 'src/app/services/app/app-settings.service';
 import { AuthService } from 'src/app/services/app/auth.service';
-import { AppSettings, ContentGenerator } from 'src/app/services/common';
+import { AppSettings } from 'src/app/services/common';
 import { TableLayout } from 'src/app/services/content-generator/table-layout';
 import { ListLayout } from 'src/app/services/content-generator/list-layout';
 import { NavService } from 'src/app/services/navigation/nav.service';
@@ -13,7 +13,8 @@ import { AppService, AppStatus } from '../../general/app.service';
 import { GridComponent } from '../../grid/grid/grid.component';
 import { fifteenSquaredBlack } from '../../common';
 import { Layouts } from 'src/app/model/interfaces';
-import { BeginnerLayout } from 'src/app/services/content-generator/beginner-layout';
+import { BeginnerLayoutList } from 'src/app/services/content-generator/beginner-layout.-list';
+import { ContentGenerator } from 'src/app/services/content-generator/content-generator';
 
 @Component({
     selector: 'app-content-preview',
@@ -41,7 +42,7 @@ export class ContentPreviewComponent implements OnInit, AfterViewInit, OnDestroy
         private activePuzzle: IActivePuzzle,
         private listLayout: ListLayout,
         private tableLayout: TableLayout,
-        private beginnerLayout: BeginnerLayout,
+        private beginnerLayout: BeginnerLayoutList,
         private detRef: ChangeDetectorRef,) { }
 
     ngOnInit() {
@@ -69,7 +70,7 @@ export class ContentPreviewComponent implements OnInit, AfterViewInit, OnDestroy
                 this.puzzle = puzzle;
 
                 if (this.puzzle) {
-                    const generator = this.getContentGenerator(this.puzzle.publishOptions.layout);
+                    const generator = this.appService.getContentGenerator(this.puzzle.publishOptions.layout);
                     this.debugContent = generator.getContent(this.puzzle, this.getGridImage(this.children.first));
                 }
                 this.detRef.detectChanges();
@@ -96,19 +97,4 @@ export class ContentPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
         return result;
     }
-
-    private getContentGenerator(layout: Layouts): ContentGenerator | undefined {
-        let result: ContentGenerator | undefined ;
-        switch (layout) {
-            case "table": result = this.tableLayout;
-            break;
-            case "list": result = this.listLayout;
-            break;
-            case "beginner": result = this.beginnerLayout;
-            break;
-            default: result = undefined;
-        }
-
-        return result;
-    } 
 }

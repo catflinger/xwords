@@ -3,11 +3,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 import { Alert, AlertType } from '../common';
 import { PuzzleProvider, Base64Encoded, ProvisionOptions, Layouts } from 'src/app/model/interfaces';
-import { AppResultSymbols, ContentGenerator } from 'src/app/services/common';
+import { AppResultSymbols } from 'src/app/services/common';
 import { TableLayout } from 'src/app/services/content-generator/table-layout';
 import { ListLayout } from 'src/app/services/content-generator/list-layout';
-import { BeginnerLayout } from 'src/app/services/content-generator/beginner-layout';
-//import { ProvisionOptions } from '../puzzle-editing/provision-options-control/provision-options-control.component';
+import { BeginnerLayoutList } from 'src/app/services/content-generator/beginner-layout.-list';
+import { ContentGenerator } from 'src/app/services/content-generator/content-generator';
+import { BeginnerLayoutTable } from 'src/app/services/content-generator/beginner-layout-table';
 
 export type OpenPuzzleAction = "openByDate" | "openLatest";
 
@@ -102,7 +103,8 @@ export class AppService implements OnDestroy {
     constructor(
         private tableLayout: TableLayout,
         private listLayout: ListLayout,
-        private beginnerLayout: BeginnerLayout,
+        private beginnerLayoutList: BeginnerLayoutList,
+        private beginnerLayoutTable: BeginnerLayoutTable,
     ) {
         this.bs = new BehaviorSubject<AppStatus>(
             new AppStatus(
@@ -216,7 +218,9 @@ export class AppService implements OnDestroy {
             break;
             case "list": result = this.listLayout;
             break;
-            case "beginner": result = this.beginnerLayout;
+            case "beginner-table": result = this.beginnerLayoutTable;
+            break;
+            case "beginner-list": result = this.beginnerLayoutList;
             break;
             default: result = undefined;
         }

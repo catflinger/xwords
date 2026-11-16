@@ -121,6 +121,11 @@ export class PublishOptionsComponent implements OnInit, OnDestroy {
         this.navService.navigate("nina");
     }
 
+    public get isBeginner(): boolean {
+        return this.puzzle?.info?.provider === "quick-cryptic";
+    }
+
+
     private saveAndCommit(values: PublishOptions) {
 
         this.activePuzzle.updateAndCommit(

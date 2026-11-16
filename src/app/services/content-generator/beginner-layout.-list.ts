@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Clue } from 'src/app/model/puzzle-model/clue';
 import { Puzzle } from 'src/app/model/puzzle-model/puzzle';
-import { ContentGenerator } from '../common';
 import { Attribute } from './attribute';
 import { More } from './more';
 import { Root } from './root';
@@ -12,14 +11,12 @@ import { QuillNode } from './quill-node';
 import { PublishOptions } from 'src/app/model/puzzle-model/publish-options';
 import { PuzzleProvision } from 'src/app/model/puzzle-model/puzzle-provision';
 import { HtmlNode } from './html';
+import { ContentGenerator } from './content-generator';
 
 @Injectable({
     providedIn: 'root'
 })
-export class BeginnerLayout implements ContentGenerator {
-
-    // ONLY USE SINGLE QUOTES IN ATTRIBUTE VALUES!
-    private readonly buttonStyle = "background-color: #666666; color: white; border-radius: 0px; border: solid 1px #666666;";
+export class BeginnerLayoutList extends ContentGenerator {
 
     public getContent(puzzle: Puzzle, gridUrl: string): string {
 
@@ -61,11 +58,25 @@ export class BeginnerLayout implements ContentGenerator {
                 new Attribute("class", `fts fts-list fts-spacing-${puzzle.publishOptions.spacing}`),
 
                 // clues
-                puzzle.publishOptions.showClueGroups ? new Tag("div", new Attribute("class", "fts-group"), new Text("ACROSS")) : null,
+                puzzle.publishOptions.showClueGroups ? 
+                    new Tag("div", 
+                        new Attribute("style", "margin-top: 1em;font-weight: bold;"), 
+                        new Attribute("class", "fts-group"), 
+                        new Text("ACROSS")
+                    ) 
+                    : null,
+                
                 new Tag("div", 
                     ...puzzle.clues.filter(c => c.group === "across").map(clue => this.makeClue(clue, puzzle.publishOptions, puzzle.provision))),
 
-                puzzle.publishOptions.showClueGroups ? new Tag("div", new Attribute("class", "fts-group"), new Text("DOWN")) : null,
+                puzzle.publishOptions.showClueGroups ? 
+                    new Tag("div", 
+                        new Attribute("style", "margin-top: 1em;font-weight: bold;"), 
+                        new Attribute("class", "fts-group"),
+                        new Text("DOWN")
+                    ) 
+                    : null,
+                
                 new Tag("div",
                      ...puzzle.clues.filter(c => c.group === "down").map(clue => this.makeClue(clue, puzzle.publishOptions, puzzle.provision))),
 
